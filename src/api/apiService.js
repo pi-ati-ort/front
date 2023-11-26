@@ -4,6 +4,6 @@ const apiClient = axios.create({
   baseURL: "http://localhost:8080",
 });
 
-export function retrieveHelloWorld() {
-  return apiClient.get("/say-hello");
+export function retrieveTest() {
+  return apiClient.get("/test-web");
 }

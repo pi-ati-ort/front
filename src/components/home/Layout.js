@@ -1,6 +1,6 @@
 import React from "react";
 
-import { retrieveHelloWorld } from "../../api/apiService";
+import { retrieveTest } from "../../api/apiService";
 
 const Home = () => {
   const LoginHandler = () => {
@@ -11,8 +11,8 @@ const Home = () => {
     window.location.href = "/register";
   };
 
-  const HelloWorldHandler = () => {
-    retrieveHelloWorld()
+  const TestHandler = () => {
+    retrieveTest()
       .then((response) => {
         console.log(response);
       })
@@ -24,8 +24,11 @@ const Home = () => {
   return (
     <div>
       <header className="App-header">
-        <p className="text-5xl text-center mt-32 mb-20 text-black font-bold">
-          Bienvenidos al Proyecto Integrador!
+        <p className="text-5xl text-center mt-32 mb-6 text-black font-bold">
+          Proyecto Integrador
+        </p>
+        <p className="text-2xl text-center mb-20 text-black font-bold">
+          Ampliación de sistema piloto de permisos de construcción
         </p>
       </header>
       <div className="flex flex-row justify-center mt-10">
@@ -48,9 +51,9 @@ const Home = () => {
         <span className="mx-4">
           <button
             className="bg-verde-idem text-white rounded-md py-3 px-9 text-lg font-semibold"
-            onClick={HelloWorldHandler}
+            onClick={TestHandler}
           >
-            Probar API Hello World
+            API test
           </button>
         </span>
       </div>
