@@ -40,9 +40,9 @@ const Login = () => {
                   Contraseña{" "}
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold verde-idem">
+                  {/*                <a href="#" className="font-semibold verde-idem">
                     Recuperar contraseña
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <div className="mt-2">
