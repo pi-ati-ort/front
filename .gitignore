@@ -1,1 +1,8 @@
 node_modules
+
+# Mac trash files
+.DS_Store
+._*
+
+# .env files
+.env
