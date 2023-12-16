@@ -26,8 +26,9 @@ const Register = () => {
 
   const registerUserHandler = (event) => {
     event.preventDefault();
-    const response = registerUser(user)
+    registerUser(user)
       .then((response) => {
+        console.log(response);
         window.location.href = "/login";
       })
       .catch((e) => {
@@ -91,7 +92,7 @@ const Register = () => {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Contraseña{" "}
+                  Contraseña
                 </label>
               </div>
               <div className="mt-2">
