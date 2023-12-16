@@ -1,9 +1,15 @@
 import axios from "axios";
 
-const apiClient = axios.create({
-  baseURL: "http://localhost:8080",
-});
-
-export function retrieveTest() {
-  return apiClient.get("/test-web");
-}
+export const registerUser = async (user) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/auth/register",
+      user
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error registering user:", error);
+    throw error;
+  }
+};
