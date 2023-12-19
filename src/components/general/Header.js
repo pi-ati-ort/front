@@ -48,10 +48,12 @@ const Header = () => {
                 </div>
               </div>
             </span>
-            <div className="flex right-0">
+            <div className="right-0">
               <p className="text-white font-semibold text-sm text-end">
                 {sessionStorage.getItem("name")}
-                <br />
+              </p>
+
+              <p className="text-white font-light text-sm text-end">
                 {sessionStorage.getItem("username")}
               </p>
             </div>
