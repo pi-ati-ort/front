@@ -9,6 +9,14 @@ const Header = () => {
     window.location.href = "/";
   };
 
+  const evaluateUrl = () => {
+    if (window.location.pathname === "/profile") {
+      return { textDecoration: "underline" };
+    } else {
+      return {};
+    }
+  };
+
   return (
     <header className="flex-wrap w-full bg-verde-idem text-sm py-3">
       <nav className="relative w-full mx-auto px-4 flex flex-row">
@@ -29,7 +37,12 @@ const Header = () => {
                     className="text-white no-underline hover:text-white hover:no-underline"
                     href="/profile"
                   >
-                    <span className="text-base font-semibold">Perfil</span>
+                    <span
+                      className="text-base font-semibold"
+                      style={evaluateUrl()}
+                    >
+                      Perfil
+                    </span>
                   </a>
                 </div>
               </div>
@@ -43,7 +56,7 @@ const Header = () => {
                       window.location.href = "/";
                     }}
                   >
-                    <span className="text-base font-semibold">Salir</span>
+                    <span className="text-base font-semibold hover:underline">Salir</span>
                   </a>
                 </div>
               </div>

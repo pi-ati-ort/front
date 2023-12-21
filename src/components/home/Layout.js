@@ -7,11 +7,19 @@ const Home = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const LoginHandler = () => {
-    window.location.href = "/login";
+    if (!sessionStorage.getItem("token")) {
+      window.location.href = "/login";
+    } else {
+      window.location.href = "/profile";
+    }
   };
 
   const RegisterHandler = () => {
-    window.location.href = "/register";
+    if (!sessionStorage.getItem("token")) {
+      window.location.href = "/register";
+    } else {
+      window.location.href = "/profile";
+    }
   };
 
   const ModalHandler = () => {
@@ -20,7 +28,7 @@ const Home = () => {
 
   return (
     <div>
-      <div className="">
+      <div className="min-h-screen">
         <div className="">
           <img
             src={logo}
@@ -28,31 +36,31 @@ const Home = () => {
             className="mx-auto w-1/3 mt-4"
           />
         </div>
-        <p className="text-4xl text-center mt-8 mb-4 text-black font-bold">
+        <p className="text-4xl text-center mt-2 mb-4 text-black font-bold">
           Proyecto Integrador
         </p>
-        <p className="text-lg text-center mb-10 text-black font-bold">
+        <p className="text-lg text-center mb-8 text-black font-bold">
           Ampliación de sistema piloto de permisos de construcción <br />
           digitales para la Intendencia de Montevideo
         </p>
-      </div>
-      <div className="flex flex-row justify-center">
-        <span className="mx-4">
-          <button
-            className="bg-verde-idem text-white rounded-md py-3 px-12 text-lg font-semibold"
-            onClick={LoginHandler}
-          >
-            Login
-          </button>
-        </span>
-        <span className="mx-4">
-          <button
-            className="bg-verde-idem text-white rounded-md py-3 px-11 text-lg font-semibold"
-            onClick={RegisterHandler}
-          >
-            Registro
-          </button>
-        </span>
+        <div className="flex flex-row justify-center">
+          <span className="mx-4">
+            <button
+              className="bg-verde-idem text-white rounded-md py-3 px-12 text-lg font-semibold"
+              onClick={LoginHandler}
+            >
+              Login
+            </button>
+          </span>
+          <span className="mx-4">
+            <button
+              className="bg-verde-idem text-white rounded-md py-3 px-11 text-lg font-semibold"
+              onClick={RegisterHandler}
+            >
+              Registro
+            </button>
+          </span>
+        </div>
       </div>
       <div className="flex flex-row justify-center mt-10">
         <span className="mx-4 w-full text-center">
@@ -69,12 +77,9 @@ const Home = () => {
           className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"
           onClick={ModalHandler}
         >
-          <div
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-lg p-10 w-4/5"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-lg p-10 w-4/5">
             <div className="flex flex-col gap-4">
-              <p className="text-2xl text-center text-black font-semibold">
+              <p className="text-3xl text-center text-black font-semibold">
                 Sobre este proyecto
               </p>
               <p className="text-justify text-black">
@@ -136,7 +141,7 @@ const Home = () => {
               </span>
               <span>
                 <button
-                  className="btn-sm bg-verde-idem text-white rounded-md py-2 px-3 text-sm font-semibold"
+                  className="btn-sm bg-verde-idem text-white rounded-md py-2 px-3 text-sm font-semibold border-2 border-idem"
                   onClick={ModalHandler}
                 >
                   Cerrar
