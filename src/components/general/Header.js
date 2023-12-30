@@ -10,7 +10,7 @@ const Header = () => {
   };
 
   const evaluateUrl = () => {
-    if (window.location.pathname === "/profile") {
+    if (window.location.pathname === "/perfil") {
       return { textDecoration: "underline" };
     } else {
       return {};
@@ -20,9 +20,10 @@ const Header = () => {
   return (
     <header className="flex-wrap w-full bg-verde-idem text-sm py-3">
       <nav className="relative w-full mx-auto px-4 flex flex-row">
-        <span className="">
+        <span className="cursor-pointer">
           <img
             src={logo}
+            title="Ir al inicio"
             alt="Intendencia de Montevideo"
             className="h-11"
             onClick={goToHome}
@@ -35,10 +36,10 @@ const Header = () => {
                 <div className="flex items-center justify-between flex-shrink-0 text-white mr-6">
                   <a
                     className="text-white no-underline hover:text-white hover:no-underline"
-                    href="/profile"
+                    href="/perfil"
                   >
                     <span
-                      className="text-base font-semibold"
+                      className="text-base font-semibold hover:underline"
                       style={evaluateUrl()}
                     >
                       Perfil
@@ -56,7 +57,9 @@ const Header = () => {
                       window.location.href = "/";
                     }}
                   >
-                    <span className="text-base font-semibold hover:underline">Salir</span>
+                    <span className="text-base font-semibold hover:underline">
+                      Salir
+                    </span>
                   </a>
                 </div>
               </div>

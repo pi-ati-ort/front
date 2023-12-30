@@ -10,16 +10,20 @@ const Home = () => {
     if (!sessionStorage.getItem("token")) {
       window.location.href = "/login";
     } else {
-      window.location.href = "/profile";
+      window.location.href = "/perfil";
     }
   };
 
   const RegisterHandler = () => {
-    if (!sessionStorage.getItem("token")) {
-      window.location.href = "/register";
+    if (sessionStorage.getItem("token")) {
+      window.location.href = "/perfil";
     } else {
-      window.location.href = "/profile";
+      window.location.href = "/register";
     }
+  };
+
+  const GoToRepo = () => {
+    window.open("https://github.com/pi-ati-ort", "_blank");
   };
 
   const ModalHandler = () => {
@@ -29,19 +33,19 @@ const Home = () => {
   return (
     <div>
       <div className="min-h-screen">
-        <div className="">
+        <div className="relative h-0" style={{ paddingBottom: "33.33%" }}>
           <img
             src={logo}
             alt="Permiso de contracción digital"
-            className="mx-auto w-1/3 mt-4"
+            className="mx-auto w-1/3 mt-4 absolute inset-0"
           />
         </div>
         <p className="text-4xl text-center mt-2 mb-4 text-black font-bold">
           Proyecto Integrador
         </p>
         <p className="text-lg text-center mb-8 text-black font-bold">
-          Ampliación de sistema piloto de permisos de construcción <br />
-          digitales para la Intendencia de Montevideo
+          Ampliación de sistema piloto de Permisos de Construcción <br />
+          Digitales para la Intendencia de Montevideo
         </p>
         <div className="flex flex-row justify-center">
           <span className="mx-4">
@@ -62,7 +66,7 @@ const Home = () => {
           </span>
         </div>
       </div>
-      <div className="flex flex-row justify-center mt-10">
+      {/*     <div className="flex flex-row justify-center mt-10">
         <span className="mx-4 w-full text-center">
           <button
             className="bg-slate-50 text-idem rounded-md py-3 text-lg font-semibold mx-auto px-20 border-2 border-idem mb-32"
@@ -123,20 +127,17 @@ const Home = () => {
                 <li>MySQL</li>
               </ul>
               <p className="text-justify text-black">
-                El código fuente de este proyecto se encuentra disponible en{" "}
-                <a href="#" className="text-idem font-semibold">
-                  GitHub
-                </a>
-                .
+                El código fuente de este proyecto se encuentra disponible en
+                github.
               </p>
             </div>
             <div className="flex justify-end mt-6 gap-3">
               <span>
                 <button
                   className="btn-sm bg-slate-50 text-idem border-2 border-idem rounded-md py-2 px-3 text-sm font-semibold"
-                  onClick={ModalHandler}
+                  onClick={GoToRepo}
                 >
-                  Ver Repositorio
+                  Ver Repositorios
                 </button>
               </span>
               <span>
@@ -151,6 +152,7 @@ const Home = () => {
           </div>
         </div>
       )}
+   */}
     </div>
   );
 };

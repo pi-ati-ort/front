@@ -1,9 +1,16 @@
 import React from "react";
 
+import logo from "../../images/dbp_logo.png";
+
 const NotFound = () => {
   return (
     <>
-      <div className="text-idem text-9xl text-center mt-16">404</div>
+      <img
+        src={logo}
+        alt="Permiso de contracción digital"
+        className="mx-auto w-1/5 mt-8"
+      />
+      <div className="text-idem text-9xl text-center font-extrabold">404</div>
       <p className="text-center text-black text-lg">
         La página que estás buscando no existe
       </p>

@@ -21,13 +21,13 @@ const Login = () => {
   const loginUserHandler = async (event) => {
     event.preventDefault();
     try {
-      const token = await loginUser(user);
+      const resp = await loginUser(user);
       const dbUser = await getUser(username);
 
-      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("token", resp.token);
       sessionStorage.setItem("name", dbUser.name);
       sessionStorage.setItem("username", dbUser.username);
-      window.location.href = "/profile";
+      window.location.href = "/perfil";
     } catch (e) {
       localStorage.clear();
       console.log(e);
@@ -35,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div className="">
+    <div className="min-h-screen">
       <div className="">
         <div className="mt-32">
           <h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">
@@ -60,7 +60,7 @@ const Login = () => {
                   autoComplete="email"
                   required
                   onChange={handleUsername}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -82,7 +82,7 @@ const Login = () => {
                   autoComplete="current-password"
                   required
                   onChange={handlePassword}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -104,7 +104,7 @@ const Login = () => {
             </a>
           </p>
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 };
