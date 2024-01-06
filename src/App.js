@@ -21,6 +21,7 @@ function App() {
       <header className="">
         <Header />
       </header>
+      <div className="mt-24">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -39,6 +40,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </div>
       <Footer />
     </div>
   );

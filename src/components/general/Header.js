@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex-wrap w-full bg-verde-idem text-sm py-3">
+    <header className="flex-wrap w-full bg-verde-idem text-sm py-3 z-10" style={{ position: "fixed", top: 0, left: 0, right: 0 }}>
       <nav className="relative w-full mx-auto px-4 flex flex-row">
         <span className="cursor-pointer">
           <img

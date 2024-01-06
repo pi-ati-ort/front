@@ -25,7 +25,7 @@ const Profile = () => {
     },
     {
       title: "Validar Normativa",
-      description: "Visualiza los trámites que están en proceso de resolución.",
+      description: "Permite validar individualmente aspectos normativos en el proyecto.",
       buttonText: "Validar",
     },
   ];
@@ -44,7 +44,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="">
+    <div className="min-h-screen">
       <p className="text-4xl text-center mt-9 mb-4 text-black font-bold">
         Te damos la bienvenida, {sessionStorage.getItem("name")}.
       </p>
@@ -52,7 +52,7 @@ const Profile = () => {
         ¿Qué deseas hacer hoy?
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:mx-44 lg:mx-72">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:mx-40 lg:mx-72">
         {menu.map((item, index) => (
           <div
             key={index}

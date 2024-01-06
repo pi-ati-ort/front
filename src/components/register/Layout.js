@@ -39,7 +39,7 @@ const Register = () => {
   return (
     <div className="min-h-screen">
       <div className="">
-        <div className="mt-32">
+        <div className=" mt-52">
           <h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">
             Registrarse
           </h2>
