@@ -3,7 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 
 import { newProject } from "../../api/apiService";
 
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 const NewProject = () => {
@@ -17,15 +17,6 @@ const NewProject = () => {
 
   const username = sessionStorage.getItem("username");
   const schemaTypes = ["IFC2X3", "IFC4"];
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   const CreateProject = () => {
     setLoading(true);
@@ -168,16 +159,22 @@ const NewProject = () => {
 
       {loading && (
         <div style={{ display: loading ? "block" : "none" }}>
-          <Lottie options={defaultOptions} height={400} width={400} />
+          <Lottie
+            animationData={animationData}
+            style={{ height: "400px", width: "400px", margin: "auto" }}
+          />
         </div>
       )}
 
       {existsProjects && (
         <>
           <h2 className="text-2xl font-semibold mt-8">Cargar Modelo</h2>
-          <div className="bg-white p-6 h-64 rounded-2xl shadow-lg flex flex-col border border-idem mt-3 mb-2">
+          <div className="bg-white p-6 h-64 rounded-2xl shadow-lg flex flex-col border border-idem mb-2">
             {uploading ? (
-              <Lottie options={defaultOptions} height={300} width={300} />
+              <Lottie
+                animationData={animationData}
+                style={{ height: "300px", width: "300px", margin: "auto" }}
+              />
             ) : (
               <div className="h-64 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed">
                 <>

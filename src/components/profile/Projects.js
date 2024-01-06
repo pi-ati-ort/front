@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { getProjects } from "../../api/apiService";
 
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 const Projects = () => {
@@ -12,15 +12,6 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
 
   const username = sessionStorage.getItem("username");
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   useEffect(() => {
     if (!sessionStorage.getItem("token")) {
@@ -62,7 +53,10 @@ const Projects = () => {
 
       {loading && (
         <div style={{ display: loading ? "block" : "none" }}>
-          <Lottie options={defaultOptions} height={300} width={300} />
+          <Lottie
+            animationData={animationData}
+            style={{ height: "400px", width: "400px", margin: "auto" }}
+          />{" "}
         </div>
       )}
 

@@ -3,7 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 
 import { getProjects } from "../../api/apiService";
 
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 const Visualize = () => {
@@ -24,15 +24,6 @@ const Visualize = () => {
 
   const LoadProject = () => {
     console.log(selectedProject);
-  };
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
   };
 
   useEffect(() => {
@@ -190,7 +181,10 @@ const Visualize = () => {
       </div>
       {loading && (
         <div style={{ display: loading ? "block" : "none" }}>
-          <Lottie options={defaultOptions} height={300} width={300} />
+          <Lottie
+            animationData={animationData}
+            style={{ height: "400px", width: "400px", margin: "auto" }}
+          />{" "}
         </div>
       )}
       {uploaded && (

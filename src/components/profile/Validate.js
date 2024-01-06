@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 const Validate = () => {
@@ -23,15 +23,6 @@ const Validate = () => {
       setLoading(false);
       setShowResults(true);
     }, 1500);
-  };
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
   };
 
   return (
@@ -287,7 +278,10 @@ const Validate = () => {
           </div>
           {loading && (
             <div style={{ display: loading ? "block" : "none" }}>
-              <Lottie options={defaultOptions} height={300} width={300} />
+              <Lottie
+                animationData={animationData}
+                style={{ height: "400px", width: "400px", margin: "auto" }}
+              />{" "}
             </div>
           )}
           {showResults && (
