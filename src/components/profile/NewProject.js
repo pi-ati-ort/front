@@ -118,10 +118,9 @@ const NewProject = () => {
                       <Listbox.Option
                         key={index}
                         className={({ active }) =>
-                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                            active
-                              ? "bg-verde-idem text-white"
-                              : "text-gray-900"
+                          `relative cursor-default select-none py-2 pl-10 pr-4 ${active
+                            ? "bg-verde-idem text-white"
+                            : "text-gray-900"
                           }`
                         }
                         value={item}
@@ -129,9 +128,8 @@ const NewProject = () => {
                         {({ selected }) => (
                           <>
                             <span
-                              className={`block truncate ${
-                                selected ? "font-medium" : "font-normal"
-                              }`}
+                              className={`block truncate ${selected ? "font-medium" : "font-normal"
+                                }`}
                             >
                               {item}
                             </span>
@@ -168,15 +166,17 @@ const NewProject = () => {
 
       {existsProjects && (
         <>
-          <h2 className="text-2xl font-semibold mt-8">Cargar Modelo</h2>
-          <div className="bg-white p-6 h-64 rounded-2xl shadow-lg flex flex-col border border-idem mb-2">
+          <div className="bg-white p-6 h-64 rounded-2xl shadow-lg flex flex-col border border-idem mt-12 mb-2">
+            <h2 className="text-2xl font-semibold">Cargar Modelo</h2>
             {uploading ? (
-              <Lottie
-                animationData={animationData}
-                style={{ height: "300px", width: "300px", margin: "auto" }}
-              />
+              <div className="mt-0">
+                <Lottie
+                  animationData={animationData}
+                  style={{ height: 200, width: 200, margin: "auto" }}
+                />
+              </div>
             ) : (
-              <div className="h-64 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed">
+              <div className="h-72 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed">
                 <>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -200,17 +200,17 @@ const NewProject = () => {
               </div>
             )}
           </div>
-          <div className="justify-center flex">
+          <div className="justify-end flex">
             <button
               onClick={HandleUpload}
-              className="bg-verde-idem text-white rounded-md py-2 text-base font-semibold mt-4 w-1/4 mx-auto"
+              className="bg-verde-idem text-white rounded-md py-2 text-base font-semibold mt-4 w-1/4 justify-self-end "
             >
               Cargar
             </button>
           </div>
         </>
       )}
-      <p className="text-green-500 text-center mt-6">{successMessage}</p>
+      <p className="text-green-500 text-end mt-4">{successMessage}</p>
     </div>
   );
 };

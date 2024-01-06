@@ -1,5 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+
+import { getProjects } from "../../api/apiService";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
@@ -10,6 +12,28 @@ const Validate = () => {
   const [projectName, setProjectName] = useState(null);
   const [loading, setLoading] = useState(null);
   const [showResults, setShowResults] = useState(false);
+
+  const username = sessionStorage.getItem("username");
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("token")) {
+      window.location.href = "/login";
+    }
+    setLoading(null);
+    setShowResults(false);
+
+    const fetchData = async () => {
+      try {
+        const response = await getProjects(username);
+        if (response) {
+          setProjects(response);
+        }
+      } catch (error) {
+        console.error("Error in fetchData: ", error);
+      }
+    };
+    fetchData();
+  }, [username]);
 
   const HandleProject = (e) => {
     setSelectedProject(e);
@@ -32,7 +56,7 @@ const Validate = () => {
         <div className="col-span-2">
           <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12">
             <h3 className="text-2xl font-semibold mb-8">Normativas</h3>
-            <ul>
+            <ul className="ml-2">
               <li>
                 <div className="flex flex-row ">
                   <input
@@ -41,9 +65,9 @@ const Validate = () => {
                     className="form-checkbox h-5 w-5 text-verde-idem mt-2"
                   />
                   <label htmlFor="FOS" className="ml-2 text-gray-700 text-2xl">
-                    Factor Ocupación Suelo (FOS)
+                    Factor Ocupación Suelo
                   </label>
-                  <span className="ml-3 justify-end">
+                  <span className="ml-20 justify-end">
                     <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
                       Ver más
                     </button>
@@ -237,22 +261,20 @@ const Validate = () => {
                           <Listbox.Option
                             key={index}
                             className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                active
-                                  ? "bg-verde-idem text-white"
-                                  : "text-gray-900"
+                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active
+                                ? "bg-verde-idem text-white"
+                                : "text-gray-900"
                               }`
                             }
-                            value={item.id}
+                            value={item.name}
                           >
                             {({ selected }) => (
                               <>
                                 <span
-                                  className={`block truncate ${
-                                    selected ? "font-medium" : "font-normal"
-                                  }`}
+                                  className={`block truncate ${selected ? "font-medium" : "font-normal"
+                                    }`}
                                 >
-                                  id: {item.id} - Proyecto sin nombre
+                                  {item.name}
                                 </span>
                                 {selected ? (
                                   <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
