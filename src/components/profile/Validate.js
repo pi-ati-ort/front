@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import { Checkbox } from "@material-tailwind/react";
 
 import { getProjects } from "../../api/apiService";
 
@@ -56,22 +57,21 @@ const Validate = () => {
         <div className="col-span-2">
           <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12">
             <h3 className="text-2xl font-semibold mb-8">Normativas</h3>
-            <ul className="ml-2">
+            <ul className="">
               <li>
                 <div className="flex flex-row ">
-                  <input
-                    type="checkbox"
-                    id="FOS"
-                    className="form-checkbox h-5 w-5 text-verde-idem mt-2"
-                  />
-                  <label htmlFor="FOS" className="ml-2 text-gray-700 text-2xl">
+                  <Checkbox color="green" id="FOS" />
+                  <label
+                    htmlFor="FOS"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
+                  >
                     Factor Ocupación Suelo
                   </label>
-                  <span className="ml-20 justify-end">
-                    <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
-                      Ver más
-                    </button>
-                  </span>
+                  <span className="ml-auto justify-end">
+                      <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                        Ver más
+                      </button>
+                    </span>
                 </div>
               </li>
 
@@ -79,22 +79,18 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <input
-                    type="checkbox"
-                    id="AlturaMax"
-                    className="form-checkbox h-5 w-5 text-verde-idem mt-2"
-                  />
+                  <Checkbox color="green" id="AlturaMax" />
                   <label
                     htmlFor="AlturaMax"
-                    className="ml-2 text-gray-700 text-2xl"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Altura Máxima{" "}
                   </label>
-                  <span className="ml-44 justify-end">
-                    <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
-                      Ver más
-                    </button>
-                  </span>
+                    <span className="ml-auto justify-end">
+                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                        Ver más
+                      </button>
+                    </span>
                 </div>
               </li>
 
@@ -102,22 +98,18 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <input
-                    type="checkbox"
-                    id="ConstViv"
-                    className="form-checkbox h-5 w-5 text-verde-idem mt-2"
-                  />
+                <Checkbox color="green" id="ConstViv" />
                   <label
                     htmlFor="ConstViv"
-                    className="ml-2 text-gray-700 text-2xl"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
                   >
-                    Constitución de la Vivienda
+                    Constitución Vivienda
                   </label>
-                  <span className="ml-11 justify-end">
-                    <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
-                      Ver más
-                    </button>
-                  </span>
+                  <span className="ml-auto justify-end">
+                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                        Ver más
+                      </button>
+                    </span>
                 </div>
               </li>
 
@@ -125,22 +117,18 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <input
-                    type="checkbox"
-                    id="Otro1"
-                    className="form-checkbox h-5 w-5 text-verde-idem mt-2"
-                  />
+                <Checkbox color="green" id="otro1" />
                   <label
-                    htmlFor="Otro1"
-                    className="ml-2 text-gray-700 text-2xl"
+                    htmlFor="otro1"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Otro requerimiento
                   </label>
-                  <span className="ml-32 justify-end">
-                    <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
-                      Ver más
-                    </button>
-                  </span>
+                  <span className="ml-auto justify-end">
+                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                        Ver más
+                      </button>
+                    </span>
                 </div>
               </li>
 
@@ -148,22 +136,18 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <input
-                    type="checkbox"
-                    id="otro2"
-                    className="form-checkbox h-5 w-5 text-verde-idem mt-2"
-                  />
+                <Checkbox color="green" id="otro2" />
                   <label
                     htmlFor="otro2"
-                    className="ml-2 text-gray-700 text-2xl"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Otro requerimiento
                   </label>
-                  <span className="ml-32 justify-end">
-                    <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
-                      Ver más
-                    </button>
-                  </span>
+                  <span className="ml-auto justify-end">
+                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                        Ver más
+                      </button>
+                    </span>
                 </div>
               </li>
 
@@ -171,22 +155,18 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <input
-                    type="checkbox"
-                    id="otro3"
-                    className="form-checkbox h-5 w-5 text-verde-idem mt-2"
-                  />
+                <Checkbox color="green" id="otro3" />
                   <label
                     htmlFor="otro3"
-                    className="ml-2 text-gray-700 text-2xl"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Otro requerimiento
                   </label>
-                  <span className="ml-32 justify-end">
-                    <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
-                      Ver más
-                    </button>
-                  </span>
+                  <span className="ml-auto justify-end">
+                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                        Ver más
+                      </button>
+                    </span>
                 </div>
               </li>
 
@@ -194,24 +174,18 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <span>
-                    <input
-                      type="checkbox"
-                      id="otro4"
-                      className="form-checkbox h-5 w-5 text-verde-idem mt-2"
-                    />
+                <Checkbox color="green" id="otro4" />
                     <label
                       htmlFor="otro4"
-                      className="ml-2 text-gray-700 text-2xl"
+                      className="ml-2 text-gray-700 text-2xl mt-1"
                     >
                       Otro requerimiento
                     </label>
-                  </span>
-                  <span className="ml-32 justify-end">
-                    <button className="bg-verde-idem text-white rounded-md btn-sm text-xs font-bold px-2 py-1 mx-2 border-2 border-idem">
-                      Ver más
-                    </button>
-                  </span>
+                    <span className="ml-auto justify-end">
+                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                        Ver más
+                      </button>
+                    </span>
                 </div>
               </li>
             </ul>
@@ -261,9 +235,10 @@ const Validate = () => {
                           <Listbox.Option
                             key={index}
                             className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active
-                                ? "bg-verde-idem text-white"
-                                : "text-gray-900"
+                              `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                active
+                                  ? "bg-verde-idem text-white"
+                                  : "text-gray-900"
                               }`
                             }
                             value={item.name}
@@ -271,8 +246,9 @@ const Validate = () => {
                             {({ selected }) => (
                               <>
                                 <span
-                                  className={`block truncate ${selected ? "font-medium" : "font-normal"
-                                    }`}
+                                  className={`block truncate ${
+                                    selected ? "font-medium" : "font-normal"
+                                  }`}
                                 >
                                   {item.name}
                                 </span>

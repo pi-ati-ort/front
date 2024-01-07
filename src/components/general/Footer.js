@@ -22,7 +22,7 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className=" font-light text-2xl">2023</h3>
             <h4 className="font-extrabold text-xl mb-1">
-              P.D.C. Proyecto Integrador
+              P.C.D. Proyecto Integrador
             </h4>
             <p className=" font-semibold text-sm">Universidad ORT Uruguay </p>
             <p className="text-xs">Analista en Tecnologías de la Información</p>
