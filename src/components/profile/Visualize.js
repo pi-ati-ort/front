@@ -1,4 +1,7 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
+import * as THREE from "three";
+import * as OBC from "openbim-components";
+
 import { Listbox, Transition } from "@headlessui/react";
 
 import { getProjects } from "../../api/apiService";
@@ -10,12 +13,15 @@ const Visualize = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectName, setProjectName] = useState(null);
-  const [modelName, setModelName] = useState(null);
+  const [modelName, setModelName] = useState("");
 
   const [loading, setLoading] = useState(null);
   const [uploaded, setUploaded] = useState(null);
 
   const username = sessionStorage.getItem("username");
+
+  const visualizer = useRef(null);
+  const components = new OBC.Components();
 
   const HandleProject = (e) => {
     setSelectedProject(e);
@@ -32,6 +38,33 @@ const Visualize = () => {
     }
     setLoading(null);
     setUploaded(null);
+
+    if (visualizer.current) {
+      components.renderer = new OBC.SimpleRenderer(
+        components,
+        visualizer.current
+      );
+      components.scene = new OBC.SimpleScene(components);
+      components.renderer = new OBC.SimpleRenderer(components, visualizer);
+      components.camera = new OBC.SimpleCamera(components);
+      components.raycaster = new OBC.SimpleRaycaster(components);
+      components.init();
+
+      const scene = components.scene.get();
+
+      components.camera.controls.setLookAt(10, 10, 10, 0, 0, 0);
+
+      const grid = new OBC.SimpleGrid(components);
+
+      const boxMaterial = new THREE.MeshStandardMaterial({ color: "#6528D7" });
+      const boxGeometry = new THREE.BoxGeometry(3, 3, 3);
+      const cube = new THREE.Mesh(boxGeometry, boxMaterial);
+      cube.position.set(0, 1.5, 0);
+      scene.add(cube);
+
+      components.scene.setup();
+      components.init();
+    }
 
     const fetchData = async () => {
       try {
@@ -191,9 +224,7 @@ const Visualize = () => {
         <div className="bg-white h-[600px] p-4 rounded-2xl shadow-lg border border-idem mt-12 mb-20">
           <h3 className="text-2xl font-semibold">{projectName}</h3>
           <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
-            <div className="col-span-12">
-              <p className="text-center mt-32">Visualización</p>
-            </div>
+            <div ref={visualizer} className="col-span-12"></div>
           </div>
         </div>
       )}

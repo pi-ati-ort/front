@@ -68,10 +68,10 @@ const Validate = () => {
                     Factor Ocupación Suelo
                   </label>
                   <span className="ml-auto justify-end">
-                      <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
-                        Ver más
-                      </button>
-                    </span>
+                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      Ver más
+                    </button>
+                  </span>
                 </div>
               </li>
 
@@ -86,11 +86,11 @@ const Validate = () => {
                   >
                     Altura Máxima{" "}
                   </label>
-                    <span className="ml-auto justify-end">
+                  <span className="ml-auto justify-end">
                     <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
-                        Ver más
-                      </button>
-                    </span>
+                      Ver más
+                    </button>
+                  </span>
                 </div>
               </li>
 
@@ -98,7 +98,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                <Checkbox color="green" id="ConstViv" />
+                  <Checkbox color="green" id="ConstViv" />
                   <label
                     htmlFor="ConstViv"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -106,10 +106,10 @@ const Validate = () => {
                     Constitución Vivienda
                   </label>
                   <span className="ml-auto justify-end">
-                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
-                        Ver más
-                      </button>
-                    </span>
+                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      Ver más
+                    </button>
+                  </span>
                 </div>
               </li>
 
@@ -117,7 +117,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                <Checkbox color="green" id="otro1" />
+                  <Checkbox color="green" id="otro1" />
                   <label
                     htmlFor="otro1"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -125,10 +125,10 @@ const Validate = () => {
                     Otro requerimiento
                   </label>
                   <span className="ml-auto justify-end">
-                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
-                        Ver más
-                      </button>
-                    </span>
+                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      Ver más
+                    </button>
+                  </span>
                 </div>
               </li>
 
@@ -136,7 +136,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                <Checkbox color="green" id="otro2" />
+                  <Checkbox color="green" id="otro2" />
                   <label
                     htmlFor="otro2"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -144,10 +144,10 @@ const Validate = () => {
                     Otro requerimiento
                   </label>
                   <span className="ml-auto justify-end">
-                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
-                        Ver más
-                      </button>
-                    </span>
+                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      Ver más
+                    </button>
+                  </span>
                 </div>
               </li>
 
@@ -155,7 +155,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                <Checkbox color="green" id="otro3" />
+                  <Checkbox color="green" id="otro3" />
                   <label
                     htmlFor="otro3"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -163,10 +163,10 @@ const Validate = () => {
                     Otro requerimiento
                   </label>
                   <span className="ml-auto justify-end">
-                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
-                        Ver más
-                      </button>
-                    </span>
+                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      Ver más
+                    </button>
+                  </span>
                 </div>
               </li>
 
@@ -174,18 +174,18 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                <Checkbox color="green" id="otro4" />
-                    <label
-                      htmlFor="otro4"
-                      className="ml-2 text-gray-700 text-2xl mt-1"
-                    >
-                      Otro requerimiento
-                    </label>
-                    <span className="ml-auto justify-end">
+                  <Checkbox color="green" id="otro4" />
+                  <label
+                    htmlFor="otro4"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
+                  >
+                    Otro requerimiento
+                  </label>
+                  <span className="ml-auto justify-end">
                     <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
-                        Ver más
-                      </button>
-                    </span>
+                      Ver más
+                    </button>
+                  </span>
                 </div>
               </li>
             </ul>

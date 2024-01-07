@@ -118,9 +118,10 @@ const NewProject = () => {
                       <Listbox.Option
                         key={index}
                         className={({ active }) =>
-                          `relative cursor-default select-none py-2 pl-10 pr-4 ${active
-                            ? "bg-verde-idem text-white"
-                            : "text-gray-900"
+                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                            active
+                              ? "bg-verde-idem text-white"
+                              : "text-gray-900"
                           }`
                         }
                         value={item}
@@ -128,8 +129,9 @@ const NewProject = () => {
                         {({ selected }) => (
                           <>
                             <span
-                              className={`block truncate ${selected ? "font-medium" : "font-normal"
-                                }`}
+                              className={`block truncate ${
+                                selected ? "font-medium" : "font-normal"
+                              }`}
                             >
                               {item}
                             </span>
