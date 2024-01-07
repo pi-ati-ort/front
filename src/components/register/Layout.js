@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { registerUser } from "../../api/apiService";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Register = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -28,11 +31,33 @@ const Register = () => {
     event.preventDefault();
     registerUser(user)
       .then(() => {
+        toast.success("Registro exitoso", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
         sessionStorage.clear();
-        window.location.href = "/login";
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
       })
       .catch((e) => {
         console.log(e);
+        toast.error("Error en el registro", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
       });
   };
 
@@ -126,6 +151,18 @@ const Register = () => {
           </p>
         </div>
       </div>{" "}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

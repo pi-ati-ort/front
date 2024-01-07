@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { loginUser, getUser } from "../../api/apiService";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,11 +27,34 @@ const Login = () => {
       const resp = await loginUser(user);
       const dbUser = await getUser(username);
 
+      toast.success("Autenticación exitosa", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+
       sessionStorage.setItem("token", resp.token);
       sessionStorage.setItem("name", dbUser.name);
       sessionStorage.setItem("username", dbUser.username);
-      window.location.href = "/perfil";
+      setTimeout(() => {
+        window.location.href = "/perfil";
+      }, 2000);
     } catch (e) {
+      toast.error("Error en la autenticación", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
       localStorage.clear();
       console.log(e);
     }
@@ -105,6 +131,18 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
