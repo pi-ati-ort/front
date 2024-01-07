@@ -6,6 +6,9 @@ import { newProject } from "../../api/apiService";
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const NewProject = () => {
   const [name, setName] = useState("");
   const [schema, setSchema] = useState("");
@@ -22,11 +25,32 @@ const NewProject = () => {
     setLoading(true);
     newProject(name, schema, username)
       .then((res) => {
-        setExistsProjects(true);
         console.log(res);
+        console.log(res);
+        setExistsProjects(true);
+        toast.success("Proyecto creado con éxito", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Ocurrió un error", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .finally(() => {
         setLoading(false);
@@ -44,17 +68,30 @@ const NewProject = () => {
     setUploading(true);
     setTimeout(() => {
       setUploading(false);
-      setSuccessMessage("Modelo cargado con éxito");
+      toast.success("Modelo cargado con éxito", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }, 1500);
     setTimeout(() => {
       window.location.href = "/proyectos";
-    }, 2500);
+    }, 3500);
   };
 
   return (
     <div className="container mx-auto min-h-screen mb-28">
       <h2 className="text-5xl font-semibold mt-12">Nuevo Proyecto</h2>
-      <div className="bg-white p-6 h-auto rounded-2xl shadow-lg flex items-center justify-center border border-idem mt-12">
+      <div
+        className="bg-white p-6 h-aut
+      
+      o rounded-2xl shadow-lg flex items-center justify-center border border-idem mt-12"
+      >
         <div className="w-4/5 mr-6">
           <label htmlFor="name" className="font-medium leading-6 text-gray-900">
             Nombre
@@ -156,7 +193,6 @@ const NewProject = () => {
           Crear Proyecto
         </button>
       </div>
-
       {loading && (
         <div style={{ display: loading ? "block" : "none" }}>
           <Lottie
@@ -165,7 +201,6 @@ const NewProject = () => {
           />
         </div>
       )}
-
       {existsProjects && (
         <>
           <div className="bg-white p-6 h-64 rounded-2xl shadow-lg flex flex-col border border-idem mt-12 mb-2">
@@ -212,7 +247,18 @@ const NewProject = () => {
           </div>
         </>
       )}
-      <p className="text-green-500 text-end mt-4">{successMessage}</p>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />{" "}
     </div>
   );
 };
