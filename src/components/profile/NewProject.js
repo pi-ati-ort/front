@@ -16,7 +16,6 @@ const NewProject = () => {
   const [loading, setLoading] = useState(null);
   const [uploading, setUploading] = useState(null);
   const [existsProjects, setExistsProjects] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
 
   const username = sessionStorage.getItem("username");
   const schemaTypes = ["IFC2X3", "IFC4"];
@@ -25,7 +24,6 @@ const NewProject = () => {
     setLoading(true);
     newProject(name, schema, username)
       .then((res) => {
-        console.log(res);
         console.log(res);
         setExistsProjects(true);
         toast.success("Proyecto creado con éxito", {

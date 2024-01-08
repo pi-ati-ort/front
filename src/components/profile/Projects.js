@@ -11,6 +11,9 @@ const Projects = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const [showMore, setShowMore] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+
   const username = sessionStorage.getItem("username");
 
   useEffect(() => {
@@ -31,6 +34,11 @@ const Projects = () => {
     };
     fetchData();
   }, [username]);
+
+  function showMoreProject(id) {
+    setShowMore(true);
+    setSelectedProject(projects.find((project) => project.id === id));
+  }
 
   return (
     <div className="container mx-auto min-h-screen mb-10">
@@ -90,7 +98,12 @@ const Projects = () => {
                     <td className=" px-4 py-2">{project.poid}</td>
                     <td className="py-2 text-right w-min">
                       <div className="flex flex-row text-end justify-end">
-                        <button className="bg-white text-idem border-idem border-2 py-1 px-3 mx-2 rounded-md text-base font-semibold w-auto">
+                        <button
+                          onClick={() => {
+                            showMoreProject(project.id);
+                          }}
+                          className="bg-white text-idem border-idem border-2 py-1 px-3 mx-2 rounded-md text-base font-semibold w-auto"
+                        >
                           Más
                         </button>
                         <button className="bg-white text-idem border-idem border-2 py-1 px-3 rounded-md text-base font-semibold">
@@ -105,6 +118,48 @@ const Projects = () => {
                 ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {showMore && (
+        <div className="bg-white p-6 h-auto rounded-2xl shadow-lg flex flex-col border border-idem mt-10 mb-16">
+          <h2 className="">
+            <span className="font-semibold font-lg">Proyecto: </span>
+            <br />
+            <span className="text-3xl font-semibold">
+              {selectedProject.name}
+            </span>
+          </h2>
+          <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
+            <div className="col-span-4">
+              <p className="text-lg font-semibold">Fecha de creación:</p>
+              <p className="text-lg">
+                {selectedProject.created_at.slice(0, 10)}
+              </p>
+            </div>
+            <div className="col-span-4">
+              <p className="text-lg font-semibold">Esquema:</p>
+              <p className="text-lg">{selectedProject.schema}</p>
+            </div>
+            <div className="col-span-4">
+              <p className="text-lg font-semibold">BIM Id:</p>
+              <p className="text-lg">{selectedProject.poid}</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
+            <div className="col-span-4">
+              <p className="text-lg font-semibold">Modelo:</p>
+              <p className="text-lg">{selectedProject.name}</p>
+            </div>
+            <div className="col-span-4">
+              <p className="text-lg font-semibold">Descripción:</p>
+              <p className="text-lg">{selectedProject.id}</p>
+            </div>
+            <div className="col-span-4">
+              <p className="text-lg font-semibold">Categoría:</p>
+              <p className="text-lg">{selectedProject.id}</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
