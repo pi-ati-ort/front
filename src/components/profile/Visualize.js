@@ -4,7 +4,7 @@ import * as OBC from "openbim-components";
 
 import { Listbox, Transition } from "@headlessui/react";
 
-import { getProjects } from "../../api/apiService";
+import { getProjects } from "../../api/apiProject";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
@@ -90,7 +90,20 @@ const Visualize = () => {
 
   return (
     <div className="container mx-auto min-h-screen">
-      <h2 className="text-5xl font-semibold mt-12">Visualizar Modelo</h2>
+      <div className="flex flex-row">
+        <span>
+          <h2 className="text-5xl font-semibold">Visualizar Modelo</h2>
+        </span>
+        {uploaded && (
+          <span className="ml-auto">
+            <a href="/visualizar">
+              <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem mt-2">
+                Volver
+              </button>
+            </a>
+          </span>
+        )}
+      </div>
       <div className="grid grid-cols-2 gap-8 items-center">
         {!uploaded && (
           <>

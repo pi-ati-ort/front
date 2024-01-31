@@ -27,7 +27,7 @@ const Home = () => {
           <img
             src={logo}
             alt="Permiso de contracción digital"
-            className="mx-auto w-[30%] mt-2 absolute inset-0"
+            className="mx-auto w-[30%] absolute inset-0"
           />
         </div>
         <p className="text-5xl text-center mb-4 text-black font-bold">

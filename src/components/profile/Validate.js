@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { Checkbox } from "@material-tailwind/react";
 
-import { getProjects } from "../../api/apiService";
+import { getProjects } from "../../api/apiProject";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";

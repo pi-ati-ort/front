@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 
-import { newProject } from "../../api/apiService";
+import { newProject } from "../../api/apiProject";
+import { uploadModelToProject } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
@@ -16,16 +17,42 @@ const NewProject = () => {
   const [loading, setLoading] = useState(null);
   const [uploading, setUploading] = useState(null);
   const [existsProjects, setExistsProjects] = useState(false);
+  const [createdProject, setCreatedProject] = useState(null);
+
+  const [file, setFile] = useState(null);
 
   const username = sessionStorage.getItem("username");
+
   const schemaTypes = ["IFC2X3", "IFC4"];
 
-  const CreateProject = () => {
+  const project = {
+    name: name,
+    schema: schema,
+    username: username,
+  };
+
+  const CreateProject = async () => {
+    if (name === "" || schema === "") {
+      toast.error("Complete todos los campos", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+    console.log(project);
+    console.log("Creando proyecto...");
     setLoading(true);
-    newProject(name, schema, username)
+    await newProject(project)
       .then((res) => {
-        console.log(res);
+        console.log(res, "la respuesta");
         setExistsProjects(true);
+        setCreatedProject(res);
         toast.success("Proyecto creado con éxito", {
           position: "bottom-right",
           autoClose: 2000,
@@ -62,28 +89,37 @@ const NewProject = () => {
     setSchema(e);
   };
 
-  const HandleUpload = () => {
+  const HandleUpload = (e) => {
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
     setUploading(true);
-    setTimeout(() => {
-      setUploading(false);
-      toast.success("Modelo cargado con éxito", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    }, 1500);
-    setTimeout(() => {
-      window.location.href = "/proyectos";
-    }, 3500);
+
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+
+    uploadModelToProject(createdProject.id, formData).then((res) => {
+      console.log(res);
+      setTimeout(() => {
+        setUploading(false);
+        toast.success("Modelo cargado con éxito", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }, 1500);
+    });
+    //setTimeout(() => {
+    // window.location.href = "/proyectos";
+    //}, 2500);
   };
 
   return (
-    <div className="container mx-auto min-h-screen mb-28">
+    <div className="container mx-auto min-h-screen">
       <h2 className="text-5xl font-semibold mt-12">Nuevo Proyecto</h2>
       <div
         className="bg-white p-6 h-aut
@@ -201,7 +237,7 @@ const NewProject = () => {
       )}
       {existsProjects && (
         <>
-          <div className="bg-white p-6 h-64 rounded-2xl shadow-lg flex flex-col border border-idem mt-12 mb-2">
+          <div className="bg-white p-6 h-80 rounded-2xl shadow-lg flex flex-col border border-idem mt-12 mb-2">
             <h2 className="text-2xl font-semibold">Cargar Modelo</h2>
             {uploading ? (
               <div className="mt-0">
@@ -211,27 +247,35 @@ const NewProject = () => {
                 />
               </div>
             ) : (
-              <div className="h-72 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed">
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-12 w-12 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                  <p className="text-gray-400">
-                    Arrastra y suelta el archivo .ifc aquí o haz click para
-                    cargarlo
-                  </p>
-                </>
+              <div className="h-96 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed">
+                <input
+                  type="file"
+                  id="fileUpload"
+                  accept=".ifc"
+                  style={{ display: "none" }}
+                  onChange={HandleUpload}
+                />
+                <label htmlFor="fileUpload" className="cursor-pointer">
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-14 w-14 text-gray-400 mx-auto"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <p className="text-gray-400">
+                      Haz click aquí para cargar el archivo .ifc
+                    </p>
+                  </>
+                </label>
               </div>
             )}
           </div>

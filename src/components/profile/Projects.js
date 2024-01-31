@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
-import { getProjects } from "../../api/apiService";
+import { getProjects } from "../../api/apiProject";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
@@ -12,6 +12,8 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
 
   const [showMore, setShowMore] = useState(false);
+  const showMoreRef = useRef(null);
+
   const [selectedProject, setSelectedProject] = useState(null);
 
   const username = sessionStorage.getItem("username");
@@ -37,6 +39,7 @@ const Projects = () => {
 
   function showMoreProject(id) {
     setShowMore(true);
+    showMoreRef.current.scrollIntoView({ behavior: "smooth" });
     setSelectedProject(projects.find((project) => project.id === id));
   }
 
@@ -120,7 +123,7 @@ const Projects = () => {
           </table>
         </div>
       )}
-
+      <div ref={showMoreRef} />
       {showMore && (
         <div className="bg-white p-6 h-auto rounded-2xl shadow-lg flex flex-col border border-idem mt-10 mb-16">
           <h2 className="">
