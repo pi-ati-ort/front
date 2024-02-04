@@ -126,41 +126,51 @@ const Projects = () => {
       <div ref={showMoreRef} />
       {showMore && (
         <div className="bg-white p-6 h-auto rounded-2xl shadow-lg flex flex-col border border-idem mt-10 mb-16">
-          <h2 className="">
+          <div className="mb-10">
             <span className="font-semibold font-lg">Proyecto: </span>
             <br />
             <span className="text-3xl font-semibold">
               {selectedProject.name}
             </span>
-          </h2>
-          <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
+          </div>
+          <div className="grid grid-cols-12 gap-4 mt-6 mr-4 mb-4">
             <div className="col-span-4">
               <p className="text-lg font-semibold">Fecha de creación:</p>
               <p className="text-lg">
                 {selectedProject.created_at.slice(0, 10)}
               </p>
             </div>
-            <div className="col-span-4">
+            <div className="col-span-2">
               <p className="text-lg font-semibold">Esquema:</p>
               <p className="text-lg">{selectedProject.schema}</p>
             </div>
-            <div className="col-span-4">
-              <p className="text-lg font-semibold">BIM Id:</p>
+            <div className="col-span-2">
+              <p className="text-lg font-semibold">BIM ID:</p>
               <p className="text-lg">{selectedProject.poid}</p>
             </div>
+            <div className="col-span-4">
+              <p className="text-lg font-semibold">UUID:</p>
+              <p className="text-lg">{selectedProject.uuid}</p>
+            </div>
           </div>
-          <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
+          <div className="grid grid-cols-12 gap-4 mt-6 mr-4 mb-6">
             <div className="col-span-4">
               <p className="text-lg font-semibold">Modelo:</p>
               <p className="text-lg">{selectedProject.name}</p>
             </div>
             <div className="col-span-4">
               <p className="text-lg font-semibold">Descripción:</p>
-              <p className="text-lg">{selectedProject.id}</p>
+              <p className="text-lg">{selectedProject.description}</p>
             </div>
-            <div className="col-span-4">
-              <p className="text-lg font-semibold">Categoría:</p>
-              <p className="text-lg">{selectedProject.id}</p>
+            <div className="col-span-2">
+              <button className="bg-white border-idem text-idem border-2 py-1 px-3 rounded-md text-base font-semibold">
+                Descargar modelo
+              </button>
+            </div>
+            <div className="col-span-2">
+              <button className="bg-verde-idem border-idem text-white border-2 py-1 px-3 rounded-md text-base font-semibold">
+                Eliminar modelo
+              </button>
             </div>
           </div>
         </div>

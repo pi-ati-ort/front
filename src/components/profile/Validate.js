@@ -7,6 +7,8 @@ import { getProjects } from "../../api/apiProject";
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
+import { normativas } from "../../utils/utilities";
+
 const Validate = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -50,11 +52,15 @@ const Validate = () => {
     }, 1500);
   };
 
+  const handleNormativas = (id) => {
+    console.log(id);
+  };
+
   return (
     <div className="container mx-auto min-h-screen">
       <h2 className="text-5xl font-semibold mt-12">Validar Normativa</h2>
-      <div className="grid grid-cols-5 gap-8">
-        <div className="col-span-2">
+      <div className="grid grid-cols-12 gap-8">
+        <div className="col-span-5">
           <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12">
             <h3 className="text-2xl font-semibold mb-8">Normativas</h3>
             <ul className="">
@@ -68,7 +74,10 @@ const Validate = () => {
                     Factor Ocupación Suelo
                   </label>
                   <span className="ml-auto justify-end">
-                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                    <button onClick={() => {
+                        handleNormativas("FOS");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
                       Ver más
                     </button>
                   </span>
@@ -87,7 +96,10 @@ const Validate = () => {
                     Altura Máxima{" "}
                   </label>
                   <span className="ml-auto justify-end">
-                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                    <button onClick={() => {
+                        handleNormativas("AlturaMax");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
                       Ver más
                     </button>
                   </span>
@@ -106,7 +118,10 @@ const Validate = () => {
                     Constitución Vivienda
                   </label>
                   <span className="ml-auto justify-end">
-                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                    <button onClick={() => {
+                        handleNormativas("ConstViv");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
                       Ver más
                     </button>
                   </span>
@@ -122,10 +137,13 @@ const Validate = () => {
                     htmlFor="otro1"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
-                    Otro requerimiento
+                    Construcción Basamento
                   </label>
                   <span className="ml-auto justify-end">
-                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                    <button onClick={() => {
+                        handleNormativas("otro1");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
                       Ver más
                     </button>
                   </span>
@@ -141,10 +159,13 @@ const Validate = () => {
                     htmlFor="otro2"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
-                    Otro requerimiento
+                    Construcción Gálibo
                   </label>
                   <span className="ml-auto justify-end">
-                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                    <button onClick={() => {
+                        handleNormativas("otro2");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
                       Ver más
                     </button>
                   </span>
@@ -160,10 +181,13 @@ const Validate = () => {
                     htmlFor="otro3"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
-                    Otro requerimiento
+                    Medianeras Vistas
                   </label>
                   <span className="ml-auto justify-end">
-                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                    <button onClick={() => {
+                        handleNormativas("otro3");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
                       Ver más
                     </button>
                   </span>
@@ -179,10 +203,15 @@ const Validate = () => {
                     htmlFor="otro4"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
-                    Otro requerimiento
+                    Superficie Mínima
                   </label>
                   <span className="ml-auto justify-end">
-                    <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                    <button
+                      onClick={() => {
+                        handleNormativas("otro4");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
                       Ver más
                     </button>
                   </span>
@@ -191,7 +220,7 @@ const Validate = () => {
             </ul>
           </div>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-7">
           <div className="bg-white h-32 p-4 rounded-2xl shadow-lg border border-idem mt-12">
             <h3 className="text-2xl font-semibold">Seleccionar proyecto</h3>
             <div className="grid grid-cols-12 gap-4 mt-4 mr-4">
