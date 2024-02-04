@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { Fragment, useState, useEffect, useRef, useMemo } from "react";
 import * as THREE from "three";
 import * as OBC from "openbim-components";
 
@@ -21,8 +21,7 @@ const Visualize = () => {
   const username = sessionStorage.getItem("username");
 
   const visualizer = useRef(null);
-  const components = new OBC.Components();
-
+  const components = useMemo(() => new OBC.Components(), []);
   const HandleProject = (e) => {
     setSelectedProject(e);
     setProjectName(e.name);
@@ -77,7 +76,7 @@ const Visualize = () => {
       }
     };
     fetchData();
-  }, [username]);
+  }, [username, components, visualizer]);
 
   const VisualizeProject = () => {
     console.log(selectedProject);

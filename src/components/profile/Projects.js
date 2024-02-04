@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 
 import { getProjects } from "../../api/apiProject";
+import { getAllModels } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
+  const [models, setModels] = useState([]);
   const [existsProjects, setExistsProjects] = useState(false);
 
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,7 @@ const Projects = () => {
   const showMoreRef = useRef(null);
 
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null);
 
   const username = sessionStorage.getItem("username");
 
@@ -33,6 +36,8 @@ const Projects = () => {
       } catch (error) {
         console.error("Error in fetchData: ", error);
       }
+      const models = await getAllModels();
+      setModels(models);
     };
     fetchData();
   }, [username]);
@@ -41,6 +46,7 @@ const Projects = () => {
     setShowMore(true);
     showMoreRef.current.scrollIntoView({ behavior: "smooth" });
     setSelectedProject(projects.find((project) => project.id === id));
+    setSelectedModel(models.find((model) => model.projectId === id));
   }
 
   return (
@@ -126,14 +132,27 @@ const Projects = () => {
       <div ref={showMoreRef} />
       {showMore && (
         <div className="bg-white p-6 h-auto rounded-2xl shadow-lg flex flex-col border border-idem mt-10 mb-16">
+          <div className="flex flex-row justify-between">
+            <div className="mb-10 w-5/6">
+              <span className="font-semibold font-lg">Proyecto: </span>
+              <br />
+              <span className="text-3xl font-semibold">
+                {selectedProject.name}
+              </span>
+            </div>
+            <div className="">
+              <button className="bg-verde-idem text-white border-idem border-2 py-2 px-20 rounded-md text-xl font-medium">
+                Visualizar
+              </button>
+            </div>
+          </div>
           <div className="mb-10">
-            <span className="font-semibold font-lg">Proyecto: </span>
-            <br />
-            <span className="text-3xl font-semibold">
-              {selectedProject.name}
+            <span className="font-semibold text-lg">
+              Descripción:{" "}
+              <span className="font-light">{selectedProject.description}</span>
             </span>
           </div>
-          <div className="grid grid-cols-12 gap-4 mt-6 mr-4 mb-4">
+          <div className="grid grid-cols-12 gap-4 mt-2 mr-4 mb-4">
             <div className="col-span-4">
               <p className="text-lg font-semibold">Fecha de creación:</p>
               <p className="text-lg">
@@ -156,11 +175,19 @@ const Projects = () => {
           <div className="grid grid-cols-12 gap-4 mt-6 mr-4 mb-6">
             <div className="col-span-4">
               <p className="text-lg font-semibold">Modelo:</p>
-              <p className="text-lg">{selectedProject.name}</p>
+              <p className="text-lg">
+                {selectedProject.id === selectedModel.projectId
+                  ? selectedModel.filename
+                  : ""}
+              </p>
             </div>
             <div className="col-span-4">
-              <p className="text-lg font-semibold">Descripción:</p>
-              <p className="text-lg">{selectedProject.description}</p>
+              <p className="text-lg font-semibold">Tamaño:</p>
+              <p className="text-lg">
+                {selectedProject.id === selectedModel.projectId
+                  ? `${(selectedModel.size / 1024 / 1024).toFixed(3)} MB`
+                  : ""}
+              </p>
             </div>
             <div className="col-span-2">
               <button className="bg-white border-idem text-idem border-2 py-1 px-3 rounded-md text-base font-semibold">
@@ -169,7 +196,7 @@ const Projects = () => {
             </div>
             <div className="col-span-2">
               <button className="bg-verde-idem border-idem text-white border-2 py-1 px-3 rounded-md text-base font-semibold">
-                Eliminar modelo
+                Reemplazar modelo
               </button>
             </div>
           </div>

@@ -2,13 +2,15 @@ import React, { Fragment, useState, useRef } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 
 import { newProject } from "../../api/apiProject";
-import { uploadModelToProject } from "../../api/apiModel";
+import { uploadModelToDatabase } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import { ReactComponent as IfcSvg } from "../../images/svg/ifc.svg";
 
 const NewProject = () => {
   const [name, setName] = useState("");
@@ -38,11 +40,25 @@ const NewProject = () => {
     description: description,
   };
 
+  const model = {
+    filename: file ? file.name : null,
+    size: file ? file.size : null,
+    projectId: createdProject ? createdProject.id : null,
+  };
+
   const scrollTo = () => {
     uploadAnchor.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  function reset() {
+    setLoading(false);
+    setUploading(false);
+    setExistsProjects(false);
+    setCreatedProject(null);
+  }
+
   const CreateProject = async () => {
+    reset();
     if (name === "" || schema === "") {
       toast.error("Complete todos los campos", {
         position: "bottom-right",
@@ -56,10 +72,10 @@ const NewProject = () => {
       });
       return;
     }
-    scrollTo();
     setLoading(true);
     await newProject(project)
       .then((res) => {
+        scrollTo();
         setExistsProjects(true);
         setCreatedProject(res);
         toast.success("Proyecto creado con éxito", {
@@ -101,15 +117,29 @@ const NewProject = () => {
     setDescription(e.target.value);
   };
 
-  const HandleUpload = (e) => {
+  const HandleIFCUpload = (e) => {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
+  };
+
+  const HandleUpload = () => {
     setUploading(true);
-
     const formData = new FormData();
-    formData.append("file", e.target.files[0]);
+    formData.append("file", file);
+    console.log(formData);
+    console.log(createdProject.id);
+    console.log(formData);
 
-    uploadModelToProject(createdProject.id, formData).then((res) => {
+    if (
+      model.filename != null &&
+      model.size != null &&
+      model.projectId != null
+    ) {
+      uploadModelToDatabase(createdProject.id, model).then((res) => {
+        console.log(res);
+      });
+    }
+    /* uploadModelToProject(createdProject.id, formData).then((res) => {
       console.log(res);
       setTimeout(() => {
         setUploading(false);
@@ -124,10 +154,24 @@ const NewProject = () => {
           theme: "light",
         });
       }, 1500);
-    });
-    //setTimeout(() => {
-    // window.location.href = "/proyectos";
-    //}, 2500);
+    }); */
+    setTimeout(() => {
+      setUploading(false);
+      toast.success("Modelo cargado con éxito", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }, 1500);
+
+    setTimeout(() => {
+      window.location.href = "/proyectos";
+    }, 3500);
   };
 
   return (
@@ -140,7 +184,7 @@ const NewProject = () => {
               htmlFor="name"
               className="font-medium leading-6 text-gray-900"
             >
-              Nombre <span className="text-idem">*</span>
+              Nombre <span className="text-idem font-bold">*</span>
             </label>
             <div className="mt-2">
               <input
@@ -160,7 +204,7 @@ const NewProject = () => {
               htmlFor="name"
               className="text-sm font-medium leading-6 text-gray-900"
             >
-              Esquema <span className="text-idem">*</span>
+              Esquema <span className="text-idem font-bold">*</span>
             </label>
             <div className="mt-2">
               <Listbox value={schema} onChange={HandleSchema}>
@@ -294,28 +338,43 @@ const NewProject = () => {
                   id="fileUpload"
                   accept=".ifc"
                   style={{ display: "none" }}
-                  onChange={HandleUpload}
+                  onChange={HandleIFCUpload}
                 />
                 <label htmlFor="fileUpload" className="cursor-pointer">
-                  <>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-14 w-14 text-gray-400 mx-auto"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      />
-                    </svg>
-                    <p className="text-gray-400">
-                      Haz click aquí para cargar el archivo .ifc
-                    </p>
-                  </>
+                  {file ? (
+                    <div className="flex">
+                      <IfcSvg className="h-12 w-14 mr-2" />
+                      <p className="text-gray-400">
+                        Modelo: <b>{file.name.replace(".ifc", "")}</b> <br />
+                        <span className="text-sm">
+                          Tamaño:{" "}
+                          <span className="font-medium">
+                            <b> {Number(file.size / 1000000).toFixed(3)} MB.</b>
+                          </span>
+                        </span>
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-14 w-14 text-gray-400 mx-auto"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                      <p className="text-gray-400">
+                        Haz click aquí para cargar el archivo .ifc
+                      </p>
+                    </>
+                  )}
                 </label>
               </div>
             )}
@@ -323,7 +382,12 @@ const NewProject = () => {
           <div className="justify-end flex">
             <button
               onClick={HandleUpload}
-              className="bg-verde-idem text-white rounded-md py-2 text-base font-semibold mt-4 w-1/4 justify-self-end "
+              className={`${
+                file
+                  ? "bg-verde-idem text-white"
+                  : "bg-white border-2 border-idem text-idem"
+              } rounded-md py-2 text-base font-semibold mt-4 w-1/4 justify-self-end`}
+              disabled={file ? false : true}
             >
               Cargar
             </button>
