@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { loginUser, getUser } from "../../api/apiService";
+
+import { loginUser, getUser } from "../../api/apiUser";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -21,23 +25,46 @@ const Login = () => {
   const loginUserHandler = async (event) => {
     event.preventDefault();
     try {
-      const token = await loginUser(user);
+      const resp = await loginUser(user);
       const dbUser = await getUser(username);
 
-      sessionStorage.setItem("token", token);
+      toast.success("Autenticación exitosa", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+
+      sessionStorage.setItem("token", resp.token);
       sessionStorage.setItem("name", dbUser.name);
       sessionStorage.setItem("username", dbUser.username);
-      window.location.href = "/profile";
+      setTimeout(() => {
+        window.location.href = "/perfil";
+      }, 2000);
     } catch (e) {
+      toast.error("Error en la autenticación", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
       localStorage.clear();
       console.log(e);
     }
   };
 
   return (
-    <div className="">
+    <div className="min-h-screen">
       <div className="">
-        <div className="mt-32">
+        <div className="mt-52">
           <h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">
             Iniciar sesión
           </h2>
@@ -60,7 +87,7 @@ const Login = () => {
                   autoComplete="email"
                   required
                   onChange={handleUsername}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -82,7 +109,7 @@ const Login = () => {
                   autoComplete="current-password"
                   required
                   onChange={handlePassword}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -90,7 +117,7 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-verde-idem px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="flex w-full justify-center rounded-md bg-verde-idem px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 Ingresar
               </button>
@@ -104,7 +131,19 @@ const Login = () => {
             </a>
           </p>
         </div>
-      </div>{" "}
+      </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

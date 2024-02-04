@@ -9,12 +9,21 @@ const Header = () => {
     window.location.href = "/";
   };
 
+  const evaluateUrl = () => {
+    if (window.location.pathname === "/perfil") {
+      return { textDecoration: "underline" };
+    } else {
+      return {};
+    }
+  };
+
   return (
-    <header className="flex-wrap w-full bg-verde-idem text-sm py-3">
+    <header className="flex-wrap w-full bg-verde-idem text-sm py-3 z-10" style={{ position: "fixed", top: 0, left: 0, right: 0 }}>
       <nav className="relative w-full mx-auto px-4 flex flex-row">
-        <span className="">
+        <span className="cursor-pointer">
           <img
             src={logo}
+            title="Ir al inicio"
             alt="Intendencia de Montevideo"
             className="h-11"
             onClick={goToHome}
@@ -27,9 +36,14 @@ const Header = () => {
                 <div className="flex items-center justify-between flex-shrink-0 text-white mr-6">
                   <a
                     className="text-white no-underline hover:text-white hover:no-underline"
-                    href="/profile"
+                    href="/perfil"
                   >
-                    <span className="text-base font-semibold">Perfil</span>
+                    <span
+                      className="text-base font-semibold hover:underline"
+                      style={evaluateUrl()}
+                    >
+                      Perfil
+                    </span>
                   </a>
                 </div>
               </div>
@@ -43,15 +57,19 @@ const Header = () => {
                       window.location.href = "/";
                     }}
                   >
-                    <span className="text-base font-semibold">Salir</span>
+                    <span className="text-base font-semibold hover:underline">
+                      Salir
+                    </span>
                   </a>
                 </div>
               </div>
             </span>
-            <div className="flex right-0">
+            <div className="right-0">
               <p className="text-white font-semibold text-sm text-end">
                 {sessionStorage.getItem("name")}
-                <br />
+              </p>
+
+              <p className="text-white font-light text-sm text-end">
                 {sessionStorage.getItem("username")}
               </p>
             </div>
