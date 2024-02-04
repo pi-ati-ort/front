@@ -115,9 +115,6 @@ const Projects = () => {
                         >
                           Más
                         </button>
-                        <button className="bg-white text-idem border-idem border-2 py-1 px-3 rounded-md text-base font-semibold">
-                          Visualizar
-                        </button>
                         <button className="bg-verde-idem text-white border-idem border-2 py-1 px-3 rounded-md text-base font-semibold mx-2">
                           Eliminar
                         </button>
@@ -156,7 +153,7 @@ const Projects = () => {
             <div className="col-span-4">
               <p className="text-lg font-semibold">Fecha de creación:</p>
               <p className="text-lg">
-                {selectedProject.created_at.slice(0, 10)}
+                {selectedProject.created_at.replace('T', ' a las ').split('.')[0]}
               </p>
             </div>
             <div className="col-span-2">
