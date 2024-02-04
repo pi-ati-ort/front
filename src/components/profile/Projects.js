@@ -138,7 +138,7 @@ const Projects = () => {
               </span>
             </div>
             <div className="">
-              <button className="bg-verde-idem text-white border-idem border-2 py-2 px-20 rounded-md text-xl font-medium">
+              <button className="bg-verde-idem text-white border-idem border-2 py-2 px-20 rounded-md text-xl font-medium mr-6 mt-3">
                 Visualizar
               </button>
             </div>
@@ -186,12 +186,12 @@ const Projects = () => {
                   : ""}
               </p>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 mt-3">
               <button className="bg-white border-idem text-idem border-2 py-1 px-3 rounded-md text-base font-semibold">
                 Descargar modelo
               </button>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 mt-3">
               <button className="bg-verde-idem border-idem text-white border-2 py-1 px-3 rounded-md text-base font-semibold">
                 Reemplazar modelo
               </button>
