@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import logo from "../../images/dbp_blanco.png";
+import logo from "../../assets/images/dbp_blanco.png";
 
 const Footer = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);

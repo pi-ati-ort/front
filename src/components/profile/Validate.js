@@ -18,6 +18,8 @@ const Validate = () => {
 
   const username = sessionStorage.getItem("username");
 
+  //NORMATIVAS A VALIDAR
+
   useEffect(() => {
     if (!sessionStorage.getItem("token")) {
       window.location.href = "/login";

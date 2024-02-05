@@ -1,6 +1,6 @@
 import React from "react";
 
-import logo from "../../images/dbp_logo.png";
+import logo from "../../assets/images/dbp_logo.png";
 
 const NotFound = () => {
   return (

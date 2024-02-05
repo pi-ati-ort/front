@@ -1,9 +1,9 @@
 import React from "react";
 
-import newProject from "../../images/new.png";
-import viewProjects from "../../images/projects.png";
-import viewModel from "../../images/visual.png";
-import validate from "../../images/valid.png";
+import newProject from "../../assets/images/new.png";
+import viewProjects from "../../assets/images/projects.png";
+import viewModel from "../../assets/images/visual.png";
+import validate from "../../assets/images/valid.png";
 
 const Profile = () => {
   const menu = [

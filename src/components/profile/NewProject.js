@@ -10,7 +10,7 @@ import animationData from "../general/loading.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ReactComponent as IfcSvg } from "../../images/svg/ifc.svg";
+import { ReactComponent as IfcSvg } from "../../assets/svg/ifc.svg";
 
 const NewProject = () => {
   const [name, setName] = useState("");
