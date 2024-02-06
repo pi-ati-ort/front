@@ -1,6 +1,4 @@
 import React, { Fragment, useState, useEffect, useRef, useMemo } from "react";
-import * as THREE from "three";
-import * as OBC from "openbim-components";
 
 import { Listbox, Transition } from "@headlessui/react";
 
@@ -20,8 +18,10 @@ const Visualize = () => {
 
   const username = sessionStorage.getItem("username");
 
-  const visualizer = useRef(null);
+/*   const visualizer = useRef(null);
   const components = useMemo(() => new OBC.Components(), []);
+   */
+  
   const HandleProject = (e) => {
     setSelectedProject(e);
     setProjectName(e.name);
@@ -38,7 +38,7 @@ const Visualize = () => {
     setLoading(null);
     setUploaded(null);
 
-    if (visualizer.current) {
+   /*  if (visualizer.current) {
       components.renderer = new OBC.SimpleRenderer(
         components,
         visualizer.current
@@ -62,8 +62,8 @@ const Visualize = () => {
       scene.add(cube);
 
       components.scene.setup();
-      components.init();
-    }
+      components.init(); 
+    } */
 
     const fetchData = async () => {
       try {
@@ -76,7 +76,7 @@ const Visualize = () => {
       }
     };
     fetchData();
-  }, [username, components, visualizer]);
+  }, [username ]);
 
   const VisualizeProject = () => {
     console.log(selectedProject);
@@ -236,7 +236,8 @@ const Visualize = () => {
         <div className="bg-white h-[600px] p-4 rounded-2xl shadow-lg border border-idem mt-12 mb-20">
           <h3 className="text-2xl font-semibold">{projectName}</h3>
           <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
-            <div ref={visualizer} className="col-span-12"></div>
+            <div className="col-span-12">
+            </div>
           </div>
         </div>
       )}
