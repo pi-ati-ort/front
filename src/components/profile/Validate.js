@@ -12,9 +12,11 @@ import { normativas } from "../../utils/utilities";
 const Validate = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedNormativa, setSelectedNormativa] = useState(null);
   const [projectName, setProjectName] = useState(null);
   const [loading, setLoading] = useState(null);
   const [showResults, setShowResults] = useState(false);
+  const [normativasModal, setNormativasModal] = useState(false);
 
   const username = sessionStorage.getItem("username");
 
@@ -55,7 +57,20 @@ const Validate = () => {
   };
 
   const handleNormativas = (id) => {
-    console.log(id);
+    setNormativasModal(false);
+    setSelectedNormativa(null);
+    normativas.map((norm) => {
+      if (norm.id === id) {
+        console.log(norm);
+        setSelectedNormativa(norm);
+      }
+    });
+    setNormativasModal(true);
+  };
+
+  const irANormativa = () => {
+    //podriamos si hay tiempo pasarle el id y que cada boton lleve a su correspondiente normativa
+    window.open("https://normativa.montevideo.gub.uy/volumenes", "_blank");
   };
 
   return (
@@ -76,10 +91,12 @@ const Validate = () => {
                     Factor Ocupación Suelo
                   </label>
                   <span className="ml-auto justify-end">
-                    <button onClick={() => {
+                    <button
+                      onClick={() => {
                         handleNormativas("FOS");
                       }}
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
                       Ver más
                     </button>
                   </span>
@@ -98,10 +115,12 @@ const Validate = () => {
                     Altura Máxima{" "}
                   </label>
                   <span className="ml-auto justify-end">
-                    <button onClick={() => {
+                    <button
+                      onClick={() => {
                         handleNormativas("AlturaMax");
                       }}
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
                       Ver más
                     </button>
                   </span>
@@ -120,10 +139,12 @@ const Validate = () => {
                     Constitución Vivienda
                   </label>
                   <span className="ml-auto justify-end">
-                    <button onClick={() => {
+                    <button
+                      onClick={() => {
                         handleNormativas("ConstViv");
                       }}
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
                       Ver más
                     </button>
                   </span>
@@ -134,7 +155,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="otro1" />
+                  <Checkbox color="green" id="Basamento" />
                   <label
                     htmlFor="otro1"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -142,10 +163,12 @@ const Validate = () => {
                     Construcción Basamento
                   </label>
                   <span className="ml-auto justify-end">
-                    <button onClick={() => {
-                        handleNormativas("otro1");
+                    <button
+                      onClick={() => {
+                        handleNormativas("Basamento");
                       }}
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
                       Ver más
                     </button>
                   </span>
@@ -156,7 +179,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="otro2" />
+                  <Checkbox color="green" id="galibo" />
                   <label
                     htmlFor="otro2"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -164,10 +187,12 @@ const Validate = () => {
                     Construcción Gálibo
                   </label>
                   <span className="ml-auto justify-end">
-                    <button onClick={() => {
-                        handleNormativas("otro2");
+                    <button
+                      onClick={() => {
+                        handleNormativas("galibo");
                       }}
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
                       Ver más
                     </button>
                   </span>
@@ -178,7 +203,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="otro3" />
+                  <Checkbox color="green" id="median" />
                   <label
                     htmlFor="otro3"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -186,10 +211,12 @@ const Validate = () => {
                     Medianeras Vistas
                   </label>
                   <span className="ml-auto justify-end">
-                    <button onClick={() => {
-                        handleNormativas("otro3");
+                    <button
+                      onClick={() => {
+                        handleNormativas("median");
                       }}
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2">
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
                       Ver más
                     </button>
                   </span>
@@ -200,7 +227,7 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="otro4" />
+                  <Checkbox color="green" id="supMin" />
                   <label
                     htmlFor="otro4"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -210,7 +237,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("otro4");
+                        handleNormativas("supMin");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -305,6 +332,86 @@ const Validate = () => {
               </div>
             </div>
           </div>
+          {normativasModal && (
+            <div>
+              <div className="fixed z-10 inset-0">
+                <div className="items-end justify-center pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-20">
+                  <div
+                    className="fixed inset-0 transition-opacity"
+                    aria-hidden="true"
+                  >
+                    <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                  </div>
+                  <span
+                    className="hidden sm:inline-block sm:align-middle"
+                    aria-hidden="true"
+                  >
+                    &#8203;
+                  </span>
+                  <div className="mt-20 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
+                    <div className="">
+                      <div className="mt-4 mb-10 w-full">
+                        <div className="text-3xl font-semibold">
+                          {selectedNormativa.name}
+                        </div>
+                        <div className="text-lg mt-3 mb-3">
+                          <span className="font-semibold text-xl">
+                            Descripción: <br />
+                          </span>
+                          {selectedNormativa.description}
+                        </div>
+                        <br />
+                        <div className="text-base">
+                          <span className="font-semibold text-xl">
+                            {" "}
+                            Normativa:
+                          </span>
+                          <br />
+                          {selectedNormativa.texto_normativo}
+                        </div>
+                        <div className="text-base mt-3 mb-3">
+                          <span className="font-semibold text-xl">Valor:</span>{" "}
+                          {selectedNormativa.valor} {selectedNormativa.unidad}
+                        </div>
+                        <div className="text-base">
+                          <span className="font-semibold text-xl">
+                            Normas:{" "}
+                          </span>
+                          {selectedNormativa.norma.map((norm, index) =>
+                            index === selectedNormativa.norma.length - 1
+                              ? norm + "."
+                              : norm + ", "
+                          )}
+                        </div>
+                        <div className="flex flex-row">
+                          <span className="text-start">
+                            <button
+                              onClick={() => {
+                                irANormativa();
+                              }}
+                              className="mt-2 bg-white text-idem border-idem border-2 py-1 px-2 rounded-md text-xs font-medium"
+                            >
+                              Ver Normativa
+                            </button>
+                          </span>
+                          <span className="mx-auto origin-bottom-right right-0 mr-0">
+                            <button
+                              onClick={() => {
+                                setNormativasModal(false);
+                              }}
+                              className="bg-verde-idem text-white border-idem border-2 py-2 px-3 rounded-md text-sm font-medium"
+                            >
+                              Cerrar
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           {loading && (
             <div style={{ display: loading ? "block" : "none" }}>
               <Lottie
