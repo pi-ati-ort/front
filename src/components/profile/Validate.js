@@ -563,11 +563,11 @@ const Validate = () => {
                               <IfcSvgError className="h-6 w-6 mt-5 mr-2" />
                             )}
                             <div className="text-xl font-semibold mt-4">
-                              {normativa.name}:
+                              {normativa.name}
                             </div>
                           </div>
-                          <div className="text-lg">
-                            Cumple: {cumple ? "Si" : "No"}
+                          <div className="text-lg mt-1">
+                            {cumple ? "Cumple" : "No Cumple"}
                           </div>
                           {selectedNormativas.length > 1 &&
                             selectedNormativas.indexOf(normativa) !==

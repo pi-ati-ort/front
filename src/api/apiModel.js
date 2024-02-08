@@ -28,32 +28,38 @@ export const uploadModelToProject = async (projectId, file) => {
   }
 };
 
-export const uploadModelToDatabase = async (id, model) => {
+export const uploadModelToDatabase = async (projectId, model) => {
   try {
-    const response = await apiClient.post(`/projects/id/${id}/model`, model);
+    const response = await apiClient.post(
+      `/projects/id/${projectId}/model`,
+      model
+    );
     return response.data;
   } catch (error) {
     console.error("Error uploading model to database: ", error);
     throw error;
   }
-}
+};
 
-export const updateModelToDatabase = async (id, model) => {
+export const updateModelToDatabase = async (projectId, model) => {
   try {
-    const response = await apiClient.put(`/projects/id/${id}/model`, model);
+    const response = await apiClient.put(
+      `/projects/id/${projectId}/model`,
+      model
+    );
     return response.data;
   } catch (error) {
     console.error("Error updating model to database: ", error);
     throw error;
   }
-}
+};
 
-export const deleteModelFromDatabase = async (id, modelId) => {
+export const deleteModelByProjectId = async (ProjectId) => {
   try {
-    const response = await apiClient.delete(`/projects/id/${id}/model/${modelId}`);
+    const response = await apiClient.delete(`/projects/id/${ProjectId}/model`);
     return response.data;
   } catch (error) {
     console.error("Error deleting model from database: ", error);
     throw error;
   }
-}
+};
