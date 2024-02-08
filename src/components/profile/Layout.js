@@ -52,7 +52,7 @@ const Profile = () => {
         ¿Qué deseas hacer hoy?
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:mx-40 lg:mx-72">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:mx-20 xl:mx-60 2xl:mx-72">
         {menu.map((item, index) => (
           <div
             key={index}

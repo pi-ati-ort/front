@@ -118,7 +118,6 @@ const NewProject = () => {
   };
 
   const HandleIFCUpload = (e) => {
-    console.log(e.target.files[0]);
     setFile(e.target.files[0]);
   };
 
@@ -141,19 +140,6 @@ const NewProject = () => {
     }
     /* uploadModelToProject(createdProject.id, formData).then((res) => {
       console.log(res);
-      setTimeout(() => {
-        setUploading(false);
-        toast.success("Modelo cargado con éxito", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-        });
-      }, 1500);
     }); */
     setTimeout(() => {
       setUploading(false);

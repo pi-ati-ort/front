@@ -10,11 +10,11 @@ export const getAllModels = async () => {
   }
 };
 
-export const uploadModelToProject = async (projectId, file) => {
+export const uploadModelToProject = async (projectId, model) => {
   try {
     const response = await apiClient.post(
       `/projects/id/${projectId}/model`,
-      file,
+      model,
       {
         headers: {
           "Content-Type": "multipart/form-data",

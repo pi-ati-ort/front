@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 
 import { getProjects, deleteProject } from "../../api/apiProject";
-import { getAllModels, deleteModelByProjectId } from "../../api/apiModel";
+import {
+  getAllModels,
+  deleteModelByProjectId,
+  updateModelToDatabase,
+} from "../../api/apiModel";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
-
+import { ReactComponent as IfcSvg } from "../../assets/svg/ifc.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,11 +22,15 @@ const Projects = () => {
 
   const [showMore, setShowMore] = useState(false);
   const showMoreRef = useRef(null);
+  const showProjectsRef = useRef(null);
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedModel, setSelectedModel] = useState(null);
 
   const [showDelete, setShowDelete] = useState(false);
+  const [showReplace, setShowReplace] = useState(false);
+
+  const [newModel, setNewModel] = useState(null);
 
   const username = sessionStorage.getItem("username");
 
@@ -73,6 +81,10 @@ const Projects = () => {
     console.log(selectedProject);
   }
 
+  function showReplaceModal(id) {
+    setShowReplace(true);
+  }
+
   async function deleteProjectById(id) {
     await deleteProject(id);
     if (selectedModel) {
@@ -93,9 +105,54 @@ const Projects = () => {
     setShowDelete(false);
   }
 
+  async function updateModel(id, model) {
+    console.log(id, model);
+    console.log(selectedModel);
+    const apiModel = {
+      id: selectedModel.id,
+      projectId: id,
+      filename: model.name,
+      size: model.size,
+      bimId: null,
+      file: null,
+    };
+    await updateModelToDatabase(id, apiModel).then((res) => {
+      console.log(res);
+    });
+    setSelectedModel(apiModel);
+    setSelectedProject(selectedProject);
+    setTimeout(() => {
+      setShowReplace(false);
+      //Estas dos lineas son mientras no se arregla el refresh automático
+      setShowMore(false);
+      showProjectsRef.current.scrollIntoView({ behavior: "smooth" });
+      // -------
+      fetchModels();
+      setSelectedModel(models.find((model) => model.projectId === id));
+      setNewModel(null);
+      setTimeout(() => {
+        toast.success("Modelo reemplazado con éxito", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }, 4000);
+    }, 3000);
+  }
+
+  const HandleIFCUpload = (e) => {
+    setNewModel(e.target.files[0]);
+  };
+
   return (
     <div>
       <div className="container mx-auto min-h-screen mb-10">
+        <div ref={showProjectsRef} />
         <h2 className="text-5xl font-semibold mt-12">Mis Proyectos</h2>
         {projects.length === 0 && !loading && (
           <>
@@ -202,8 +259,8 @@ const Projects = () => {
                       </h2>
                       <p className="text-lg mt-4 mb-4">
                         ¿Estás seguro de que quieres eliminar el proyecto{" "}
-                        <b>{selectedProject.name}</b>? Esta acción no se puede
-                        deshacer.
+                        <b>{selectedProject.name}</b>? <br />
+                        Esta acción no se puede deshacer.
                       </p>
                       <div className="flex flex-row">
                         <span className="mx-auto origin-bottom-right right-0 mr-0">
@@ -285,7 +342,8 @@ const Projects = () => {
               <div className="col-span-4">
                 <p className="text-lg font-semibold">Modelo:</p>
                 <p className="text-lg">
-                  {selectedProject.id === selectedModel.projectId
+                  {selectedModel &&
+                  selectedProject.id === selectedModel.projectId
                     ? selectedModel.filename
                     : ""}
                 </p>
@@ -304,7 +362,12 @@ const Projects = () => {
                 </button>
               </div>
               <div className="col-span-2 mt-3">
-                <button className="bg-verde-idem border-idem text-white border-2 py-1 px-3 rounded-md text-base font-semibold">
+                <button
+                  onClick={() => {
+                    showReplaceModal(selectedProject.id);
+                  }}
+                  className="bg-verde-idem border-idem text-white border-2 py-1 px-3 rounded-md text-base font-semibold"
+                >
                   Reemplazar modelo
                 </button>
               </div>
@@ -312,6 +375,108 @@ const Projects = () => {
           </div>
         )}
       </div>
+      {showReplace && (
+        <div className="">
+          <div className="fixed z-10 inset-0">
+            <div className="items-end justify-center pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-20">
+              <div
+                className="fixed inset-0 transition-opacity"
+                aria-hidden="true"
+              >
+                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              </div>
+              <span
+                className="hidden sm:inline-block sm:align-middle"
+                aria-hidden="true"
+              >
+                &#8203;
+              </span>
+              <div className="mt-20 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6 w-2/3 mx-auto">
+                <div className="">
+                  <div className="mt-1 mb-8 w-full">
+                    <h2 className="text-2xl font-semibold">
+                      Reemplazar modelo
+                    </h2>
+                    <div className="h-96 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed w-full mb-8">
+                      <input
+                        type="file"
+                        id="fileUpload"
+                        accept=".ifc"
+                        style={{ display: "none" }}
+                        onChange={HandleIFCUpload}
+                      />
+                      <label htmlFor="fileUpload" className="cursor-pointer">
+                        {newModel ? (
+                          <div className="flex">
+                            <IfcSvg className="h-12 w-14 mr-2" />
+                            <p className="text-gray-400">
+                              Modelo: <b>{newModel.name.replace(".ifc", "")}</b>{" "}
+                              <br />
+                              <span className="text-sm">
+                                Tamaño:{" "}
+                                <span className="font-medium">
+                                  <b>
+                                    {" "}
+                                    {Number(newModel.size / 1000000).toFixed(
+                                      3
+                                    )}{" "}
+                                    MB.
+                                  </b>
+                                </span>
+                              </span>
+                            </p>
+                          </div>
+                        ) : (
+                          <>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-14 w-14 text-gray-400 mx-auto"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                              />
+                            </svg>
+                            <p className="text-gray-400">
+                              Haz click aquí para cargar el archivo .ifc
+                            </p>
+                          </>
+                        )}
+                      </label>
+                    </div>
+                    <div className="flex flex-row">
+                      <span className="mx-auto origin-bottom-right right-0 mr-0">
+                        <button
+                          onClick={() => {
+                            setShowReplace(false);
+                            setNewModel(null);
+                          }}
+                          className="bg-white text-idem border-idem border-2 py-2 px-3 rounded-md text-sm font-medium mr-4"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          onClick={() => {
+                            updateModel(selectedModel.id, newModel);
+                          }}
+                          className="bg-verde-idem text-white border-idem border-2 py-2 px-3 rounded-md text-sm font-medium"
+                        >
+                          Reemplazar
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <ToastContainer
         position="bottom-right"
         autoClose={2000}
