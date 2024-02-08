@@ -130,7 +130,6 @@ const Projects = () => {
       fetchModels();
       setSelectedModel(models.find((model) => model.projectId === id));
       setNewModel(null);
-      setTimeout(() => {
         toast.success("Modelo reemplazado con éxito", {
           position: "bottom-right",
           autoClose: 2000,
@@ -141,7 +140,6 @@ const Projects = () => {
           progress: undefined,
           theme: "light",
         });
-      }, 4000);
     }, 3000);
   }
 
