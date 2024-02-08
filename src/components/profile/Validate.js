@@ -31,8 +31,6 @@ const Validate = () => {
 
   const username = sessionStorage.getItem("username");
 
-  //NORMATIVAS A VALIDAR
-
   useEffect(() => {
     if (!sessionStorage.getItem("token")) {
       window.location.href = "/login";
@@ -75,7 +73,21 @@ const Validate = () => {
   };
 
   const ValidateProject = () => {
+    setShowResults(false);
     if (!selectedProject) {
+      toast.error("Seleccionar un proyecto", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+    if (!selectedNormativas.length > 0) {
       toast.error("Seleccionar normativas a validar", {
         position: "bottom-right",
         autoClose: 2000,
@@ -113,8 +125,10 @@ const Validate = () => {
   const handleAllNormativas = (id) => {
     normativas.map((norm) => {
       if (norm.id === id) {
-        console.log(norm);
-        selectedNormativas.push(norm);
+        if (selectedNormativas.includes(norm)) {
+          const index = selectedNormativas.indexOf(norm);
+          selectedNormativas.splice(index, 1);
+        } else selectedNormativas.push(norm);
       }
       return selectedNormativas;
     });
@@ -131,7 +145,7 @@ const Validate = () => {
       <div className="grid grid-cols-12 gap-8">
         <div className="col-span-5">
           <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12">
-            <h3 className="text-2xl font-semibold mb-8">Normativas</h3>
+            <h3 className="text-2xl font-semibold mb-5">Normativas</h3>
             <ul className="">
               <li>
                 <div className="flex flex-row ">
@@ -539,36 +553,30 @@ const Validate = () => {
                 <hr className="mt-4 mb-4" />
                 <h3 className="text-3xl font-semibold">Resultados</h3>
                 <div className="ml-3">
-                {selectedNormativas.length > 0 ? (
-                  selectedNormativas.map((normativa) => (
-                    <>
-                      <div className="flex">
-                        {cumple ? (
-                          <IfcSvgSucces className="h-6 w-6 mt-5 mr-2" />
-                        ) : (
-                          <IfcSvgError className="h-6 w-6 mt-5 mr-2" />
-                        )}
-                        <div className="text-xl font-semibold mt-4">
-                          {normativa.name}:
-                        </div>
-                      </div>
-                      <div className="text-lg">
-                        Cumple: {cumple ? "Si" : "No"}
-                      </div>
-                      {selectedNormativas.length > 1 &&
-                        selectedNormativas.indexOf(normativa) !==
-                          selectedNormativas.length - 1 && (
-                          <hr className="mt-2 mb-2" />
-                        )}
-                    </>
-                  ))
-                ) : (
-                  <div>
-                    <p className="text-lg">
-                      No se encontraron normativas seleccionadas
-                    </p>
-                  </div>
-                )}
+                  {selectedNormativas.length > 0
+                    ? selectedNormativas.map((normativa) => (
+                        <>
+                          <div className="flex">
+                            {cumple ? (
+                              <IfcSvgSucces className="h-6 w-6 mt-5 mr-2" />
+                            ) : (
+                              <IfcSvgError className="h-6 w-6 mt-5 mr-2" />
+                            )}
+                            <div className="text-xl font-semibold mt-4">
+                              {normativa.name}:
+                            </div>
+                          </div>
+                          <div className="text-lg">
+                            Cumple: {cumple ? "Si" : "No"}
+                          </div>
+                          {selectedNormativas.length > 1 &&
+                            selectedNormativas.indexOf(normativa) !==
+                              selectedNormativas.length - 1 && (
+                              <hr className="mt-2 mb-2" />
+                            )}
+                        </>
+                      ))
+                    : null}
                 </div>
               </div>
             </div>

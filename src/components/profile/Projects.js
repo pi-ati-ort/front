@@ -139,7 +139,7 @@ const Projects = () => {
               </span>
             </div>
             <div className="">
-              <button className="bg-verde-idem text-white border-idem border-2 py-2 px-20 rounded-md text-xl font-medium mr-6 mt-3">
+              <button className="bg-white text-idem border-idem border-2 py-2 px-20 rounded-md text-xl font-medium mr-6 mt-3">
                 Visualizar
               </button>
             </div>

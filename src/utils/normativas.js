@@ -70,7 +70,7 @@ export const normativas = [
     id: "supMin",
     name: "Superficie Mínima",
     description:
-      "La vivienda debe tener una superficie mínima que varía según el número de dormitorios: 32m² para una habitación, 44m² para dos habitaciones, 56m² para tres habitaciones y 68m² para cuatro habitaciones. Para viviendas de menor tamaño no hay una norma establecida, se evaluará cada caso.",
+      "La vivienda debe tener una superficie mínima que varía según el número de dormitorios: 32m² para una habitación, 44m² para dos habitaciones, 56m² para tres habitaciones y 68m² para cuatro habitaciones. Para viviendas de mayor tamaño no hay una norma establecida, se evaluará cada caso.",
     valor: "No aplica",
     unidad: "",
     norma: ["Artículo 3 Higiene de la Vivienda"],
