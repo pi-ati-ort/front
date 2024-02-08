@@ -48,7 +48,7 @@ export const normativas = [
     id: "galibo",
     name: "Construcción Gálibo",
     description:
-      "El gálibo no computa dentro de la altura maxima especificada, Con respecto a ésta, se permite la construcción de un piso habitable adicional con una altura exterior máxima de 3,50 m. Esta planta debe retirarse al menos 3 m del plano frontal o de la fachada principal del edificio, excluyendo los salientes. Se prohíbe terminantemente que la fachada de este piso coincida con la fachada general o principal del edificio.",
+      "El gálibo no computa dentro de la altura maxima especificada. Con respecto a ésta, se permite la construcción de un piso habitable adicional con una altura exterior máxima de 3,50 m. Esta planta debe retirarse al menos 3 m del plano frontal o de la fachada principal del edificio, excluyendo los salientes. Se prohíbe terminantemente que la fachada de este piso coincida con la fachada general o principal del edificio.",
     valor: "No aplica",
     unidad: "",
     norma: ["Articulo-D.223.202, Artículo D.223.163"],

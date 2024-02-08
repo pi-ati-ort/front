@@ -37,3 +37,23 @@ export const uploadModelToDatabase = async (id, model) => {
     throw error;
   }
 }
+
+export const updateModelToDatabase = async (id, model) => {
+  try {
+    const response = await apiClient.put(`/projects/id/${id}/model`, model);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating model to database: ", error);
+    throw error;
+  }
+}
+
+export const deleteModelFromDatabase = async (id, modelId) => {
+  try {
+    const response = await apiClient.delete(`/projects/id/${id}/model/${modelId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting model from database: ", error);
+    throw error;
+  }
+}

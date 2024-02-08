@@ -204,8 +204,7 @@ const Visualize = () => {
       {uploaded && (
         <div className="bg-white h-[600px] p-4 rounded-2xl shadow-lg border border-idem mt-12 mb-20">
           <h3 className="text-2xl font-semibold">{projectName}</h3>
-          <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
-          </div>
+          <div className="grid grid-cols-12 gap-4 mt-6 mr-4"></div>
         </div>
       )}
     </div>

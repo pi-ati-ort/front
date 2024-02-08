@@ -1,22 +1,33 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { Checkbox } from "@material-tailwind/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { getProjects } from "../../api/apiProject";
+import { getAllModels } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
-import { normativas } from "../../utils/utilities";
+import { normativas } from "../../utils/normativas";
+
+import { ReactComponent as IfcSvgError } from "../../assets/svg/error.svg";
+import { ReactComponent as IfcSvgSucces } from "../../assets/svg/succes.svg";
 
 const Validate = () => {
   const [projects, setProjects] = useState([]);
+  const [models, setModels] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedNormativas, setSelectedNormativas] = useState([]);
   const [selectedNormativa, setSelectedNormativa] = useState(null);
-  const [projectName, setProjectName] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null);
+  const [fileName, setFileName] = useState(null);
   const [loading, setLoading] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [normativasModal, setNormativasModal] = useState(false);
+
+  const cumple = true;
 
   const username = sessionStorage.getItem("username");
 
@@ -31,9 +42,17 @@ const Validate = () => {
 
     const fetchData = async () => {
       try {
-        const response = await getProjects(username);
-        if (response) {
-          setProjects(response);
+        const projectsResponse = await getProjects(username);
+        if (projectsResponse) {
+          setProjects(projectsResponse);
+        }
+      } catch (error) {
+        console.error("Error in fetchData: ", error);
+      }
+      try {
+        const modelsResponse = await getAllModels();
+        if (modelsResponse) {
+          setModels(modelsResponse);
         }
       } catch (error) {
         console.error("Error in fetchData: ", error);
@@ -43,29 +62,62 @@ const Validate = () => {
   }, [username]);
 
   const HandleProject = (e) => {
+    setShowResults(false);
     setSelectedProject(e);
-    setProjectName(e.name);
+    models.forEach((model) => {
+      projects.forEach((project) => {
+        if (project.name === e && model.projectId === project.id) {
+          setSelectedModel(model);
+          setFileName(model.filename);
+        }
+      });
+    });
   };
 
   const ValidateProject = () => {
+    if (!selectedProject) {
+      toast.error("Seleccionar normativas a validar", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     setLoading(true);
-    console.log(selectedProject);
+    if (selectedModel) {
+      setSelectedModel(selectedModel);
+      setFileName(selectedModel.filename);
+    }
+    console.log(selectedNormativas);
+    // aca el llamado a la api para validar el proyect
     setTimeout(() => {
       setLoading(false);
       setShowResults(true);
     }, 1500);
   };
 
-  const handleNormativas = (id) => {
-    setNormativasModal(false);
-    setSelectedNormativa(null);
+  const handleNormativa = (id) => {
+    normativas.forEach((norm) => {
+      if (norm.id === id) {
+        setSelectedNormativa(norm);
+        setNormativasModal(true);
+      }
+    });
+  };
+
+  const handleAllNormativas = (id) => {
     normativas.map((norm) => {
       if (norm.id === id) {
         console.log(norm);
-        setSelectedNormativa(norm);
+        selectedNormativas.push(norm);
       }
+      return selectedNormativas;
     });
-    setNormativasModal(true);
   };
 
   const irANormativa = () => {
@@ -83,7 +135,13 @@ const Validate = () => {
             <ul className="">
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="FOS" />
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("FOS");
+                    }}
+                    color="green"
+                    id="FOS"
+                  />
                   <label
                     htmlFor="FOS"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -93,7 +151,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("FOS");
+                        handleNormativa("FOS");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -107,7 +165,13 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="AlturaMax" />
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("AlturaMax");
+                    }}
+                    color="green"
+                    id="AlturaMax"
+                  />
                   <label
                     htmlFor="AlturaMax"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -117,7 +181,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("AlturaMax");
+                        handleNormativa("AlturaMax");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -131,7 +195,13 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="ConstViv" />
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("ConstViv");
+                    }}
+                    color="green"
+                    id="ConstViv"
+                  />
                   <label
                     htmlFor="ConstViv"
                     className="ml-2 text-gray-700 text-2xl mt-1"
@@ -141,7 +211,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("ConstViv");
+                        handleNormativa("ConstViv");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -155,9 +225,15 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="Basamento" />
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("Basamento");
+                    }}
+                    color="green"
+                    id="Basamento"
+                  />
                   <label
-                    htmlFor="otro1"
+                    htmlFor="Basamento"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Construcción Basamento
@@ -165,7 +241,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("Basamento");
+                        handleNormativa("Basamento");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -179,9 +255,15 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="galibo" />
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("galibo");
+                    }}
+                    color="green"
+                    id="galibo"
+                  />
                   <label
-                    htmlFor="otro2"
+                    htmlFor="galibo"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Construcción Gálibo
@@ -189,7 +271,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("galibo");
+                        handleNormativa("galibo");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -203,9 +285,15 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="median" />
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("median");
+                    }}
+                    color="green"
+                    id="median"
+                  />
                   <label
-                    htmlFor="otro3"
+                    htmlFor="median"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Medianeras Vistas
@@ -213,7 +301,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("median");
+                        handleNormativa("median");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -227,9 +315,15 @@ const Validate = () => {
 
               <li>
                 <div className="flex flex-row ">
-                  <Checkbox color="green" id="supMin" />
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("supMin");
+                    }}
+                    color="green"
+                    id="supMin"
+                  />
                   <label
-                    htmlFor="otro4"
+                    htmlFor="supMin"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Superficie Mínima
@@ -237,7 +331,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativas("supMin");
+                        handleNormativa("supMin");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -422,13 +516,77 @@ const Validate = () => {
           )}
           {showResults && (
             <div className="col-span-10">
-              <div className="bg-white p-4 h-screen rounded-2xl shadow-lg border border-idem mt-10 mb-44">
-                <h3 className="text-2xl font-semibold">Resultados</h3>
+              <div className="bg-white p-4 rounded-2xl shadow-lg border border-idem mt-10 mb-44">
+                <h3 className="text-3xl font-semibold">
+                  Información del proyecto
+                </h3>
+                <div className="grid grid-cols-12 gap-4 mt-4 mr-4">
+                  <div className="col-span-6 ml-4">
+                    <p className="text-lg">
+                      <span className="text-xl font-semibold">Nombre</span>
+                      <br />
+                      {selectedProject}
+                    </p>
+                  </div>
+                  <div className="col-span-6">
+                    <p className="text-lg">
+                      <span className="text-xl font-semibold">Modelo</span>
+                      <br />
+                      {fileName.split(".")[0]}
+                    </p>
+                  </div>
+                </div>
+                <hr className="mt-4 mb-4" />
+                <h3 className="text-3xl font-semibold">Resultados</h3>
+                <div className="ml-3">
+                {selectedNormativas.length > 0 ? (
+                  selectedNormativas.map((normativa) => (
+                    <>
+                      <div className="flex">
+                        {cumple ? (
+                          <IfcSvgSucces className="h-6 w-6 mt-5 mr-2" />
+                        ) : (
+                          <IfcSvgError className="h-6 w-6 mt-5 mr-2" />
+                        )}
+                        <div className="text-xl font-semibold mt-4">
+                          {normativa.name}:
+                        </div>
+                      </div>
+                      <div className="text-lg">
+                        Cumple: {cumple ? "Si" : "No"}
+                      </div>
+                      {selectedNormativas.length > 1 &&
+                        selectedNormativas.indexOf(normativa) !==
+                          selectedNormativas.length - 1 && (
+                          <hr className="mt-2 mb-2" />
+                        )}
+                    </>
+                  ))
+                ) : (
+                  <div>
+                    <p className="text-lg">
+                      No se encontraron normativas seleccionadas
+                    </p>
+                  </div>
+                )}
+                </div>
               </div>
             </div>
           )}
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

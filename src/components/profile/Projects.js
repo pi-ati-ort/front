@@ -47,6 +47,7 @@ const Projects = () => {
     showMoreRef.current.scrollIntoView({ behavior: "smooth" });
     setSelectedProject(projects.find((project) => project.id === id));
     setSelectedModel(models.find((model) => model.projectId === id));
+    console.log(selectedModel);
   }
 
   return (
