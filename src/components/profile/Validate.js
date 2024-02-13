@@ -6,14 +6,16 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { getProjects } from "../../api/apiProject";
 import { getAllModels } from "../../api/apiModel";
+import { evaluateModel } from "../../api/apiNorms";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 import { normativas } from "../../utils/normativas";
+import { modelos } from "../../utils/modelos";
 
 import { ReactComponent as IfcSvgError } from "../../assets/svg/error.svg";
-import { ReactComponent as IfcSvgSucces } from "../../assets/svg/succes.svg";
+import { ReactComponent as IfcSvgSuccess } from "../../assets/svg/success.svg";
 
 const Validate = () => {
   const [projects, setProjects] = useState([]);
@@ -32,11 +34,13 @@ const Validate = () => {
   const username = sessionStorage.getItem("username");
 
   useEffect(() => {
+    console.log(modelos)
     if (!sessionStorage.getItem("token")) {
       window.location.href = "/login";
     }
     setLoading(null);
     setShowResults(false);
+    setSelectedNormativas([]);
 
     const fetchData = async () => {
       try {
@@ -72,7 +76,7 @@ const Validate = () => {
     });
   };
 
-  const ValidateProject = () => {
+  const ValidateProject =  async () => {
     setShowResults(false);
     if (!selectedProject) {
       toast.error("Seleccionar un proyecto", {
@@ -100,17 +104,32 @@ const Validate = () => {
       });
       return;
     }
-    setLoading(true);
-    if (selectedModel) {
-      setSelectedModel(selectedModel);
-      setFileName(selectedModel.filename);
-    }
-    console.log(selectedNormativas);
-    // aca el llamado a la api para validar el proyect
-    setTimeout(() => {
-      setLoading(false);
-      setShowResults(true);
-    }, 1500);
+
+    await evaluateModel("normativas", modelos[0].models[0]).then((response) => {
+      console.log(response);
+      setLoading(true);
+      if (selectedModel) {
+        setSelectedModel(selectedModel);
+        setFileName(selectedModel.filename);
+      }
+      console.log(selectedNormativas);
+      setTimeout(() => {
+        setLoading(false);
+        setShowResults(true);
+      }, 1500);
+    }).catch((error) => {
+      console.error("Error in ValidateProject: ", error);
+      toast.error("Habilite el motor DMN", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    });
   };
 
   const handleNormativa = (id) => {
@@ -558,7 +577,7 @@ const Validate = () => {
                         <>
                           <div className="flex">
                             {cumple ? (
-                              <IfcSvgSucces className="h-6 w-6 mt-5 mr-2" />
+                              <IfcSvgSuccess className="h-6 w-6 mt-5 mr-2" />
                             ) : (
                               <IfcSvgError className="h-6 w-6 mt-5 mr-2" />
                             )}

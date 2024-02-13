@@ -18,6 +18,13 @@ const Footer = () => {
     setSobrePilotoModal(true);
   };
 
+  const handleDocumentoLink = () => {
+    window.open(
+      "https://nicolasfuy.s3.amazonaws.com/documentos/ANTEPROYECTO.pdf",
+      "_blank"
+    );
+  };
+
   return (
     <footer className="bg-verde-idem text-white py-4 px-4 md:px-4">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 items-center">
@@ -48,8 +55,11 @@ const Footer = () => {
               </button>
             </li>
             <li>
-              <button onClick={handleSobrePilotoModal} className="text-xs" href="#">
-                Otro enlace
+              <button
+                onClick={handleDocumentoLink}
+                className="text-xs"
+              >
+                Ver Documento
               </button>
             </li>
           </ul>
@@ -117,6 +127,7 @@ const Footer = () => {
                         como parte del Proyecto Integrador final de la carrera
                         de Analista en Tecnologías de la Información.
                       </p>
+                      <br />
                       <p className="text-justify text-black">
                         El objetivo del mismo es desarrollar una aplicación web
                         que permita a los usuarios realizar un seguimiento de
@@ -174,7 +185,7 @@ const Footer = () => {
         </div>
       )}
 
-{sobrePilotoModal && (
+      {sobrePilotoModal && (
         <div>
           <div className="fixed z-10 inset-0">
             <div className="items-end justify-center pt-4 px-4 pb-20 text-center sm:block sm:p-0 m-20">

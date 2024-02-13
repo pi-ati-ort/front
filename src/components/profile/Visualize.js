@@ -4,6 +4,9 @@ import { Listbox, Transition } from "@headlessui/react";
 
 import { getProjects } from "../../api/apiProject";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
@@ -15,6 +18,7 @@ const Visualize = () => {
 
   const [loading, setLoading] = useState(null);
   const [uploaded, setUploaded] = useState(null);
+  const [allowVisual, setAllowVisual] = useState(false);
 
   const username = sessionStorage.getItem("username");
 
@@ -49,11 +53,29 @@ const Visualize = () => {
 
   const VisualizeProject = () => {
     console.log(selectedProject);
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setUploaded(true);
-    }, 1500);
+    if (allowVisual) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setUploaded(true);
+      }, 1500);
+    } else {
+      toast.error("Funcionalidad no implementada", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const SetVisualization = () => {
+    setAllowVisual(!allowVisual);
+    console.log(allowVisual);
   };
 
   return (
@@ -69,6 +91,16 @@ const Visualize = () => {
                 Volver
               </button>
             </a>
+          </span>
+        )}
+        {!uploaded && (
+          <span className="ml-auto">
+            <button
+              onClick={SetVisualization}
+              className="bg-white text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-white mt-2"
+            >
+              Visual
+            </button>
           </span>
         )}
       </div>
@@ -207,6 +239,18 @@ const Visualize = () => {
           <div className="grid grid-cols-12 gap-4 mt-6 mr-4"></div>
         </div>
       )}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

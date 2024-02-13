@@ -40,12 +40,6 @@ const NewProject = () => {
     description: description,
   };
 
-  const model = {
-    filename: file ? file.name : null,
-    size: file ? file.size : null,
-    projectId: createdProject ? createdProject.id : null,
-  };
-
   const scrollTo = () => {
     uploadAnchor.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -121,22 +115,24 @@ const NewProject = () => {
     setFile(e.target.files[0]);
   };
 
+  const model = {
+    filename: file ? file.name : null,
+    size: file ? file.size : null,
+    projectId: createdProject ? createdProject.id : null,
+    bimId: createdProject ? createdProject.poid : null,
+  };
+
   const HandleUpload = () => {
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
-    console.log(createdProject.id);
-    console.log(formData);
 
     if (
       model.filename != null &&
       model.size != null &&
       model.projectId != null
     ) {
-      uploadModelToDatabase(createdProject.id, model).then((res) => {
-        console.log(res);
-      });
+      uploadModelToDatabase(createdProject.id, model);
     }
     /* uploadModelToProject(createdProject.id, formData).then((res) => {
       console.log(res);

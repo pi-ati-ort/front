@@ -71,6 +71,7 @@ const Projects = () => {
     showMoreRef.current.scrollIntoView({ behavior: "smooth" });
     setSelectedProject(projects.find((project) => project.id === id));
     setSelectedModel(models.find((model) => model.projectId === id));
+    console.log(selectedModel);
   }
 
   function showDeleteModal(id) {
@@ -78,7 +79,6 @@ const Projects = () => {
     setShowMore(false);
     setSelectedProject(projects.find((project) => project.id === id));
     setSelectedModel(models.find((model) => model.projectId === id));
-    console.log(selectedProject);
   }
 
   function showReplaceModal(id) {
@@ -106,40 +106,36 @@ const Projects = () => {
   }
 
   async function updateModel(id, model) {
-    console.log(id, model);
-    console.log(selectedModel);
     const apiModel = {
       id: selectedModel.id,
       projectId: id,
       filename: model.name,
       size: model.size,
-      bimId: null,
+      bimId: selectedModel.bimId,
       file: null,
     };
-    await updateModelToDatabase(id, apiModel).then((res) => {
-      console.log(res);
-    });
+    await updateModelToDatabase(id, apiModel);
     setSelectedModel(apiModel);
-    setSelectedProject(selectedProject);
+    //setSelectedProject(selectedProject);
     setTimeout(() => {
       setShowReplace(false);
       //Estas dos lineas son mientras no se arregla el refresh automático
-      setShowMore(false);
-      showProjectsRef.current.scrollIntoView({ behavior: "smooth" });
+      //setShowMore(false);
+      //showProjectsRef.current.scrollIntoView({ behavior: "smooth" });
       // -------
       fetchModels();
-      setSelectedModel(models.find((model) => model.projectId === id));
+      //setSelectedModel(models.find((model) => model.projectId === id));
       setNewModel(null);
-        toast.success("Modelo reemplazado con éxito", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-        });
+      toast.success("Modelo reemplazado con éxito", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }, 3000);
   }
 
@@ -183,8 +179,8 @@ const Projects = () => {
               <thead>
                 <tr className="uppercase font-bold text-sm">
                   {/*<th className="px-4 py-2 text-left">Id</th> */}
-                  <th className="px-4 py-2 text-left">Nombre</th>
                   <th className="px-4 py-2 text-left">Fecha</th>
+                  <th className="px-4 py-2 text-left">Nombre</th>
                   <th className="px-4 py-2 text-left">Esquema</th>
                   <th className="px-4 py-2 text-left">BIM Id</th>
                   <th className="px-4 py-2 text-right">Acciones</th>
@@ -201,10 +197,10 @@ const Projects = () => {
                       className={index % 2 === 0 ? "bg-white" : "bg-slate-50"}
                     >
                       {/* <td className="px-4 py-2">{project.id}</td> */}
-                      <td className=" px-4 py-2">{project.name}</td>
                       <td className=" px-4 py-2">
                         {project.created_at.slice(0, 10)}
                       </td>
+                      <td className=" px-4 py-2">{project.name}</td>
                       <td className=" px-4 py-2">{project.schema}</td>
                       <td className=" px-4 py-2">{project.poid}</td>
                       <td className="py-2 text-right w-min">
@@ -306,10 +302,16 @@ const Projects = () => {
             </div>
             <div className="mb-10">
               <span className="font-semibold text-lg">
-                Descripción:{" "}
-                <span className="font-light">
-                  {selectedProject.description}
-                </span>
+                {selectedProject.description ? "Descripción: " : ""}
+                {selectedProject.description ? (
+                  <span className="font-light text-2xl">
+                    {selectedProject.description}
+                  </span>
+                ) : (
+                  <span className="font-light text-2xl text-gray-400">
+                    Sin descripción.
+                  </span>
+                )}
               </span>
             </div>
             <div className="grid grid-cols-12 gap-4 mt-2 mr-4 mb-4">

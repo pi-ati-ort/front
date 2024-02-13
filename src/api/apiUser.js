@@ -4,7 +4,7 @@ import apiClient from "./apiClient";
 export const registerUser = async (user) => {
     try {
       const response = await axios.post(
-        "http://localhost:8081/auth/register",
+        "https://pi-ati-back-backend.azuremicroservices.io/auth/register",
         user
       );
       return response.data;
