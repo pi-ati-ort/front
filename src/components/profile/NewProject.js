@@ -10,7 +10,7 @@ import animationData from "../general/loading.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ReactComponent as IfcSvg } from "../../images/svg/ifc.svg";
+import { ReactComponent as IfcSvg } from "../../assets/svg/ifc.svg";
 
 const NewProject = () => {
   const [name, setName] = useState("");
@@ -38,12 +38,6 @@ const NewProject = () => {
     schema: schema,
     username: username,
     description: description,
-  };
-
-  const model = {
-    filename: file ? file.name : null,
-    size: file ? file.size : null,
-    projectId: createdProject ? createdProject.id : null,
   };
 
   const scrollTo = () => {
@@ -118,42 +112,30 @@ const NewProject = () => {
   };
 
   const HandleIFCUpload = (e) => {
-    console.log(e.target.files[0]);
     setFile(e.target.files[0]);
+  };
+
+  const model = {
+    filename: file ? file.name : null,
+    size: file ? file.size : null,
+    projectId: createdProject ? createdProject.id : null,
+    bimId: createdProject ? createdProject.poid : null,
   };
 
   const HandleUpload = () => {
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
-    console.log(createdProject.id);
-    console.log(formData);
 
     if (
       model.filename != null &&
       model.size != null &&
       model.projectId != null
     ) {
-      uploadModelToDatabase(createdProject.id, model).then((res) => {
-        console.log(res);
-      });
+      uploadModelToDatabase(createdProject.id, model);
     }
     /* uploadModelToProject(createdProject.id, formData).then((res) => {
       console.log(res);
-      setTimeout(() => {
-        setUploading(false);
-        toast.success("Modelo cargado con éxito", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-        });
-      }, 1500);
     }); */
     setTimeout(() => {
       setUploading(false);

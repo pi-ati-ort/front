@@ -1,7 +1,7 @@
 import React from "react";
 import "../../App.css";
 
-import logo from "../../images/dbp_logo.png";
+import logo from "../../assets/images/dbp_logo.png";
 
 const Home = () => {
   const LoginHandler = () => {

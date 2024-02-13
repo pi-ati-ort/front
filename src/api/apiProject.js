@@ -18,7 +18,6 @@ export const getProjects = async (username) => {
   try {
     const res = await apiClient.get(`/projects`);
     const projects = res.data.filter((p) => p.username === username);
-    console.log(projects);
     return projects;
   } catch (error) {
     console.error("Error getting projects: ", error);

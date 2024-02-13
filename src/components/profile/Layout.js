@@ -1,9 +1,9 @@
 import React from "react";
 
-import newProject from "../../images/new.png";
-import viewProjects from "../../images/projects.png";
-import viewModel from "../../images/visual.png";
-import validate from "../../images/valid.png";
+import newProject from "../../assets/images/new.png";
+import viewProjects from "../../assets/images/projects.png";
+import viewModel from "../../assets/images/visual.png";
+import validate from "../../assets/images/valid.png";
 
 const Profile = () => {
   const menu = [
@@ -52,7 +52,7 @@ const Profile = () => {
         ¿Qué deseas hacer hoy?
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:mx-40 lg:mx-72">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:mx-20 xl:mx-60 2xl:mx-72">
         {menu.map((item, index) => (
           <div
             key={index}
