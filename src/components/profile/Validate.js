@@ -6,13 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { getProjects } from "../../api/apiProject";
 import { getAllModels } from "../../api/apiModel";
-import { evaluateModel } from "../../api/apiNorms";
+import { dmnContainer, evaluateDmn } from "../../api/apiNorms";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 import { normativas } from "../../utils/normativas";
-import { modelos } from "../../utils/modelos";
+import { dmnModels } from "../../utils/dmnModels";
 
 import { ReactComponent as IfcSvgError } from "../../assets/svg/error.svg";
 import { ReactComponent as IfcSvgSuccess } from "../../assets/svg/success.svg";
@@ -28,13 +28,28 @@ const Validate = () => {
   const [loading, setLoading] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [normativasModal, setNormativasModal] = useState(false);
+  const [evaluationResults, setEvaluationResults] = useState([]);
 
-  const cumple = true;
+  const cumple = false;
 
   const username = sessionStorage.getItem("username");
+  const dmnContainerName = "DMN_1.0.0-SNAPSHOT";
+
+  const dmnRequest = {
+    "model-namespace": dmnModels[0].dmn[0]["model-namespace"],
+    "model-name": dmnModels[0].dmn[0]["model-name"],
+    "dmn-context": {
+      construccion: {
+        alturaConstruccion: 29,
+      },
+      padron: {
+        alturaMaxima: 27,
+      },
+    },
+  };
 
   useEffect(() => {
-    console.log(modelos)
+    console.log(dmnModels);
     if (!sessionStorage.getItem("token")) {
       window.location.href = "/login";
     }
@@ -76,7 +91,7 @@ const Validate = () => {
     });
   };
 
-  const ValidateProject =  async () => {
+  const ValidateProject = async () => {
     setShowResults(false);
     if (!selectedProject) {
       toast.error("Seleccionar un proyecto", {
@@ -105,31 +120,37 @@ const Validate = () => {
       return;
     }
 
-    await evaluateModel("normativas", modelos[0].models[0]).then((response) => {
-      console.log(response);
-      setLoading(true);
-      if (selectedModel) {
-        setSelectedModel(selectedModel);
-        setFileName(selectedModel.filename);
-      }
-      console.log(selectedNormativas);
-      setTimeout(() => {
-        setLoading(false);
-        setShowResults(true);
-      }, 1500);
-    }).catch((error) => {
-      console.error("Error in ValidateProject: ", error);
-      toast.error("Habilite el motor DMN", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
+    console.log(dmnRequest);
+    //await dmnContainer("DMN_1.0.0-SNAPSHOT")
+    await evaluateDmn(dmnContainerName, dmnRequest)
+      .then((response) => {
+        evaluationResults.push(response);
+        console.log(evaluationResults);
+        console.log(response);
+        setLoading(true);
+        if (selectedModel) {
+          setSelectedModel(selectedModel);
+          setFileName(selectedModel.filename);
+        }
+        console.log(selectedNormativas);
+        setTimeout(() => {
+          setLoading(false);
+          setShowResults(true);
+        }, 1500);
+      })
+      .catch((error) => {
+        console.error("Error in ValidateProject: ", error);
+        toast.error("Habilite el motor DMN", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
       });
-    });
   };
 
   const handleNormativa = (id) => {
@@ -166,36 +187,6 @@ const Validate = () => {
           <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12">
             <h3 className="text-2xl font-semibold mb-5">Normativas</h3>
             <ul className="">
-              <li>
-                <div className="flex flex-row ">
-                  <Checkbox
-                    onClick={() => {
-                      handleAllNormativas("FOS");
-                    }}
-                    color="green"
-                    id="FOS"
-                  />
-                  <label
-                    htmlFor="FOS"
-                    className="ml-2 text-gray-700 text-2xl mt-1"
-                  >
-                    Factor Ocupación Suelo
-                  </label>
-                  <span className="ml-auto justify-end">
-                    <button
-                      onClick={() => {
-                        handleNormativa("FOS");
-                      }}
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
-                    >
-                      Ver más
-                    </button>
-                  </span>
-                </div>
-              </li>
-
-              <hr className="mt-4 mb-4" />
-
               <li>
                 <div className="flex flex-row ">
                   <Checkbox
@@ -305,6 +296,36 @@ const Validate = () => {
                     <button
                       onClick={() => {
                         handleNormativa("galibo");
+                      }}
+                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
+                    >
+                      Ver más
+                    </button>
+                  </span>
+                </div>
+              </li>
+
+              <hr className="mt-4 mb-4" />
+
+              <li>
+                <div className="flex flex-row ">
+                  <Checkbox
+                    onClick={() => {
+                      handleAllNormativas("FOS");
+                    }}
+                    color="green"
+                    id="FOS"
+                  />
+                  <label
+                    htmlFor="FOS"
+                    className="ml-2 text-gray-700 text-2xl mt-1"
+                  >
+                    Factor Ocupación Suelo
+                  </label>
+                  <span className="ml-auto justify-end">
+                    <button
+                      onClick={() => {
+                        handleNormativa("FOS");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >

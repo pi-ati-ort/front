@@ -1,5 +1,10 @@
 import axios from "axios";
 
+const authCredentials = {
+  username: "pi-ati-ort",
+  password: "Tesis2023",
+};
+
 const apiClient = axios.create({
   baseURL: "https://pi-ati-back-backend.azuremicroservices.io/",
   headers: {
@@ -10,7 +15,9 @@ const apiClient = axios.create({
 const apiNorms = axios.create({
   baseURL: "http://localhost:8080/",
   headers: {
-    "Content-Type": "application/json",
+    Authorization: `Basic ${btoa(
+      `${authCredentials.username}:${authCredentials.password}`
+    )}`,
   },
 });
 
