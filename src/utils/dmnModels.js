@@ -1,9 +1,9 @@
-export const modelos = [
+export const dmnModels = [
   {
     id: 1,
     name: "ModB_BLE_PAR_02-v5.ifc",
     size: 1811151,
-    models: [
+    dmn: [
       {
         "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
         "model-name" : "AlturaMax",
@@ -133,9 +133,9 @@ export const modelos = [
   },
   {
     id: 2,
-    name: "AC20-FZK-Haus.ifc",
+    name: "ModA_C20-FZK-v1.ifc",
     size: 2526544,
-    models: [
+    dmn: [
       { 
         "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
         "model-name" : "AlturaMax",
@@ -189,7 +189,7 @@ export const modelos = [
     id: 3,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
-    models: [
+    dmn: [
       { 
         "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
         "model-name" : "AlturaMax",
@@ -243,7 +243,7 @@ export const modelos = [
     id: 4,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
-    models: [
+    dmn: [
       { 
         "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
         "model-name" : "AlturaMax",
@@ -297,7 +297,7 @@ export const modelos = [
     id: 5,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
-    models: [
+    dmn: [
       { 
         "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
         "model-name" : "AlturaMax",
@@ -351,7 +351,7 @@ export const modelos = [
     id: 6,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
-    models: [
+    dmn: [
       { 
         "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
         "model-name" : "AlturaMax",
