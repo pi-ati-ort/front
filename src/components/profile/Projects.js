@@ -116,15 +116,9 @@ const Projects = () => {
     };
     await updateModelToDatabase(id, apiModel);
     setSelectedModel(apiModel);
-    //setSelectedProject(selectedProject);
     setTimeout(() => {
       setShowReplace(false);
-      //Estas dos lineas son mientras no se arregla el refresh automático
-      //setShowMore(false);
-      //showProjectsRef.current.scrollIntoView({ behavior: "smooth" });
-      // -------
       fetchModels();
-      //setSelectedModel(models.find((model) => model.projectId === id));
       setNewModel(null);
       toast.success("Modelo reemplazado con éxito", {
         position: "bottom-right",
@@ -178,7 +172,6 @@ const Projects = () => {
             <table className="table-auto">
               <thead>
                 <tr className="uppercase font-bold text-sm">
-                  {/*<th className="px-4 py-2 text-left">Id</th> */}
                   <th className="px-4 py-2 text-left">Fecha</th>
                   <th className="px-4 py-2 text-left">Nombre</th>
                   <th className="px-4 py-2 text-left">Esquema</th>
@@ -196,7 +189,6 @@ const Projects = () => {
                       key={index}
                       className={index % 2 === 0 ? "bg-white" : "bg-slate-50"}
                     >
-                      {/* <td className="px-4 py-2">{project.id}</td> */}
                       <td className=" px-4 py-2">
                         {project.created_at.slice(0, 10)}
                       </td>

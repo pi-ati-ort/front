@@ -22,14 +22,17 @@ const Visualize = () => {
 
   const username = sessionStorage.getItem("username");
 
+  const [file, setFile] = useState(null);
+
   const HandleProject = (e) => {
     setSelectedProject(e);
     setProjectName(e.name);
   };
 
-  const LoadProject = () => {
-    console.log(selectedProject);
+  const HandleIFCUpload = (e) => {
+    setFile(e.target.files[0]);
   };
+
 
   useEffect(() => {
     if (!sessionStorage.getItem("token")) {
@@ -60,7 +63,7 @@ const Visualize = () => {
         setUploaded(true);
       }, 1500);
     } else {
-      toast.error("Funcionalidad no implementada", {
+      toast.warning("Funcionalidad no implementada", {
         position: "bottom-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -147,34 +150,48 @@ const Visualize = () => {
                           leaveTo="opacity-0"
                         >
                           <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {projects.map((item, index) => (
+                            {projects.length > 0 ? (
+                              projects.map((item, index) => (
+                                <Listbox.Option
+                                  key={index}
+                                  className={({ active }) =>
+                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                      active
+                                        ? "bg-verde-idem text-white"
+                                        : "text-gray-900"
+                                    }`
+                                  }
+                                  value={item.name}
+                                >
+                                  {({ selected }) => (
+                                    <>
+                                      <span
+                                        className={`block truncate ${
+                                          selected
+                                            ? "font-medium"
+                                            : "font-normal"
+                                        }`}
+                                      >
+                                        {item.name}
+                                      </span>
+                                      {selected ? (
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+                                      ) : null}
+                                    </>
+                                  )}
+                                </Listbox.Option>
+                              ))
+                            ) : (
                               <Listbox.Option
-                                key={index}
-                                className={({ active }) =>
-                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                    active
-                                      ? "bg-verde-idem text-white"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={item.name}
+                                className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-600"
+                                value="No hay proyectos"
+                                disabled
                               >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`block truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      {item.name}
-                                    </span>
-                                    {selected ? (
-                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
-                                    ) : null}
-                                  </>
-                                )}
+                                <span className="block truncate font-normal">
+                                  No hay proyectos creados
+                                </span>
                               </Listbox.Option>
-                            ))}
+                            )}
                           </Listbox.Options>
                         </Transition>
                       </div>
@@ -204,12 +221,26 @@ const Visualize = () => {
                     />
                   </div>
                   <div className="col-span-2 mr-4">
-                    <button
-                      className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem"
-                      onClick={LoadProject}
-                    >
-                      Cargar
-                    </button>
+                    <label htmlFor="fileUpload" className="cursor-pointer">
+                      <button
+                        className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem"
+                        onClick={() =>
+                          document.getElementById("fileUpload").click()
+                        }
+                      >
+                        Cargar
+                      </button>
+                      <input
+                        type="file"
+                        id="fileUpload"
+                        accept=".ifc"
+                        style={{ display: "none" }}
+                        onChange={(e) => {
+                          HandleIFCUpload(e);
+                          setModelName(e.target.files[0].name);
+                        }}
+                      />
+                    </label>
                   </div>
                   <div className="col-span-2">
                     <button

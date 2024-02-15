@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useRef } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import { Tooltip, Typography } from "@material-tailwind/react";
 
 import { newProject } from "../../api/apiProject";
 import { uploadModelToDatabase } from "../../api/apiModel";
@@ -166,7 +167,45 @@ const NewProject = () => {
               htmlFor="name"
               className="font-medium leading-6 text-gray-900"
             >
-              Nombre <span className="text-idem font-bold">*</span>
+              <div className="flex">
+                Nombre <span className="text-idem font-bold">*</span>{" "}
+                <span className="ml-1 mt-0.5">
+                  <Tooltip
+                    placement="top"
+                    className="border border-blue-gray-50 bg-white px-4 py-3 shadow-xl shadow-black/10"
+                    content={
+                      <div className="w-80">
+                        <Typography
+                          color="blue-gray"
+                          className="font-medium"
+                        ></Typography>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-80"
+                        >
+                          El nombre debe ser único en todo el servidor BIM.
+                        </Typography>
+                      </div>
+                    }
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="#5CBE81"
+                      strokeWidth={2}
+                      className="h-5 w-5 cursor-pointer text-blue-gray-500"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                      />
+                    </svg>
+                  </Tooltip>
+                </span>
+              </div>
             </label>
             <div className="mt-2">
               <input
@@ -181,12 +220,51 @@ const NewProject = () => {
             </div>
           </div>
           <div className="col-span-1"></div>
-          <div className="col-span-4 w-full">
+          <div className="col-span-4 w-full ">
             <label
               htmlFor="name"
               className="text-sm font-medium leading-6 text-gray-900"
             >
-              Esquema <span className="text-idem font-bold">*</span>
+              <div className="flex">
+                Esquema <span className="text-idem font-bold">*</span>{" "}
+                <span className="ml-1 mt-0.5">
+                  <Tooltip
+                    placement="top"
+                    className="border border-blue-gray-50 bg-white px-4 py-3 shadow-xl shadow-black/10"
+                    content={
+                      <div className="w-80">
+                        <Typography
+                          color="blue-gray"
+                          className="font-medium"
+                        ></Typography>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-80"
+                        >
+                          Para que la validación normativa sea ejecutada
+                          correctamente, el esquema debe ser IFC 4.
+                        </Typography>
+                      </div>
+                    }
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="#5CBE81"
+                      strokeWidth={2}
+                      className="h-5 w-5 cursor-pointer text-blue-gray-500"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                      />
+                    </svg>
+                  </Tooltip>
+                </span>
+              </div>
             </label>
             <div className="mt-2">
               <Listbox value={schema} onChange={HandleSchema}>
