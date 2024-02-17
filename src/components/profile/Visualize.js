@@ -33,7 +33,6 @@ const Visualize = () => {
     setFile(e.target.files[0]);
   };
 
-
   useEffect(() => {
     if (!sessionStorage.getItem("token")) {
       window.location.href = "/login";
@@ -84,29 +83,33 @@ const Visualize = () => {
 
   return (
     <div className="container mx-auto min-h-screen">
-      <div className="flex flex-row">
-        <span>
-          <h2 className="text-5xl font-semibold">Visualizar Modelo</h2>
-        </span>
-        {uploaded && (
-          <span className="ml-auto">
-            <a href="/visualizar">
-              <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem mt-2">
-                Volver
+      <div>
+        <div className="flex flex-row">
+          <span>
+            <h2 className="text-5xl font-semibold">Visualizar Modelo</h2>
+          </span>
+          {uploaded && (
+            <>
+              <span className="ml-auto">
+                <a href="/visualizar">
+                  <button className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem mt-2">
+                    Volver
+                  </button>{" "}
+                </a>
+              </span>
+            </>
+          )}
+          {!uploaded && (
+            <span className="ml-auto">
+              <button
+                onClick={SetVisualization}
+                className="bg-white text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-white mt-2"
+              >
+                Visual
               </button>
-            </a>
-          </span>
-        )}
-        {!uploaded && (
-          <span className="ml-auto">
-            <button
-              onClick={SetVisualization}
-              className="bg-white text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-white mt-2"
-            >
-              Visual
-            </button>
-          </span>
-        )}
+            </span>
+          )}
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-8 items-center">
         {!uploaded && (
@@ -266,9 +269,13 @@ const Visualize = () => {
         </div>
       )}
       {uploaded && (
-        <div className="bg-white h-[600px] p-4 rounded-2xl shadow-lg border border-idem mt-12 mb-20">
+        <div className="bg-white h-[630px] p-2 rounded-2xl shadow-lg border border-idem mt-6 mb-20 overflow-hidden">
           <h3 className="text-2xl font-semibold">{projectName}</h3>
-          <div className="grid grid-cols-12 gap-4 mt-6 mr-4"></div>
+            <iframe
+              src="https://wikiifc.com/"
+              title="IFC Wiki"
+              className="w-full h-full rounded-lg"
+            ></iframe>
         </div>
       )}
       <ToastContainer
