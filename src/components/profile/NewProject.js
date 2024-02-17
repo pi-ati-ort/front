@@ -178,11 +178,13 @@ const NewProject = () => {
                         <Typography
                           color="blue-gray"
                           className="font-medium"
+                          children=""
                         ></Typography>
                         <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal opacity-80"
+                          children=""
                         >
                           El nombre debe ser único en todo el servidor BIM.
                         </Typography>
@@ -236,11 +238,13 @@ const NewProject = () => {
                         <Typography
                           color="blue-gray"
                           className="font-medium"
+                          children=""
                         ></Typography>
                         <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal opacity-80"
+                          children=""
                         >
                           Para que la validación normativa sea ejecutada
                           correctamente, el esquema debe ser IFC 4.

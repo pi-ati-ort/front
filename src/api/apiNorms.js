@@ -1,5 +1,5 @@
 import axios from "axios";
-import apiClient, { apiNorms } from "./apiClient";
+import { apiNorms } from "./apiClient";
 
 export const evaluateModel = async (dmnName, selectedModel) => {
   console.log(selectedModel);

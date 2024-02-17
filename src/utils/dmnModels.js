@@ -1,7 +1,7 @@
 export const dmnModels = [
   {
     id: 1,
-    name: "ModB_BLE_PAR_02-v5.ifc",
+    name: "ModC_REV_PAR_01-v5.ifc",
     size: 1811151,
     dmn: [
       {
@@ -11,7 +11,7 @@ export const dmnModels = [
         {
           "construccion" :
           {
-          "alturaConstruccion" : 26
+          "alturaConstruccion" : 28
           },
           "padron" :
           {
@@ -26,13 +26,13 @@ export const dmnModels = [
         {
           "construccion" :
           {
-             "areaTotalConstruccionPlanta": 50
+             "areaTotalConstruccionPlanta": 420
       
           },
           "padron" :
           {
-              "FOS": 0.5,
-              "superficie": 0
+              "FOS": 1,
+              "superficie": 400
           }
         }
       },
@@ -87,14 +87,14 @@ export const dmnModels = [
         {
           "construccion" :
           {
-              "alturaConstruccion" :28,
+              "alturaConstruccion" :20,
               "tieneGalibo" :true,
-              "alturaGalibo" :3.50,
+              "alturaGalibo" :4,
               "retiroDeGaliboDePlanoFachada" :2
        },
           "padron" :
           {
-              "alturaMax" :27
+              "alturaMaxima" :27
           }
         }
     },
@@ -106,7 +106,7 @@ export const dmnModels = [
         "vivienda" :
         {
             "cantDormitorio" : 3,
-            "areaTotal" : 3
+            "areaTotal" : 60
        }
       
       }
@@ -131,273 +131,58 @@ export const dmnModels = [
     },
     ],
   },
+    //-----------------------------------------------------------------------------------------------
   {
     id: 2,
     name: "ModA_C20-FZK-v1.ifc",
     size: 2526544,
     dmn: [
       { 
-        "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
-        "model-name" : "AlturaMax",
-        "dmn-context" :
-        {
-          "construccion" :
-          {
-              "alturaContruccion" : 26,
-              "retiroDesdePlanoFachada" : null,
-              "tieneBasamento" : null,
-              "alturaBasamento" : null,
-              "areaTotalConstruccionPlanta" : null,
-              "tieneGalibo" : false,
-              "alturaGalibo" : null,
-              "retiroDeGaliboDePlanoFachada" : null,
-              "lineaEdificacionConstruccionIzquierda" : null,
-              "lineaEdificacionConstruccionDerecha" : null
-          },
-          "padron" :
-          {
-            "alturaMaxima" : 27,              
-            "esFrentista": false,
-            "anchoVia": null,
-            "FOS": 100,
-            "superficie": null,
-            "lineaEdificacionPadronDerecha": null,
-            "lineaEdificacionPadronIzquierda": null
-      
-          },
-          "vivienda" : 
-          {
-            "cantBano" : null,
-            "cantCocina" : null,
-            "cantEstar" : null,
-            "cantDormitorio" : null,
-            "areaTotal" : null
-          },
-          "bano" : 
-          {
-            "independencia" : true
-          },
-          "dormitorio" : 
-          {
-            "independencia" : true
-          }
-        }
+       
       }
     ],
   },
+  //-----------------------------------------------------------------------------------------------
   {
     id: 3,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
     dmn: [
       { 
-        "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
-        "model-name" : "AlturaMax",
-        "dmn-context" :
-        {
-          "construccion" :
-          {
-              "alturaContruccion" : 26,
-              "retiroDesdePlanoFachada" : null,
-              "tieneBasamento" : null,
-              "alturaBasamento" : null,
-              "areaTotalConstruccionPlanta" : null,
-              "tieneGalibo" : false,
-              "alturaGalibo" : null,
-              "retiroDeGaliboDePlanoFachada" : null,
-              "lineaEdificacionConstruccionIzquierda" : null,
-              "lineaEdificacionConstruccionDerecha" : null
-          },
-          "padron" :
-          {
-            "alturaMaxima" : 27,              
-            "esFrentista": false,
-            "anchoVia": null,
-            "FOS": 100,
-            "superficie": null,
-            "lineaEdificacionPadronDerecha": null,
-            "lineaEdificacionPadronIzquierda": null
-      
-          },
-          "vivienda" : 
-          {
-            "cantBano" : null,
-            "cantCocina" : null,
-            "cantEstar" : null,
-            "cantDormitorio" : null,
-            "areaTotal" : null
-          },
-          "bano" : 
-          {
-            "independencia" : true
-          },
-          "dormitorio" : 
-          {
-            "independencia" : true
-          }
-        }
+       
       }
     ],
   },
+    //-----------------------------------------------------------------------------------------------
   {
     id: 4,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
     dmn: [
       { 
-        "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
-        "model-name" : "AlturaMax",
-        "dmn-context" :
-        {
-          "construccion" :
-          {
-              "alturaContruccion" : 26,
-              "retiroDesdePlanoFachada" : null,
-              "tieneBasamento" : null,
-              "alturaBasamento" : null,
-              "areaTotalConstruccionPlanta" : null,
-              "tieneGalibo" : false,
-              "alturaGalibo" : null,
-              "retiroDeGaliboDePlanoFachada" : null,
-              "lineaEdificacionConstruccionIzquierda" : null,
-              "lineaEdificacionConstruccionDerecha" : null
-          },
-          "padron" :
-          {
-            "alturaMaxima" : 27,              
-            "esFrentista": false,
-            "anchoVia": null,
-            "FOS": 100,
-            "superficie": null,
-            "lineaEdificacionPadronDerecha": null,
-            "lineaEdificacionPadronIzquierda": null
-      
-          },
-          "vivienda" : 
-          {
-            "cantBano" : null,
-            "cantCocina" : null,
-            "cantEstar" : null,
-            "cantDormitorio" : null,
-            "areaTotal" : null
-          },
-          "bano" : 
-          {
-            "independencia" : true
-          },
-          "dormitorio" : 
-          {
-            "independencia" : true
-          }
-        }
+       
       }
     ],
   },
+    //-----------------------------------------------------------------------------------------------
   {
     id: 5,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
     dmn: [
       { 
-        "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
-        "model-name" : "AlturaMax",
-        "dmn-context" :
-        {
-          "construccion" :
-          {
-              "alturaContruccion" : 26,
-              "retiroDesdePlanoFachada" : null,
-              "tieneBasamento" : null,
-              "alturaBasamento" : null,
-              "areaTotalConstruccionPlanta" : null,
-              "tieneGalibo" : false,
-              "alturaGalibo" : null,
-              "retiroDeGaliboDePlanoFachada" : null,
-              "lineaEdificacionConstruccionIzquierda" : null,
-              "lineaEdificacionConstruccionDerecha" : null
-          },
-          "padron" :
-          {
-            "alturaMaxima" : 27,              
-            "esFrentista": false,
-            "anchoVia": null,
-            "FOS": 100,
-            "superficie": null,
-            "lineaEdificacionPadronDerecha": null,
-            "lineaEdificacionPadronIzquierda": null
-      
-          },
-          "vivienda" : 
-          {
-            "cantBano" : null,
-            "cantCocina" : null,
-            "cantEstar" : null,
-            "cantDormitorio" : null,
-            "areaTotal" : null
-          },
-          "bano" : 
-          {
-            "independencia" : true
-          },
-          "dormitorio" : 
-          {
-            "independencia" : true
-          }
-        }
+       
       }
     ],
   },
+    //-----------------------------------------------------------------------------------------------
   {
     id: 6,
     name: "AC20-FZK-Haus.ifc",
     size: 2526544,
     dmn: [
       { 
-        "model-namespace" : "https://kiegroup.org/dmn/_DD0007C9-3C2E-4290-A92E-3D03AD41E47F",
-        "model-name" : "AlturaMax",
-        "dmn-context" :
-        {
-          "construccion" :
-          {
-              "alturaContruccion" : 26,
-              "retiroDesdePlanoFachada" : null,
-              "tieneBasamento" : null,
-              "alturaBasamento" : null,
-              "areaTotalConstruccionPlanta" : null,
-              "tieneGalibo" : false,
-              "alturaGalibo" : null,
-              "retiroDeGaliboDePlanoFachada" : null,
-              "lineaEdificacionConstruccionIzquierda" : null,
-              "lineaEdificacionConstruccionDerecha" : null
-          },
-          "padron" :
-          {
-            "alturaMaxima" : 27,              
-            "esFrentista": false,
-            "anchoVia": null,
-            "FOS": 100,
-            "superficie": null,
-            "lineaEdificacionPadronDerecha": null,
-            "lineaEdificacionPadronIzquierda": null
-      
-          },
-          "vivienda" : 
-          {
-            "cantBano" : null,
-            "cantCocina" : null,
-            "cantEstar" : null,
-            "cantDormitorio" : null,
-            "areaTotal" : null
-          },
-          "bano" : 
-          {
-            "independencia" : true
-          },
-          "dormitorio" : 
-          {
-            "independencia" : true
-          }
-        }
+       
       }
     ],
   },
