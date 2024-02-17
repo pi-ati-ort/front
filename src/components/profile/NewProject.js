@@ -151,6 +151,7 @@ const NewProject = () => {
       model.projectId != null
     ) {
       uploadModelToDatabase(createdProject.id, model);
+      console.log("Modelo", model);
     }
     /* uploadModelToProject(createdProject.id, formData).then((res) => {
       console.log(res);
@@ -481,7 +482,20 @@ const NewProject = () => {
       {existsProjects && (
         <>
           <div className="bg-white p-6 h-80 rounded-2xl shadow-lg flex flex-col border border-idem mt-4 mb-2">
-            <h2 className="text-2xl font-semibold">Cargar Modelo</h2>
+            <h2 className="text-2xl font-semibold">
+              Cargar Modelo <span className="text-lg text-idem font-bold">*</span>
+            </h2>
+            <p className=" text-gray-500 font-medium text-sm mb-2">
+              Debe cargar un modelo IFC compatible con este proyecto, seleccione uno{" "}
+              <a
+                href="https://github.com/pi-ati-ort/ifc-models"
+                target="_blank"
+                rel="noreferrer"
+                className="underline text-verde-idem font-semibold"
+              >
+                aqui.
+              </a>
+            </p>
             {uploading ? (
               <div className="mt-0">
                 <Lottie

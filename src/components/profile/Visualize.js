@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef, useMemo } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 import { Listbox, Transition } from "@headlessui/react";
 
@@ -58,6 +58,7 @@ const Visualize = () => {
     console.log(selectedProject);
     if (allowVisual) {
       setLoading(true);
+      console.log(file);
       setTimeout(() => {
         setLoading(false);
         setUploaded(true);

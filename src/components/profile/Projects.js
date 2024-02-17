@@ -5,6 +5,7 @@ import {
   getAllModels,
   deleteModelByProjectId,
   updateModelToDatabase,
+  uploadModelToDatabase,
 } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
@@ -106,31 +107,60 @@ const Projects = () => {
   }
 
   async function updateModel(id, model) {
-    const apiModel = {
-      id: selectedModel.id,
-      projectId: id,
-      filename: model.name,
-      size: model.size,
-      bimId: selectedModel.bimId,
-      file: null,
-    };
-    await updateModelToDatabase(id, apiModel);
-    setSelectedModel(apiModel);
-    setTimeout(() => {
-      setShowReplace(false);
-      fetchModels();
-      setNewModel(null);
-      toast.success("Modelo reemplazado con éxito", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    }, 3000);
+    if (selectedModel) {
+      const apiModel = {
+        id: selectedModel.id,
+        projectId: id,
+        filename: model.name,
+        size: model.size,
+        bimId: selectedModel.bimId,
+        file: null,
+      };
+      await updateModelToDatabase(id, apiModel);
+      setSelectedModel(apiModel);
+      setTimeout(() => {
+        setShowReplace(false);
+        fetchModels();
+        setNewModel(null);
+        toast.success("Modelo reemplazado con éxito", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }, 3000);
+    } else {
+      const apiModel = {
+        id: selectedProject.id,
+        projectId: id,
+        filename: model.name,
+        size: model.size,
+        bimId: selectedProject.bimId,
+        file: null,
+      };
+      const result = await uploadModelToDatabase(id, apiModel);
+      console.log(result);
+      setSelectedModel(apiModel);
+      setTimeout(() => {
+        setShowReplace(false);
+        fetchModels();
+        setNewModel(null);
+        toast.success("Modelo reemplazado con éxito", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }, 3000);
+    }
   }
 
   const HandleIFCUpload = (e) => {
@@ -344,19 +374,24 @@ const Projects = () => {
               <div className="col-span-4">
                 <p className="text-lg font-semibold">Modelo:</p>
                 <p className="text-lg">
-                  {selectedModel &&
-                  selectedProject.id === selectedModel.projectId
-                    ? selectedModel.filename
-                    : ""}
+                  {selectedModel
+                    ? selectedProject.id === selectedModel.projectId
+                      ? selectedModel.filename
+                      : "Sin modelo IFC cargado"
+                    : "Sin modelo IFC cargado"}
                 </p>
               </div>
               <div className="col-span-4">
-                <p className="text-lg font-semibold">Tamaño:</p>
-                <p className="text-lg">
-                  {selectedProject.id === selectedModel.projectId
-                    ? `${(selectedModel.size / 1024 / 1024).toFixed(3)} MB`
-                    : ""}
-                </p>
+                {selectedModel && (
+                  <div className="col-span-4">
+                    <p className="text-lg font-semibold">Tamaño:</p>
+                    <p className="text-lg">
+                      {selectedProject.id === selectedModel.projectId
+                        ? `${(selectedModel.size / 1024 / 1024).toFixed(3)} MB`
+                        : ""}
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="col-span-2 mt-3">
                 <button className="bg-white border-idem text-idem border-2 py-1 px-3 rounded-md text-base font-semibold">
@@ -464,7 +499,10 @@ const Projects = () => {
                         </button>
                         <button
                           onClick={() => {
-                            updateModel(selectedModel.id, newModel);
+                            const id = selectedModel
+                              ? selectedModel.projectId
+                              : selectedProject.id;
+                            updateModel(id, newModel);
                           }}
                           className="bg-verde-idem text-white border-idem border-2 py-2 px-3 rounded-md text-sm font-medium"
                         >
