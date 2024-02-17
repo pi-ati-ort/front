@@ -5,6 +5,7 @@ import {
   getAllModels,
   deleteModelByProjectId,
   updateModelToDatabase,
+  uploadModelToDatabase,
 } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
@@ -106,37 +107,60 @@ const Projects = () => {
   }
 
   async function updateModel(id, model) {
-    const apiModel = {
-      id: selectedModel.id,
-      projectId: id,
-      filename: model.name,
-      size: model.size,
-      bimId: selectedModel.bimId,
-      file: null,
-    };
-    await updateModelToDatabase(id, apiModel);
-    setSelectedModel(apiModel);
-    //setSelectedProject(selectedProject);
-    setTimeout(() => {
-      setShowReplace(false);
-      //Estas dos lineas son mientras no se arregla el refresh automático
-      //setShowMore(false);
-      //showProjectsRef.current.scrollIntoView({ behavior: "smooth" });
-      // -------
-      fetchModels();
-      //setSelectedModel(models.find((model) => model.projectId === id));
-      setNewModel(null);
-      toast.success("Modelo reemplazado con éxito", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    }, 3000);
+    if (selectedModel) {
+      const apiModel = {
+        id: selectedModel.id,
+        projectId: id,
+        filename: model.name,
+        size: model.size,
+        bimId: selectedModel.bimId,
+        file: null,
+      };
+      await updateModelToDatabase(id, apiModel);
+      setSelectedModel(apiModel);
+      setTimeout(() => {
+        setShowReplace(false);
+        fetchModels();
+        setNewModel(null);
+        toast.success("Modelo reemplazado con éxito", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }, 3000);
+    } else {
+      const apiModel = {
+        id: selectedProject.id,
+        projectId: id,
+        filename: model.name,
+        size: model.size,
+        bimId: selectedProject.bimId,
+        file: null,
+      };
+      const result = await uploadModelToDatabase(id, apiModel);
+      console.log(result);
+      setSelectedModel(apiModel);
+      setTimeout(() => {
+        setShowReplace(false);
+        fetchModels();
+        setNewModel(null);
+        toast.success("Modelo reemplazado con éxito", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }, 3000);
+    }
   }
 
   const HandleIFCUpload = (e) => {
@@ -178,7 +202,6 @@ const Projects = () => {
             <table className="table-auto">
               <thead>
                 <tr className="uppercase font-bold text-sm">
-                  {/*<th className="px-4 py-2 text-left">Id</th> */}
                   <th className="px-4 py-2 text-left">Fecha</th>
                   <th className="px-4 py-2 text-left">Nombre</th>
                   <th className="px-4 py-2 text-left">Esquema</th>
@@ -196,7 +219,6 @@ const Projects = () => {
                       key={index}
                       className={index % 2 === 0 ? "bg-white" : "bg-slate-50"}
                     >
-                      {/* <td className="px-4 py-2">{project.id}</td> */}
                       <td className=" px-4 py-2">
                         {project.created_at.slice(0, 10)}
                       </td>
@@ -300,7 +322,7 @@ const Projects = () => {
                 </button>
               </div>
             </div>
-            <div className="mb-10">
+            <div className="mb-5">
               <span className="font-semibold text-lg">
                 {selectedProject.description ? "Descripción: " : ""}
                 {selectedProject.description ? (
@@ -313,6 +335,16 @@ const Projects = () => {
                   </span>
                 )}
               </span>
+            </div>
+            <div className="grid grid-cols-12 gap-4 mt-0 mr-4 mb-4">
+              <div className="col-span-8">
+                <p className="text-lg font-semibold">Dirección:</p>
+                <p className="text-lg">{selectedProject.address}</p>
+              </div>
+              <div className="col-span-4">
+                <p className="text-lg font-semibold">Nº Padrón:</p>
+                <p className="text-lg">{selectedProject.padron}</p>
+              </div>
             </div>
             <div className="grid grid-cols-12 gap-4 mt-2 mr-4 mb-4">
               <div className="col-span-4">
@@ -342,19 +374,24 @@ const Projects = () => {
               <div className="col-span-4">
                 <p className="text-lg font-semibold">Modelo:</p>
                 <p className="text-lg">
-                  {selectedModel &&
-                  selectedProject.id === selectedModel.projectId
-                    ? selectedModel.filename
-                    : ""}
+                  {selectedModel
+                    ? selectedProject.id === selectedModel.projectId
+                      ? selectedModel.filename
+                      : "Sin modelo IFC cargado"
+                    : "Sin modelo IFC cargado"}
                 </p>
               </div>
               <div className="col-span-4">
-                <p className="text-lg font-semibold">Tamaño:</p>
-                <p className="text-lg">
-                  {selectedProject.id === selectedModel.projectId
-                    ? `${(selectedModel.size / 1024 / 1024).toFixed(3)} MB`
-                    : ""}
-                </p>
+                {selectedModel && (
+                  <div className="col-span-4">
+                    <p className="text-lg font-semibold">Tamaño:</p>
+                    <p className="text-lg">
+                      {selectedProject.id === selectedModel.projectId
+                        ? `${(selectedModel.size / 1024 / 1024).toFixed(3)} MB`
+                        : ""}
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="col-span-2 mt-3">
                 <button className="bg-white border-idem text-idem border-2 py-1 px-3 rounded-md text-base font-semibold">
@@ -462,7 +499,10 @@ const Projects = () => {
                         </button>
                         <button
                           onClick={() => {
-                            updateModel(selectedModel.id, newModel);
+                            const id = selectedModel
+                              ? selectedModel.projectId
+                              : selectedProject.id;
+                            updateModel(id, newModel);
                           }}
                           className="bg-verde-idem text-white border-idem border-2 py-2 px-3 rounded-md text-sm font-medium"
                         >

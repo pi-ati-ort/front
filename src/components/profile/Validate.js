@@ -6,16 +6,17 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { getProjects } from "../../api/apiProject";
 import { getAllModels } from "../../api/apiModel";
-import { dmnContainer, evaluateDmn } from "../../api/apiNorms";
+import { evaluateDmn } from "../../api/apiNorms";
 
 import Lottie from "lottie-react";
 import animationData from "../general/loading.json";
 
 import { normativas } from "../../utils/normativas";
 import { dmnModels } from "../../utils/dmnModels";
+import { dmnRequest } from "../../utils/dmnRequest";
 
-import { ReactComponent as IfcSvgError } from "../../assets/svg/error.svg";
-import { ReactComponent as IfcSvgSuccess } from "../../assets/svg/success.svg";
+import { FcCheckmark } from "react-icons/fc";
+import { FcCancel } from "react-icons/fc";
 
 const Validate = () => {
   const [projects, setProjects] = useState([]);
@@ -28,28 +29,13 @@ const Validate = () => {
   const [loading, setLoading] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [normativasModal, setNormativasModal] = useState(false);
-  const [evaluationResults, setEvaluationResults] = useState([]);
-
-  const cumple = false;
+  const [evaluationResults] = useState([]);
+  const [evalBooleans] = useState([]);
 
   const username = sessionStorage.getItem("username");
   const dmnContainerName = "DMN_1.0.0-SNAPSHOT";
 
-  const dmnRequest = {
-    "model-namespace": dmnModels[0].dmn[0]["model-namespace"],
-    "model-name": dmnModels[0].dmn[0]["model-name"],
-    "dmn-context": {
-      construccion: {
-        alturaConstruccion: 29,
-      },
-      padron: {
-        alturaMaxima: 27,
-      },
-    },
-  };
-
   useEffect(() => {
-    console.log(dmnModels);
     if (!sessionStorage.getItem("token")) {
       window.location.href = "/login";
     }
@@ -91,6 +77,64 @@ const Validate = () => {
     });
   };
 
+  const updateDmnRequest = async () => {
+    for (const dmnModel of dmnModels) {
+      if (selectedModel.filename === dmnModel.name) {
+        for (const dmn of dmnModel.dmn) {
+          for (const selectedNormativa of selectedNormativas) {
+            if (selectedNormativa.dmnApi[0] === dmn["model-name"]) {
+              let newRequest = null;
+              newRequest = { ...dmnRequest };
+              newRequest["model-namespace"] = dmn["model-namespace"];
+              newRequest["model-name"] = dmn["model-name"];
+              Object.keys(dmn["dmn-context"]).forEach((key) => {
+                if (dmn["dmn-context"][key] !== null) {
+                  newRequest["dmn-context"][key] = {
+                    ...dmn["dmn-context"][key],
+                  };
+                }
+              });
+              try {
+                const response = await evaluateDmn(
+                  dmnContainerName,
+                  newRequest
+                );
+                //console.log("response", response);
+                evaluationResults.push(response.data.result);
+                const boolResult = obtainBoolResult(
+                  response.data.result,
+                  selectedNormativa.id
+                );
+                evalBooleans.push({
+                  result: boolResult,
+                  name: selectedNormativa.id,
+                });
+                console.log("evalBooleans", evalBooleans);
+                setLoading(true);
+                setTimeout(() => {
+                  setLoading(false);
+                  setShowResults(true);
+                }, 1500);
+              } catch (error) {
+                console.error("Error in ValidateProject: ", error);
+                toast.error("Habilite el motor DMN", {
+                  position: "bottom-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: false,
+                  progress: undefined,
+                  theme: "light",
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+
   const ValidateProject = async () => {
     setShowResults(false);
     if (!selectedProject) {
@@ -119,38 +163,7 @@ const Validate = () => {
       });
       return;
     }
-
-    console.log(dmnRequest);
-    //await dmnContainer("DMN_1.0.0-SNAPSHOT")
-    await evaluateDmn(dmnContainerName, dmnRequest)
-      .then((response) => {
-        evaluationResults.push(response);
-        console.log(evaluationResults);
-        console.log(response);
-        setLoading(true);
-        if (selectedModel) {
-          setSelectedModel(selectedModel);
-          setFileName(selectedModel.filename);
-        }
-        console.log(selectedNormativas);
-        setTimeout(() => {
-          setLoading(false);
-          setShowResults(true);
-        }, 1500);
-      })
-      .catch((error) => {
-        console.error("Error in ValidateProject: ", error);
-        toast.error("Habilite el motor DMN", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-        });
-      });
+    updateDmnRequest();
   };
 
   const handleNormativa = (id) => {
@@ -165,10 +178,13 @@ const Validate = () => {
   const handleAllNormativas = (id) => {
     normativas.map((norm) => {
       if (norm.id === id) {
+        //console.log("norm", norm);
         if (selectedNormativas.includes(norm)) {
           const index = selectedNormativas.indexOf(norm);
           selectedNormativas.splice(index, 1);
-        } else selectedNormativas.push(norm);
+        } else {
+          selectedNormativas.push(norm);
+        }
       }
       return selectedNormativas;
     });
@@ -177,6 +193,10 @@ const Validate = () => {
   const irANormativa = () => {
     //podriamos si hay tiempo pasarle el id y que cada boton lleve a su correspondiente normativa
     window.open("https://normativa.montevideo.gub.uy/volumenes", "_blank");
+  };
+
+  const obtainBoolResult = (resultado, name) => {
+    return resultado["dmn-evaluation-result"]["dmn-context"][name];
   };
 
   return (
@@ -191,13 +211,13 @@ const Validate = () => {
                 <div className="flex flex-row ">
                   <Checkbox
                     onClick={() => {
-                      handleAllNormativas("AlturaMax");
+                      handleAllNormativas("alturaMax");
                     }}
                     color="green"
-                    id="AlturaMax"
+                    id="alturaMax"
                   />
                   <label
-                    htmlFor="AlturaMax"
+                    htmlFor="alturaMax"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Altura Máxima{" "}
@@ -205,7 +225,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativa("AlturaMax");
+                        handleNormativa("alturaMax");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -221,13 +241,13 @@ const Validate = () => {
                 <div className="flex flex-row ">
                   <Checkbox
                     onClick={() => {
-                      handleAllNormativas("ConstViv");
+                      handleAllNormativas("constitucionDeVivienda");
                     }}
                     color="green"
-                    id="ConstViv"
+                    id="constitucionDeVivienda"
                   />
                   <label
-                    htmlFor="ConstViv"
+                    htmlFor="constitucionDeVivienda"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Constitución Vivienda
@@ -235,7 +255,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativa("ConstViv");
+                        handleNormativa("constitucionDeVivienda");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -251,13 +271,13 @@ const Validate = () => {
                 <div className="flex flex-row ">
                   <Checkbox
                     onClick={() => {
-                      handleAllNormativas("Basamento");
+                      handleAllNormativas("ConstruccionBasamento");
                     }}
                     color="green"
-                    id="Basamento"
+                    id="ConstruccionBasamento"
                   />
                   <label
-                    htmlFor="Basamento"
+                    htmlFor="ConstruccionBasamento"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Construcción Basamento
@@ -265,7 +285,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativa("Basamento");
+                        handleNormativa("ConstruccionBasamento");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -281,13 +301,13 @@ const Validate = () => {
                 <div className="flex flex-row ">
                   <Checkbox
                     onClick={() => {
-                      handleAllNormativas("galibo");
+                      handleAllNormativas("construccionGabilo");
                     }}
                     color="green"
-                    id="galibo"
+                    id="construccionGabilo"
                   />
                   <label
-                    htmlFor="galibo"
+                    htmlFor="construccionGabilo"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Construcción Gálibo
@@ -295,7 +315,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativa("galibo");
+                        handleNormativa("construccionGabilo");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -341,13 +361,13 @@ const Validate = () => {
                 <div className="flex flex-row ">
                   <Checkbox
                     onClick={() => {
-                      handleAllNormativas("median");
+                      handleAllNormativas("medianerasVistas");
                     }}
                     color="green"
-                    id="median"
+                    id="medianerasVistas"
                   />
                   <label
-                    htmlFor="median"
+                    htmlFor="medianerasVistas"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Medianeras Vistas
@@ -355,7 +375,7 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativa("median");
+                        handleNormativa("medianerasVistas");
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -371,13 +391,15 @@ const Validate = () => {
                 <div className="flex flex-row ">
                   <Checkbox
                     onClick={() => {
-                      handleAllNormativas("supMin");
+                      handleAllNormativas(
+                        "superficieTotalMinimaVivienda-Dormitorios"
+                      );
                     }}
                     color="green"
-                    id="supMin"
+                    id="superficieTotalMinimaVivienda-Dormitorios"
                   />
                   <label
-                    htmlFor="supMin"
+                    htmlFor="superficieTotalMinimaVivienda-Dormitorios"
                     className="ml-2 text-gray-700 text-2xl mt-1"
                   >
                     Superficie Mínima
@@ -385,7 +407,9 @@ const Validate = () => {
                   <span className="ml-auto justify-end">
                     <button
                       onClick={() => {
-                        handleNormativa("supMin");
+                        handleNormativa(
+                          "superficieTotalMinimaVivienda-Dormitorios"
+                        );
                       }}
                       className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-2 py-1 mx-2 border-2 border-idem mt-2"
                     >
@@ -437,34 +461,46 @@ const Validate = () => {
                       leaveTo="opacity-0"
                     >
                       <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                        {projects.map((item, index) => (
+                        {projects.length > 0 ? (
+                          projects.map((item, index) => (
+                            <Listbox.Option
+                              key={index}
+                              className={({ active }) =>
+                                `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                  active
+                                    ? "bg-verde-idem text-white"
+                                    : "text-gray-900"
+                                }`
+                              }
+                              value={item.name}
+                            >
+                              {({ selected }) => (
+                                <>
+                                  <span
+                                    className={`block truncate ${
+                                      selected ? "font-medium" : "font-normal"
+                                    }`}
+                                  >
+                                    {item.name}
+                                  </span>
+                                  {selected ? (
+                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+                                  ) : null}
+                                </>
+                              )}
+                            </Listbox.Option>
+                          ))
+                        ) : (
                           <Listbox.Option
-                            key={index}
-                            className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                active
-                                  ? "bg-verde-idem text-white"
-                                  : "text-gray-900"
-                              }`
-                            }
-                            value={item.name}
+                            className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-600"
+                            value="No hay proyectos"
+                            disabled
                           >
-                            {({ selected }) => (
-                              <>
-                                <span
-                                  className={`block truncate ${
-                                    selected ? "font-medium" : "font-normal"
-                                  }`}
-                                >
-                                  {item.name}
-                                </span>
-                                {selected ? (
-                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
-                                ) : null}
-                              </>
-                            )}
+                            <span className="block truncate font-normal">
+                              No hay proyectos creados
+                            </span>
                           </Listbox.Option>
-                        ))}
+                        )}
                       </Listbox.Options>
                     </Transition>
                   </div>
@@ -594,28 +630,45 @@ const Validate = () => {
                 <h3 className="text-3xl font-semibold">Resultados</h3>
                 <div className="ml-3">
                   {selectedNormativas.length > 0
-                    ? selectedNormativas.map((normativa) => (
-                        <>
-                          <div className="flex">
-                            {cumple ? (
-                              <IfcSvgSuccess className="h-6 w-6 mt-5 mr-2" />
-                            ) : (
-                              <IfcSvgError className="h-6 w-6 mt-5 mr-2" />
-                            )}
-                            <div className="text-xl font-semibold mt-4">
-                              {normativa.name}
+                    ? selectedNormativas.map((normativa, index) => {
+                        const resultado = evaluationResults.find(
+                          (res) =>
+                            res["dmn-evaluation-result"]["model-name"] ===
+                            normativa.dmnApi[0]
+                        );
+
+                        const evalBoolean = evalBooleans.find(
+                          (evalBool) => evalBool.name === normativa.id
+                        );
+
+                        if (resultado && evalBoolean) {
+                          return (
+                            <div key={index}>
+                              <div className="flex">
+                                {evalBoolean.result === true ? (
+                                  <FcCheckmark className="h-8 w-8 mt-4 mr-2" />
+                                ) : (
+                                  <FcCancel className="h-8 w-8 mt-4 mr-2" />
+                                )}
+                                <div className="text-xl font-semibold mt-4">
+                                  {normativa.name}
+                                </div>
+                              </div>
+                              <div className="text-lg mt-1">
+                                {evalBoolean.result === true
+                                  ? "Cumple"
+                                  : "No Cumple"}
+                              </div>
+                              {selectedNormativas.length > 1 &&
+                                selectedNormativas.indexOf(normativa) !==
+                                  selectedNormativas.length - 1 && (
+                                  <hr className="mt-2 mb-2" />
+                                )}
                             </div>
-                          </div>
-                          <div className="text-lg mt-1">
-                            {cumple ? "Cumple" : "No Cumple"}
-                          </div>
-                          {selectedNormativas.length > 1 &&
-                            selectedNormativas.indexOf(normativa) !==
-                              selectedNormativas.length - 1 && (
-                              <hr className="mt-2 mb-2" />
-                            )}
-                        </>
-                      ))
+                          );
+                        }
+                        return null;
+                      })
                     : null}
                 </div>
               </div>
