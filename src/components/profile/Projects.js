@@ -292,7 +292,7 @@ const Projects = () => {
                 </button>
               </div>
             </div>
-            <div className="mb-10">
+            <div className="mb-5">
               <span className="font-semibold text-lg">
                 {selectedProject.description ? "Descripción: " : ""}
                 {selectedProject.description ? (
@@ -305,6 +305,16 @@ const Projects = () => {
                   </span>
                 )}
               </span>
+            </div>
+            <div className="grid grid-cols-12 gap-4 mt-0 mr-4 mb-4">
+              <div className="col-span-8">
+                <p className="text-lg font-semibold">Dirección:</p>
+                <p className="text-lg">{selectedProject.address}</p>
+              </div>
+              <div className="col-span-4">
+                <p className="text-lg font-semibold">Nº Padrón:</p>
+                <p className="text-lg">{selectedProject.padron}</p>
+              </div>
             </div>
             <div className="grid grid-cols-12 gap-4 mt-2 mr-4 mb-4">
               <div className="col-span-4">

@@ -29,8 +29,8 @@ const Validate = () => {
   const [loading, setLoading] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [normativasModal, setNormativasModal] = useState(false);
-  const [evaluationResults, setEvaluationResults] = useState([]);
-  const [evalBooleans, setEvalBooleans] = useState([]);
+  const [evaluationResults] = useState([]);
+  const [evalBooleans] = useState([]);
 
   const username = sessionStorage.getItem("username");
   const dmnContainerName = "DMN_1.0.0-SNAPSHOT";

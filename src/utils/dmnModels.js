@@ -11,7 +11,7 @@ export const dmnModels = [
         {
           "construccion" :
           {
-          "alturaConstruccion" : 28
+          "alturaConstruccion" : 9
           },
           "padron" :
           {
@@ -19,6 +19,7 @@ export const dmnModels = [
           }
         }
       },
+       //---------------------
       {
         "model-namespace" : "https://kiegroup.org/dmn/_89D1B161-19C8-4863-8C0F-C071D7613D3F",
         "model-name" : "FOS",
@@ -26,16 +27,17 @@ export const dmnModels = [
         {
           "construccion" :
           {
-             "areaTotalConstruccionPlanta": 420
+             "areaTotalConstruccionPlanta": 240
       
           },
           "padron" :
           {
               "FOS": 1,
-              "superficie": 400
+              "superficie": 650
           }
         }
       },
+       //---------------------
       {
         "model-namespace" : "https://kiegroup.org/dmn/_EB5C8F23-46E2-40D1-AB79-D74003DCD81F",
         "model-name" : "ConstrucciónBasamento",
@@ -58,6 +60,7 @@ export const dmnModels = [
           }
         }
       },
+       //---------------------
       {
         "model-namespace" : "https://kiegroup.org/dmn/_4300BED8-A4F3-4816-AB54-B789423CCE3C",
         "model-name" : "ConstitucionDeVivienda",
@@ -80,6 +83,7 @@ export const dmnModels = [
           }
         }
       },
+       //---------------------
       {
         "model-namespace" : "https://kiegroup.org/dmn/_ADA50AD4-ABB6-49C6-BD16-28E0F133D903",
         "model-name" : "ConstruccionGalibo",
@@ -89,7 +93,7 @@ export const dmnModels = [
           {
               "alturaConstruccion" :20,
               "tieneGalibo" :true,
-              "alturaGalibo" :4,
+              "alturaGalibo" :3,
               "retiroDeGaliboDePlanoFachada" :2
        },
           "padron" :
@@ -98,6 +102,7 @@ export const dmnModels = [
           }
         }
     },
+     //---------------------
     {
       "model-namespace" : "https://kiegroup.org/dmn/_9CBEDDEB-89C9-469A-AE41-9D6D98984371",
       "model-name" : "SuperficieTotalMinimaVivienda-Dormitorios",
@@ -111,6 +116,7 @@ export const dmnModels = [
       
       }
     },
+     //---------------------
     {
       "model-namespace" : "https://kiegroup.org/dmn/_CFB0FAFD-07FF-4478-B0F6-781C9862B894",
       "model-name" : "MedianerasVistas",
@@ -118,8 +124,8 @@ export const dmnModels = [
       {
         "construccion" :
         {
-            "alturaConstruccion" :10,
-            "lineaEdificacionConstruccionIzquierda": 10,
+            "alturaConstruccion" :9,
+            "lineaEdificacionConstruccionIzquierda": 8,
             "lineaEdificacionConstruccionDerecha": 4
      },
         "padron" :
