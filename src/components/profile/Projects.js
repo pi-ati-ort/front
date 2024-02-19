@@ -114,6 +114,7 @@ const Projects = () => {
         size: model.size,
         bimId: selectedModel.bimId,
         file: null,
+        username: username,
       };
       await updateModelToDatabase(id, apiModel);
       setSelectedModel(apiModel);
