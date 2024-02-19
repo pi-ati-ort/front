@@ -13,6 +13,16 @@ export const registerUser = async (user) => {
       throw error;
     }
   };
+
+export const getAllUsers = async () => {
+    try {
+      const response = await apiClient.get("/users");
+      return response.data;
+    } catch (error) {
+      console.error("Error getting users: ", error);
+      throw error;
+    }
+  };
   
   export const loginUser = async (user) => {
     try {
@@ -30,6 +40,16 @@ export const registerUser = async (user) => {
       return response.data;
     } catch (error) {
       console.error("Error getting user: ", error);
+      throw error;
+    }
+  };
+
+  export const deleteUser = async (id) => {
+    try {
+      const response = await apiClient.delete(`/users/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting user: ", error);
       throw error;
     }
   };

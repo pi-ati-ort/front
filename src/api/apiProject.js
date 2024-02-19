@@ -16,8 +16,8 @@ export const newProject = async (project) => {
 
 export const getProjects = async () => {
   try {
-    const projects = await apiClient.get(`/projects`);
-    return projects;
+    const response = await apiClient.get(`/projects`);
+    return response.data;
   } catch (error) {
     console.error("Error getting projects: ", error);
     throw error;

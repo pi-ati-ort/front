@@ -26,7 +26,11 @@ const Register = () => {
   };
 
   const handleRole = (event) => {
-    setRole(event.target.value);
+    if (event.target.checked) {
+      setRole("ADMIN");
+    } else {
+      setRole("USER");
+    }
   };
 
   const handleKey = (event) => {
@@ -42,7 +46,7 @@ const Register = () => {
 
   const registerUserHandler = (event) => {
     event.preventDefault();
-    if (role === "ADMIN" && key != "Tesis2023") {
+    if (role === "ADMIN" && key !== "Tesis2023") {
       toast.error("Clave incorrecta", {
         position: "bottom-right",
         autoClose: 2000,
@@ -165,14 +169,7 @@ const Register = () => {
               <div className="col-span-1">
                 <Checkbox
                   size="sm"
-                  onClick={(e) => {
-                    if (e.target.checked) {
-                      setRole("ADMIN");
-                    } else {
-                      setRole("USER");
-                    }
-                    console.log(role);
-                  }}
+                  onClick={handleRole}
                   color="green"
                   id="role"
                   name="role"
