@@ -14,11 +14,20 @@ export const newProject = async (project) => {
   }
 };
 
-export const getProjects = async (username) => {
+export const getProjects = async () => {
   try {
-    const res = await apiClient.get(`/projects`);
-    const projects = res.data.filter((p) => p.username === username);
+    const projects = await apiClient.get(`/projects`);
     return projects;
+  } catch (error) {
+    console.error("Error getting projects: ", error);
+    throw error;
+  }
+};
+
+export const getProjectsByUser = async (username) => {
+  try {
+    const projects = await apiClient.get(`projects/user/${username}/projects`);
+    return projects.data;
   } catch (error) {
     console.error("Error getting projects: ", error);
     throw error;

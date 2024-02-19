@@ -4,8 +4,8 @@ import { Checkbox } from "@material-tailwind/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { getProjects } from "../../api/apiProject";
-import { getAllModels } from "../../api/apiModel";
+import { getProjectsByUser } from "../../api/apiProject";
+import { getAllModelsByUser } from "../../api/apiModel";
 import { evaluateDmn } from "../../api/apiNorms";
 
 import Lottie from "lottie-react";
@@ -45,7 +45,7 @@ const Validate = () => {
 
     const fetchData = async () => {
       try {
-        const projectsResponse = await getProjects(username);
+        const projectsResponse = await getProjectsByUser(username);
         if (projectsResponse) {
           setProjects(projectsResponse);
         }
@@ -53,7 +53,7 @@ const Validate = () => {
         console.error("Error in fetchData: ", error);
       }
       try {
-        const modelsResponse = await getAllModels();
+        const modelsResponse = await getAllModelsByUser(username);
         if (modelsResponse) {
           setModels(modelsResponse);
         }
@@ -100,7 +100,6 @@ const Validate = () => {
                   dmnContainerName,
                   newRequest
                 );
-                //console.log("response", response);
                 evaluationResults.push(response.data.result);
                 const boolResult = obtainBoolResult(
                   response.data.result,
@@ -110,7 +109,6 @@ const Validate = () => {
                   result: boolResult,
                   name: selectedNormativa.id,
                 });
-                console.log("evalBooleans", evalBooleans);
                 setLoading(true);
                 setTimeout(() => {
                   setLoading(false);
@@ -183,7 +181,6 @@ const Validate = () => {
   const handleAllNormativas = (id) => {
     normativas.map((norm) => {
       if (norm.id === id) {
-        //console.log("norm", norm);
         if (selectedNormativas.includes(norm)) {
           const index = selectedNormativas.indexOf(norm);
           selectedNormativas.splice(index, 1);
@@ -467,34 +464,40 @@ const Validate = () => {
                     >
                       <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                         {projects.length > 0 ? (
-                          projects.map((item, index) => (
-                            <Listbox.Option
-                              key={index}
-                              className={({ active }) =>
-                                `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                  active
-                                    ? "bg-verde-idem text-white"
-                                    : "text-gray-900"
-                                }`
-                              }
-                              value={item.name}
-                            >
-                              {({ selected }) => (
-                                <>
-                                  <span
-                                    className={`block truncate ${
-                                      selected ? "font-medium" : "font-normal"
-                                    }`}
-                                  >
-                                    {item.name}
-                                  </span>
-                                  {selected ? (
-                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
-                                  ) : null}
-                                </>
-                              )}
-                            </Listbox.Option>
-                          ))
+                          projects
+                            .filter((item) =>
+                              models
+                                .map((model) => model.projectId)
+                                .includes(item.id)
+                            )
+                            .map((item, index) => (
+                              <Listbox.Option
+                                key={index}
+                                className={({ active }) =>
+                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "bg-verde-idem text-white"
+                                      : "text-gray-900"
+                                  }`
+                                }
+                                value={item.name}
+                              >
+                                {({ selected }) => (
+                                  <>
+                                    <span
+                                      className={`block truncate ${
+                                        selected ? "font-medium" : "font-normal"
+                                      }`}
+                                    >
+                                      {item.name}
+                                    </span>
+                                    {selected ? (
+                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+                                    ) : null}
+                                  </>
+                                )}
+                              </Listbox.Option>
+                            ))
                         ) : (
                           <Listbox.Option
                             className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-600"

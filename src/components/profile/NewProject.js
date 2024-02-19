@@ -138,6 +138,7 @@ const NewProject = () => {
     size: file ? file.size : null,
     projectId: createdProject ? createdProject.id : null,
     bimId: createdProject ? createdProject.poid : null,
+    username: username,
   };
 
   const HandleUpload = () => {

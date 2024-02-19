@@ -2,7 +2,8 @@ import React, { Fragment, useState, useEffect } from "react";
 
 import { Listbox, Transition } from "@headlessui/react";
 
-import { getProjects } from "../../api/apiProject";
+import { getProjectsByUser } from "../../api/apiProject";
+import { getAllModelsByUser } from "../../api/apiModel";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +12,10 @@ import Lottie from "lottie-react";
 import animationData from "../../assets/loading.json";
 
 const Visualize = () => {
+  const username = sessionStorage.getItem("username");
+
   const [projects, setProjects] = useState([]);
+  const [models, setModels] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectName, setProjectName] = useState(null);
   const [modelName, setModelName] = useState("");
@@ -19,8 +23,6 @@ const Visualize = () => {
   const [loading, setLoading] = useState(null);
   const [uploaded, setUploaded] = useState(null);
   const [allowVisual, setAllowVisual] = useState(false);
-
-  const username = sessionStorage.getItem("username");
 
   const [file, setFile] = useState(null);
 
@@ -42,9 +44,17 @@ const Visualize = () => {
 
     const fetchData = async () => {
       try {
-        const response = await getProjects(username);
+        const response = await getProjectsByUser(username);
         if (response) {
           setProjects(response);
+        }
+      } catch (error) {
+        console.error("Error in fetchData: ", error);
+      }
+      try {
+        const modelsResponse = await getAllModelsByUser(username);
+        if (modelsResponse) {
+          setModels(modelsResponse);
         }
       } catch (error) {
         console.error("Error in fetchData: ", error);
@@ -54,10 +64,8 @@ const Visualize = () => {
   }, [username]);
 
   const VisualizeProject = () => {
-    console.log(selectedProject);
     if (allowVisual) {
       setLoading(true);
-      console.log(file);
       setTimeout(() => {
         setLoading(false);
         setUploaded(true);
@@ -78,7 +86,6 @@ const Visualize = () => {
 
   const SetVisualization = () => {
     setAllowVisual(!allowVisual);
-    console.log(allowVisual);
   };
 
   return (
@@ -155,36 +162,42 @@ const Visualize = () => {
                         >
                           <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                             {projects.length > 0 ? (
-                              projects.map((item, index) => (
-                                <Listbox.Option
-                                  key={index}
-                                  className={({ active }) =>
-                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                      active
-                                        ? "bg-verde-idem text-white"
-                                        : "text-gray-900"
-                                    }`
-                                  }
-                                  value={item.name}
-                                >
-                                  {({ selected }) => (
-                                    <>
-                                      <span
-                                        className={`block truncate ${
-                                          selected
-                                            ? "font-medium"
-                                            : "font-normal"
-                                        }`}
-                                      >
-                                        {item.name}
-                                      </span>
-                                      {selected ? (
-                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
-                                      ) : null}
-                                    </>
-                                  )}
-                                </Listbox.Option>
-                              ))
+                              projects
+                                .filter((item) =>
+                                  models
+                                    .map((model) => model.projectId)
+                                    .includes(item.id)
+                                )
+                                .map((item, index) => (
+                                  <Listbox.Option
+                                    key={index}
+                                    className={({ active }) =>
+                                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                        active
+                                          ? "bg-verde-idem text-white"
+                                          : "text-gray-900"
+                                      }`
+                                    }
+                                    value={item.name}
+                                  >
+                                    {({ selected }) => (
+                                      <>
+                                        <span
+                                          className={`block truncate ${
+                                            selected
+                                              ? "font-medium"
+                                              : "font-normal"
+                                          }`}
+                                        >
+                                          {item.name}
+                                        </span>
+                                        {selected ? (
+                                          <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+                                        ) : null}
+                                      </>
+                                    )}
+                                  </Listbox.Option>
+                                ))
                             ) : (
                               <Listbox.Option
                                 className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-600"

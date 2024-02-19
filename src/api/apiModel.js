@@ -10,6 +10,16 @@ export const getAllModels = async () => {
   }
 };
 
+export const getAllModelsByUser = async (username) => {
+  try {
+    const response = await apiClient.get(`/models/user/${username}/models`);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting models: ", error);
+    throw error;
+  }
+}
+
 export const uploadModelToProject = async (projectId, model) => {
   try {
     const response = await apiClient.post(
