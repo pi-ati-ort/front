@@ -55,10 +55,7 @@ const Footer = () => {
               </button>
             </li>
             <li>
-              <button
-                onClick={handleDocumentoLink}
-                className="text-xs"
-              >
+              <button onClick={handleDocumentoLink} className="text-xs">
                 Ver Documento
               </button>
             </li>
@@ -106,14 +103,14 @@ const Footer = () => {
               >
                 &#8203;
               </span>
-              <div className="mt-20 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
-                <div className="">
+              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
+                <div className="overflow-y-auto max-h-[80vh]">
                   <div className="mt-4 mb-10 w-full">
                     <div className="">
-                      <p className="text-3xl text-left text-black font-semibold">
+                      <p className="text-3xl text-left text-black font-semibold mb-4">
                         Sobre este proyecto
                       </p>
-                      <p className="text-justify text-black">
+                      <p className="text-justify text-black mb-3">
                         Este proyecto fue realizado por Nicolas Fernandez y
                         Sebastian Paulos, estudiantes de la{" "}
                         <a
@@ -125,46 +122,71 @@ const Footer = () => {
                           Universidad ORT Uruguay
                         </a>{" "}
                         como parte del Proyecto Integrador final de la carrera
-                        de Analista en Tecnologías de la Información.
+                        de Analista en Tecnologías de la Información. El
+                        proyecto final de carrera se enfoca en la expansión de
+                        un proyecto existente, a traves de un nuevo proyecto que
+                        utiliza los mismos lenguajes, el cual tiene como
+                        objetivo principal la implementación de un sistema de
+                        gestión de permisos de construcción digitales en la
+                        Intendencia de Montevideo (IdeM). Este proyecto busca
+                        abordar una serie de desafíos en la gestión de permisos
+                        de construcción, relativos a los procesos de solicitud,
+                        evaluación y aprobación de estos.
                       </p>
-                      <br />
-                      <p className="text-justify text-black">
-                        El objetivo del mismo es desarrollar una aplicación web
-                        que permita a los usuarios realizar un seguimiento de
-                        los trámites que realizan ante la Intendencia de
-                        Montevideo. El objetivo del mismo es desarrollar una
-                        aplicación web que permita a los usuarios realizar un
-                        seguimiento de los trámites que realizan ante la
-                        Intendencia de Montevideo. El objetivo del mismo es
-                        desarrollar una aplicación web que permita a los
-                        usuarios realizar un seguimiento de los trámites que
-                        realizan ante la Intendencia de Montevideo. El objetivo
-                        del mismo es desarrollar una aplicación web que permita
-                        a los usuarios realizar un seguimiento de los trámites
-                        que realizan ante la Intendencia de Montevideo. El
-                        objetivo del mismo es desarrollar una aplicación web que
-                        permita a los usuarios realizar un seguimiento de los
-                        trámites que realizan ante la Intendencia de Montevideo.
-                        El objetivo del mismo es desarrollar una aplicación web
-                        que permita a los usuarios realizar un seguimiento de
-                        los trámites que realizan ante la Intendencia de
-                        Montevideo.
+                      <p className="text-justify text-black mb-3">
+                        El proyecto surge de las charlas técnicas que realiza la
+                        empresa{" "}
+                        <a
+                          href="https://www.pyxis.tech/"
+                          className="text-idem font-semibold"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Pyxis
+                        </a>{" "}
+                        (Pyxis Open Tech), en la cual se presentó el proyecto
+                        piloto que se realizó para la Intendencia de Montevideo.
+                        A partir de esto, se entablaron las conversaciones con{" "}
+                        <a
+                          href="https://www.pyxis.tech/"
+                          className="text-idem font-semibold"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Pyxis Dev
+                        </a>{" "}
+                        y el{" "}
+                        <a
+                          href="https://www.fing.edu.uy/es/inco"
+                          className="text-idem font-semibold"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Instituto de Computación
+                        </a>{" "}
+                        de la Facultad de Ingeniería de la Universidad de la
+                        República, los dos equipos responsables del proyecto
+                        piloto, para poder realizar este proyecto final de
+                        carrera.
                       </p>
-                      <p className="text-justify text-black">
+                      <p className="text-justify text-black mb-3">
+                        El alcance del proyecto incluye la incorporación de
+                        nuevos subsistemas, como un servidor BIM para el
+                        almacenamiento de modelos IFC y un subsistema frontend
+                        que permite la visualización e interacción con modelos
+                        3D. La inclusión de un Motor DMN (Decision Model and
+                        Notation) para abordar requerimientos normativos como
+                        reglas de negocio. También implica el establecimiento de
+                        una nueva base de datos para almacenar información
+                        procesada, y un subsistema backend para gestionar la
+                        comunicación interna y externa de los nuevos módulos del
+                        sistema.
+                      </p>
+                      <p className="text-justify text-black mb-3"></p>
+                      <p className="text-justify text-black mb-3">
                         Para ello, se utilizaron las siguientes tecnologías:
                       </p>
-                      <ul className="list-disc list-inside text-black">
-                        <li>React</li>
-                        <li>Node.js</li>
-                        <li>Express</li>
-                        <li>MySQL</li>
-                      </ul>
-                      <p className="text-justify text-black">
-                        El código fuente de este proyecto se encuentra
-                        disponible en github.
-                      </p>
                     </div>
-
                     <div className="flex flex-row">
                       <span className="mx-auto origin-bottom-right right-0 mr-0">
                         <button
@@ -201,8 +223,8 @@ const Footer = () => {
               >
                 &#8203;
               </span>
-              <div className="mt-20 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
-                <div className="">
+              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
+                <div className="overflow-y-auto max-h-[80vh]">
                   <div className="mt-4 mb-10 w-full">
                     <div className="">
                       <p className="text-3xl text-left text-black font-semibold">

@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Lottie from "lottie-react";
-import animationData from "../general/loading.json";
+import animationData from "../../assets/loading.json";
 
 const Visualize = () => {
   const [projects, setProjects] = useState([]);
@@ -118,7 +118,7 @@ const Visualize = () => {
               <div className="bg-white h-32 p-4 rounded-2xl shadow-lg border border-idem mt-12">
                 <h3 className="text-2xl font-semibold">Proyecto existente</h3>
                 <div className="grid grid-cols-12 gap-4 mt-4 mr-4">
-                  <div className="col-span-10">
+                  <div className="sm:col-span-8 lg:col-span-9">
                     <Listbox value={selectedProject} onChange={HandleProject}>
                       <div className="relative mt-2">
                         <Listbox.Button
@@ -201,9 +201,9 @@ const Visualize = () => {
                       </div>
                     </Listbox>
                   </div>
-                  <div className="col-span-2 mr-4">
+                  <div className="sm:col-span-4 lg:col-span-3 w-full">
                     <button
-                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem mt-2"
+                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem mt-2 w-full"
                       onClick={VisualizeProject}
                     >
                       Visualizar
@@ -215,8 +215,8 @@ const Visualize = () => {
             <div className="col-span-1">
               <div className="bg-white h-32 p-4 rounded-2xl shadow-lg border border-idem mt-12">
                 <h3 className="text-2xl font-semibold">Cargar modelo</h3>
-                <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
-                  <div className="col-span-8">
+                <div className="grid grid-cols-5 gap-2 mt-6">
+                  <div className="col-span-3">
                     <input
                       type="text"
                       disabled
@@ -224,10 +224,10 @@ const Visualize = () => {
                       className="border border-gray-300 p-2 w-full rounded-md text-sm"
                     />
                   </div>
-                  <div className="col-span-2 mr-4">
+                  <div className="col-span-1">
                     <label htmlFor="fileUpload" className="cursor-pointer">
                       <button
-                        className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem"
+                        className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem w-full"
                         onClick={() =>
                           document.getElementById("fileUpload").click()
                         }
@@ -246,9 +246,9 @@ const Visualize = () => {
                       />
                     </label>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-1">
                     <button
-                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem"
+                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-2 xl:px-4 py-2 mx-auto border-2 border-idem m-full"
                       onClick={VisualizeProject}
                     >
                       Visualizar
@@ -271,11 +271,11 @@ const Visualize = () => {
       {uploaded && (
         <div className="bg-white h-[630px] p-2 rounded-2xl shadow-lg border border-idem mt-6 mb-20 overflow-hidden">
           <h3 className="text-2xl font-semibold">{projectName}</h3>
-            <iframe
-              src="https://wikiifc.com/"
-              title="IFC Wiki"
-              className="w-full h-full rounded-lg"
-            ></iframe>
+          <iframe
+            src="https://wikiifc.com/"
+            title="IFC Wiki"
+            className="w-full h-full rounded-lg"
+          ></iframe>
         </div>
       )}
       <ToastContainer

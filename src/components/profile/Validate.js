@@ -9,7 +9,7 @@ import { getAllModels } from "../../api/apiModel";
 import { evaluateDmn } from "../../api/apiNorms";
 
 import Lottie from "lottie-react";
-import animationData from "../general/loading.json";
+import animationData from "../../assets/loading.json";
 
 import { normativas } from "../../utils/normativas";
 import { dmnModels } from "../../utils/dmnModels";
@@ -78,6 +78,7 @@ const Validate = () => {
   };
 
   const updateDmnRequest = async () => {
+    let errorOccurred = false; // Add this line
     for (const dmnModel of dmnModels) {
       if (selectedModel.filename === dmnModel.name) {
         for (const dmn of dmnModel.dmn) {
@@ -117,16 +118,20 @@ const Validate = () => {
                 }, 1500);
               } catch (error) {
                 console.error("Error in ValidateProject: ", error);
-                toast.error("Habilite el motor DMN", {
-                  position: "bottom-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: false,
-                  progress: undefined,
-                  theme: "light",
-                });
+                if (!errorOccurred) {
+                  // Add this line
+                  errorOccurred = true; // Add this line
+                  toast.error("Habilite el motor DMN", {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                }
               }
             }
           }
@@ -203,8 +208,8 @@ const Validate = () => {
     <div className="container mx-auto min-h-screen">
       <h2 className="text-5xl font-semibold mt-12">Validar Normativa</h2>
       <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-5">
-          <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12">
+        <div className="sm:col-span-6 xl:col-span-5">
+          <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12 mb-32">
             <h3 className="text-2xl font-semibold mb-5">Normativas</h3>
             <ul className="">
               <li>
@@ -421,11 +426,11 @@ const Validate = () => {
             </ul>
           </div>
         </div>
-        <div className="col-span-7">
+        <div className="sm:col-span-6 xl:col-span-7">
           <div className="bg-white h-32 p-4 rounded-2xl shadow-lg border border-idem mt-12">
             <h3 className="text-2xl font-semibold">Seleccionar proyecto</h3>
             <div className="grid grid-cols-12 gap-4 mt-4 mr-4">
-              <div className="col-span-10">
+              <div className="2xl:col-span-10 sm:col-span-9">
                 <Listbox value={selectedProject} onChange={HandleProject}>
                   <div className="relative mt-2">
                     <Listbox.Button
@@ -506,7 +511,7 @@ const Validate = () => {
                   </div>
                 </Listbox>
               </div>
-              <div className="col-span-2">
+              <div className="2xl:col-span-2 sm:col-span-3">
                 <button
                   className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto mt-2 w-full"
                   onClick={ValidateProject}
@@ -532,8 +537,8 @@ const Validate = () => {
                   >
                     &#8203;
                   </span>
-                  <div className="mt-20 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
-                    <div className="">
+                  <div className="2xl:mt-16 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
+                    <div className="overflow-y-auto max-h-[80vh]">
                       <div className="mt-4 mb-10 w-full">
                         <div className="text-3xl font-semibold">
                           {selectedNormativa.name}
@@ -605,7 +610,7 @@ const Validate = () => {
             </div>
           )}
           {showResults && (
-            <div className="col-span-10">
+            <div className="col-span-10 sm:col-span-6">
               <div className="bg-white p-4 rounded-2xl shadow-lg border border-idem mt-10 mb-44">
                 <h3 className="text-3xl font-semibold">
                   Información del proyecto

@@ -9,13 +9,15 @@ import {
 } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
-import animationData from "../general/loading.json";
+import animationData from "../../assets/loading.json";
 import { ReactComponent as IfcSvg } from "../../assets/svg/ifc.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
+  const [userProjects, setUserProjects] = useState([]);
+
   const [models, setModels] = useState([]);
   const [existsProjects, setExistsProjects] = useState(false);
 

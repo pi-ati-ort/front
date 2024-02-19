@@ -6,7 +6,7 @@ import { newProject } from "../../api/apiProject";
 import { uploadModelToDatabase } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
-import animationData from "../general/loading.json";
+import animationData from "../../assets/loading.json";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
