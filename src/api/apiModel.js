@@ -10,6 +10,16 @@ export const getAllModels = async () => {
   }
 };
 
+export const getAllModelsByUser = async (username) => {
+  try {
+    const response = await apiClient.get(`/models/user/${username}/models`);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting models: ", error);
+    throw error;
+  }
+}
+
 export const uploadModelToProject = async (projectId, model) => {
   try {
     const response = await apiClient.post(
@@ -60,6 +70,17 @@ export const deleteModelByProjectId = async (ProjectId) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting model from database: ", error);
+    throw error;
+  }
+};
+
+export const deleteModelById = async (Id) => {
+  try {
+    const response = await apiClient.delete(`/models/id/${Id}`);
+    return response.data;
+  }
+  catch (error) {
+    console.error("Error getting model by id: ", error);
     throw error;
   }
 };

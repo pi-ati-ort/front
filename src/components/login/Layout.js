@@ -27,7 +27,6 @@ const Login = () => {
     try {
       const resp = await loginUser(user);
       const dbUser = await getUser(username);
-
       toast.success("Autenticación exitosa", {
         position: "bottom-right",
         autoClose: 2000,
@@ -38,10 +37,10 @@ const Login = () => {
         progress: undefined,
         theme: "light",
       });
-
       sessionStorage.setItem("token", resp.token);
       sessionStorage.setItem("name", dbUser.name);
       sessionStorage.setItem("username", dbUser.username);
+      sessionStorage.setItem("role", dbUser.role);
       setTimeout(() => {
         window.location.href = "/perfil";
       }, 2000);
@@ -57,7 +56,6 @@ const Login = () => {
         theme: "light",
       });
       localStorage.clear();
-      console.log(e);
     }
   };
 

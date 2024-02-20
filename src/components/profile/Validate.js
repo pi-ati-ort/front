@@ -4,12 +4,12 @@ import { Checkbox } from "@material-tailwind/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { getProjects } from "../../api/apiProject";
-import { getAllModels } from "../../api/apiModel";
+import { getProjectsByUser } from "../../api/apiProject";
+import { getAllModelsByUser } from "../../api/apiModel";
 import { evaluateDmn } from "../../api/apiNorms";
 
 import Lottie from "lottie-react";
-import animationData from "../general/loading.json";
+import animationData from "../../assets/loading.json";
 
 import { normativas } from "../../utils/normativas";
 import { dmnModels } from "../../utils/dmnModels";
@@ -30,7 +30,7 @@ const Validate = () => {
   const [showResults, setShowResults] = useState(false);
   const [normativasModal, setNormativasModal] = useState(false);
   const [evaluationResults] = useState([]);
-  const [evalBooleans] = useState([]);
+  const [evalBooleans, setEvalBooleans] = useState([]);
 
   const username = sessionStorage.getItem("username");
   const dmnContainerName = "DMN_1.0.0-SNAPSHOT";
@@ -45,7 +45,7 @@ const Validate = () => {
 
     const fetchData = async () => {
       try {
-        const projectsResponse = await getProjects(username);
+        const projectsResponse = await getProjectsByUser(username);
         if (projectsResponse) {
           setProjects(projectsResponse);
         }
@@ -53,7 +53,7 @@ const Validate = () => {
         console.error("Error in fetchData: ", error);
       }
       try {
-        const modelsResponse = await getAllModels();
+        const modelsResponse = await getAllModelsByUser(username);
         if (modelsResponse) {
           setModels(modelsResponse);
         }
@@ -66,6 +66,7 @@ const Validate = () => {
 
   const HandleProject = (e) => {
     setShowResults(false);
+    setEvalBooleans([]);
     setSelectedProject(e);
     models.forEach((model) => {
       projects.forEach((project) => {
@@ -78,6 +79,7 @@ const Validate = () => {
   };
 
   const updateDmnRequest = async () => {
+    let errorOccurred = false;
     for (const dmnModel of dmnModels) {
       if (selectedModel.filename === dmnModel.name) {
         for (const dmn of dmnModel.dmn) {
@@ -99,7 +101,6 @@ const Validate = () => {
                   dmnContainerName,
                   newRequest
                 );
-                //console.log("response", response);
                 evaluationResults.push(response.data.result);
                 const boolResult = obtainBoolResult(
                   response.data.result,
@@ -109,7 +110,6 @@ const Validate = () => {
                   result: boolResult,
                   name: selectedNormativa.id,
                 });
-                console.log("evalBooleans", evalBooleans);
                 setLoading(true);
                 setTimeout(() => {
                   setLoading(false);
@@ -117,16 +117,19 @@ const Validate = () => {
                 }, 1500);
               } catch (error) {
                 console.error("Error in ValidateProject: ", error);
-                toast.error("Habilite el motor DMN", {
-                  position: "bottom-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: false,
-                  progress: undefined,
-                  theme: "light",
-                });
+                if (!errorOccurred) {
+                  errorOccurred = true;
+                  toast.error("Habilite el motor DMN", {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                }
               }
             }
           }
@@ -178,7 +181,6 @@ const Validate = () => {
   const handleAllNormativas = (id) => {
     normativas.map((norm) => {
       if (norm.id === id) {
-        //console.log("norm", norm);
         if (selectedNormativas.includes(norm)) {
           const index = selectedNormativas.indexOf(norm);
           selectedNormativas.splice(index, 1);
@@ -191,7 +193,6 @@ const Validate = () => {
   };
 
   const irANormativa = () => {
-    //podriamos si hay tiempo pasarle el id y que cada boton lleve a su correspondiente normativa
     window.open("https://normativa.montevideo.gub.uy/volumenes", "_blank");
   };
 
@@ -203,8 +204,8 @@ const Validate = () => {
     <div className="container mx-auto min-h-screen">
       <h2 className="text-5xl font-semibold mt-12">Validar Normativa</h2>
       <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-5">
-          <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12">
+        <div className="sm:col-span-6 xl:col-span-5">
+          <div className="bg-white h-auto p-4 rounded-2xl shadow-lg border border-idem mt-12 mb-32">
             <h3 className="text-2xl font-semibold mb-5">Normativas</h3>
             <ul className="">
               <li>
@@ -421,11 +422,11 @@ const Validate = () => {
             </ul>
           </div>
         </div>
-        <div className="col-span-7">
+        <div className="sm:col-span-6 xl:col-span-7">
           <div className="bg-white h-32 p-4 rounded-2xl shadow-lg border border-idem mt-12">
             <h3 className="text-2xl font-semibold">Seleccionar proyecto</h3>
             <div className="grid grid-cols-12 gap-4 mt-4 mr-4">
-              <div className="col-span-10">
+              <div className="2xl:col-span-10 sm:col-span-9">
                 <Listbox value={selectedProject} onChange={HandleProject}>
                   <div className="relative mt-2">
                     <Listbox.Button
@@ -462,34 +463,40 @@ const Validate = () => {
                     >
                       <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                         {projects.length > 0 ? (
-                          projects.map((item, index) => (
-                            <Listbox.Option
-                              key={index}
-                              className={({ active }) =>
-                                `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                  active
-                                    ? "bg-verde-idem text-white"
-                                    : "text-gray-900"
-                                }`
-                              }
-                              value={item.name}
-                            >
-                              {({ selected }) => (
-                                <>
-                                  <span
-                                    className={`block truncate ${
-                                      selected ? "font-medium" : "font-normal"
-                                    }`}
-                                  >
-                                    {item.name}
-                                  </span>
-                                  {selected ? (
-                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
-                                  ) : null}
-                                </>
-                              )}
-                            </Listbox.Option>
-                          ))
+                          projects
+                            .filter((item) =>
+                              models
+                                .map((model) => model.projectId)
+                                .includes(item.id)
+                            )
+                            .map((item, index) => (
+                              <Listbox.Option
+                                key={index}
+                                className={({ active }) =>
+                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "bg-verde-idem text-white"
+                                      : "text-gray-900"
+                                  }`
+                                }
+                                value={item.name}
+                              >
+                                {({ selected }) => (
+                                  <>
+                                    <span
+                                      className={`block truncate ${
+                                        selected ? "font-medium" : "font-normal"
+                                      }`}
+                                    >
+                                      {item.name}
+                                    </span>
+                                    {selected ? (
+                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+                                    ) : null}
+                                  </>
+                                )}
+                              </Listbox.Option>
+                            ))
                         ) : (
                           <Listbox.Option
                             className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-600"
@@ -506,7 +513,7 @@ const Validate = () => {
                   </div>
                 </Listbox>
               </div>
-              <div className="col-span-2">
+              <div className="2xl:col-span-2 sm:col-span-3">
                 <button
                   className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto mt-2 w-full"
                   onClick={ValidateProject}
@@ -532,8 +539,8 @@ const Validate = () => {
                   >
                     &#8203;
                   </span>
-                  <div className="mt-20 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
-                    <div className="">
+                  <div className="2xl:mt-16 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle px-8 pt-6">
+                    <div className="overflow-y-auto max-h-[80vh]">
                       <div className="mt-4 mb-10 w-full">
                         <div className="text-3xl font-semibold">
                           {selectedNormativa.name}
@@ -605,7 +612,7 @@ const Validate = () => {
             </div>
           )}
           {showResults && (
-            <div className="col-span-10">
+            <div className="col-span-10 sm:col-span-6">
               <div className="bg-white p-4 rounded-2xl shadow-lg border border-idem mt-10 mb-44">
                 <h3 className="text-3xl font-semibold">
                   Información del proyecto

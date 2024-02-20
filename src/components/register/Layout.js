@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Checkbox } from "@material-tailwind/react";
 
 import { registerUser } from "../../api/apiUser";
 
@@ -9,6 +10,8 @@ const Register = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("USER");
+  const [key, setKey] = useState("");
 
   const handleUsername = (event) => {
     setUsername(event.target.value);
@@ -22,44 +25,72 @@ const Register = () => {
     setName(event.target.value);
   };
 
+  const handleRole = (event) => {
+    if (event.target.checked) {
+      setRole("ADMIN");
+    } else {
+      setRole("USER");
+    }
+  };
+
+  const handleKey = (event) => {
+    setKey(event.target.value);
+  };
+
   const user = {
     name: name,
     username: username,
     password: password,
+    role: role,
   };
 
   const registerUserHandler = (event) => {
     event.preventDefault();
-    registerUser(user)
-      .then(() => {
-        toast.success("Registro exitoso", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-        });
-        sessionStorage.clear();
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
-      })
-      .catch((e) => {
-        console.log(e);
-        toast.error("Error en el registro", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-        });
+    if (role === "ADMIN" && key !== "Tesis2023") {
+      toast.error("Clave incorrecta", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
       });
+      return;
+    } else {
+      if (role === "USER" || (role === "ADMIN" && key === "Tesis2023")) {
+        registerUser(user)
+          .then(() => {
+            toast.success("Registro exitoso", {
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: false,
+              progress: undefined,
+              theme: "light",
+            });
+            sessionStorage.clear();
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2000);
+          })
+          .catch((e) => {
+            toast.error("Error en el registro", {
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: false,
+              progress: undefined,
+              theme: "light",
+            });
+          });
+      }
+    }
   };
 
   return (
@@ -132,6 +163,50 @@ const Register = () => {
                   className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
                 />
               </div>
+            </div>
+
+            <div className="grid grid-cols-8">
+              <div className="col-span-1">
+                <Checkbox
+                  size="sm"
+                  onClick={handleRole}
+                  color="green"
+                  id="role"
+                  name="role"
+                  title="Administrador"
+                  value={role}
+                />
+              </div>
+              <div className="col-span-3 mt-2">
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Administrador{" "}
+                </label>
+              </div>
+              {role === "ADMIN" ? (
+                <>
+                  <div className="col-span-1 mt-2">
+                    <label
+                      htmlFor="role"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Clave
+                    </label>
+                  </div>
+                  <div className="col-span-3 mt-1 w-full">
+                    <input
+                      id="key"
+                      name="key"
+                      type="password"
+                      autoComplete="key"
+                      onChange={handleKey}
+                      className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </>
+              ) : null}
             </div>
 
             <div>

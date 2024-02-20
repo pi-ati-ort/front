@@ -1,23 +1,25 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 
-import { getProjects, deleteProject } from "../../api/apiProject";
+import { getProjectsByUser, deleteProject } from "../../api/apiProject";
 import {
-  getAllModels,
+  getAllModelsByUser,
   deleteModelByProjectId,
   updateModelToDatabase,
   uploadModelToDatabase,
 } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
-import animationData from "../general/loading.json";
+import animationData from "../../assets/loading.json";
 import { ReactComponent as IfcSvg } from "../../assets/svg/ifc.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Projects = () => {
+  const username = sessionStorage.getItem("username");
+
   const [projects, setProjects] = useState([]);
-  const [models, setModels] = useState([]);
   const [existsProjects, setExistsProjects] = useState(false);
+  const [models, setModels] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -33,11 +35,9 @@ const Projects = () => {
 
   const [newModel, setNewModel] = useState(null);
 
-  const username = sessionStorage.getItem("username");
-
   const fetchProjects = useCallback(async () => {
     try {
-      const response = await getProjects(username);
+      const response = await getProjectsByUser(username);
       if (response) {
         setProjects(response);
         setExistsProjects(response.length > 0);
@@ -50,14 +50,14 @@ const Projects = () => {
 
   const fetchModels = useCallback(async () => {
     try {
-      const response = await getAllModels();
+      const response = await getAllModelsByUser(username);
       if (response) {
         setModels(response);
       }
     } catch (error) {
       console.error("Error in fetchData: ", error);
     }
-  }, []);
+  }, [username]);
 
   useEffect(() => {
     if (!sessionStorage.getItem("token")) {
@@ -72,7 +72,6 @@ const Projects = () => {
     showMoreRef.current.scrollIntoView({ behavior: "smooth" });
     setSelectedProject(projects.find((project) => project.id === id));
     setSelectedModel(models.find((model) => model.projectId === id));
-    console.log(selectedModel);
   }
 
   function showDeleteModal(id) {
@@ -115,6 +114,7 @@ const Projects = () => {
         size: model.size,
         bimId: selectedModel.bimId,
         file: null,
+        username: username,
       };
       await updateModelToDatabase(id, apiModel);
       setSelectedModel(apiModel);
@@ -141,9 +141,9 @@ const Projects = () => {
         size: model.size,
         bimId: selectedProject.bimId,
         file: null,
+        username: username,
       };
-      const result = await uploadModelToDatabase(id, apiModel);
-      console.log(result);
+      await uploadModelToDatabase(id, apiModel);
       setSelectedModel(apiModel);
       setTimeout(() => {
         setShowReplace(false);

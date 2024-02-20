@@ -15,6 +15,11 @@ import Projects from "./components/profile/Projects";
 import Visualize from "./components/profile/Visualize";
 import Validate from "./components/profile/Validate";
 
+import AllUsers from "./components/admin/AllUsers";
+import AllProjects from "./components/admin/AllProjects";
+import AllModels from "./components/admin/AllModels";
+import AllNorms from "./components/admin/AllNorms";
+
 function App() {
   return (
     <div className="h-screen">
@@ -22,24 +27,28 @@ function App() {
         <Header />
       </header>
       <div className="mt-24">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-          {sessionStorage.getItem("token") && (
-            <>
-              <Route path="/perfil" element={<Profile />} />
-              <Route path="/nuevo" element={<NewProject />} />
-              <Route path="/proyectos" element={<Projects />} />
-              <Route path="/visualizar" element={<Visualize />} />
-              <Route path="/validar" element={<Validate />} />
-            </>
-          )}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+            {sessionStorage.getItem("token") && (
+              <>
+                <Route path="/perfil" element={<Profile />} />
+                <Route path="/nuevo" element={<NewProject />} />
+                <Route path="/proyectos" element={<Projects />} />
+                <Route path="/visualizar" element={<Visualize />} />
+                <Route path="/validar" element={<Validate />} />
+                <Route path="/usuarios" element={<AllUsers />} />
+                <Route path="/all-proyectos" element={<AllProjects />} />
+                <Route path="/modelos" element={<AllModels />} />
+                <Route path="/normas" element={<AllNorms />} />
+              </>
+            )}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </div>
       <Footer />
     </div>

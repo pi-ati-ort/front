@@ -2,16 +2,20 @@ import React, { Fragment, useState, useEffect } from "react";
 
 import { Listbox, Transition } from "@headlessui/react";
 
-import { getProjects } from "../../api/apiProject";
+import { getProjectsByUser } from "../../api/apiProject";
+import { getAllModelsByUser } from "../../api/apiModel";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Lottie from "lottie-react";
-import animationData from "../general/loading.json";
+import animationData from "../../assets/loading.json";
 
 const Visualize = () => {
+  const username = sessionStorage.getItem("username");
+
   const [projects, setProjects] = useState([]);
+  const [models, setModels] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectName, setProjectName] = useState(null);
   const [modelName, setModelName] = useState("");
@@ -19,8 +23,6 @@ const Visualize = () => {
   const [loading, setLoading] = useState(null);
   const [uploaded, setUploaded] = useState(null);
   const [allowVisual, setAllowVisual] = useState(false);
-
-  const username = sessionStorage.getItem("username");
 
   const [file, setFile] = useState(null);
 
@@ -42,9 +44,17 @@ const Visualize = () => {
 
     const fetchData = async () => {
       try {
-        const response = await getProjects(username);
+        const response = await getProjectsByUser(username);
         if (response) {
           setProjects(response);
+        }
+      } catch (error) {
+        console.error("Error in fetchData: ", error);
+      }
+      try {
+        const modelsResponse = await getAllModelsByUser(username);
+        if (modelsResponse) {
+          setModels(modelsResponse);
         }
       } catch (error) {
         console.error("Error in fetchData: ", error);
@@ -54,10 +64,8 @@ const Visualize = () => {
   }, [username]);
 
   const VisualizeProject = () => {
-    console.log(selectedProject);
     if (allowVisual) {
       setLoading(true);
-      console.log(file);
       setTimeout(() => {
         setLoading(false);
         setUploaded(true);
@@ -78,7 +86,6 @@ const Visualize = () => {
 
   const SetVisualization = () => {
     setAllowVisual(!allowVisual);
-    console.log(allowVisual);
   };
 
   return (
@@ -118,7 +125,7 @@ const Visualize = () => {
               <div className="bg-white h-32 p-4 rounded-2xl shadow-lg border border-idem mt-12">
                 <h3 className="text-2xl font-semibold">Proyecto existente</h3>
                 <div className="grid grid-cols-12 gap-4 mt-4 mr-4">
-                  <div className="col-span-10">
+                  <div className="sm:col-span-8 lg:col-span-9">
                     <Listbox value={selectedProject} onChange={HandleProject}>
                       <div className="relative mt-2">
                         <Listbox.Button
@@ -155,36 +162,42 @@ const Visualize = () => {
                         >
                           <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                             {projects.length > 0 ? (
-                              projects.map((item, index) => (
-                                <Listbox.Option
-                                  key={index}
-                                  className={({ active }) =>
-                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                      active
-                                        ? "bg-verde-idem text-white"
-                                        : "text-gray-900"
-                                    }`
-                                  }
-                                  value={item.name}
-                                >
-                                  {({ selected }) => (
-                                    <>
-                                      <span
-                                        className={`block truncate ${
-                                          selected
-                                            ? "font-medium"
-                                            : "font-normal"
-                                        }`}
-                                      >
-                                        {item.name}
-                                      </span>
-                                      {selected ? (
-                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
-                                      ) : null}
-                                    </>
-                                  )}
-                                </Listbox.Option>
-                              ))
+                              projects
+                                .filter((item) =>
+                                  models
+                                    .map((model) => model.projectId)
+                                    .includes(item.id)
+                                )
+                                .map((item, index) => (
+                                  <Listbox.Option
+                                    key={index}
+                                    className={({ active }) =>
+                                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                        active
+                                          ? "bg-verde-idem text-white"
+                                          : "text-gray-900"
+                                      }`
+                                    }
+                                    value={item.name}
+                                  >
+                                    {({ selected }) => (
+                                      <>
+                                        <span
+                                          className={`block truncate ${
+                                            selected
+                                              ? "font-medium"
+                                              : "font-normal"
+                                          }`}
+                                        >
+                                          {item.name}
+                                        </span>
+                                        {selected ? (
+                                          <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+                                        ) : null}
+                                      </>
+                                    )}
+                                  </Listbox.Option>
+                                ))
                             ) : (
                               <Listbox.Option
                                 className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-600"
@@ -201,9 +214,9 @@ const Visualize = () => {
                       </div>
                     </Listbox>
                   </div>
-                  <div className="col-span-2 mr-4">
+                  <div className="sm:col-span-4 lg:col-span-3 w-full">
                     <button
-                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem mt-2"
+                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem mt-2 w-full"
                       onClick={VisualizeProject}
                     >
                       Visualizar
@@ -215,8 +228,8 @@ const Visualize = () => {
             <div className="col-span-1">
               <div className="bg-white h-32 p-4 rounded-2xl shadow-lg border border-idem mt-12">
                 <h3 className="text-2xl font-semibold">Cargar modelo</h3>
-                <div className="grid grid-cols-12 gap-4 mt-6 mr-4">
-                  <div className="col-span-8">
+                <div className="grid grid-cols-5 gap-2 mt-6">
+                  <div className="col-span-3">
                     <input
                       type="text"
                       disabled
@@ -224,10 +237,10 @@ const Visualize = () => {
                       className="border border-gray-300 p-2 w-full rounded-md text-sm"
                     />
                   </div>
-                  <div className="col-span-2 mr-4">
+                  <div className="col-span-1">
                     <label htmlFor="fileUpload" className="cursor-pointer">
                       <button
-                        className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem"
+                        className="bg-white text-idem rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem w-full"
                         onClick={() =>
                           document.getElementById("fileUpload").click()
                         }
@@ -246,9 +259,9 @@ const Visualize = () => {
                       />
                     </label>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-1">
                     <button
-                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-3 py-2 mx-auto border-2 border-idem"
+                      className="bg-verde-idem text-white rounded-md btn-sm text-sm font-bold px-2 xl:px-4 py-2 mx-auto border-2 border-idem m-full"
                       onClick={VisualizeProject}
                     >
                       Visualizar
@@ -271,11 +284,11 @@ const Visualize = () => {
       {uploaded && (
         <div className="bg-white h-[630px] p-2 rounded-2xl shadow-lg border border-idem mt-6 mb-20 overflow-hidden">
           <h3 className="text-2xl font-semibold">{projectName}</h3>
-            <iframe
-              src="https://wikiifc.com/"
-              title="IFC Wiki"
-              className="w-full h-full rounded-lg"
-            ></iframe>
+          <iframe
+            src="https://wikiifc.com/"
+            title="IFC Wiki"
+            className="w-full h-full rounded-lg"
+          ></iframe>
         </div>
       )}
       <ToastContainer
