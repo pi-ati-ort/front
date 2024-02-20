@@ -30,7 +30,7 @@ const Validate = () => {
   const [showResults, setShowResults] = useState(false);
   const [normativasModal, setNormativasModal] = useState(false);
   const [evaluationResults] = useState([]);
-  const [evalBooleans] = useState([]);
+  const [evalBooleans, setEvalBooleans] = useState([]);
 
   const username = sessionStorage.getItem("username");
   const dmnContainerName = "DMN_1.0.0-SNAPSHOT";
@@ -66,6 +66,7 @@ const Validate = () => {
 
   const HandleProject = (e) => {
     setShowResults(false);
+    setEvalBooleans([]);
     setSelectedProject(e);
     models.forEach((model) => {
       projects.forEach((project) => {
@@ -78,7 +79,7 @@ const Validate = () => {
   };
 
   const updateDmnRequest = async () => {
-    let errorOccurred = false; // Add this line
+    let errorOccurred = false;
     for (const dmnModel of dmnModels) {
       if (selectedModel.filename === dmnModel.name) {
         for (const dmn of dmnModel.dmn) {
@@ -117,8 +118,7 @@ const Validate = () => {
               } catch (error) {
                 console.error("Error in ValidateProject: ", error);
                 if (!errorOccurred) {
-                  // Add this line
-                  errorOccurred = true; // Add this line
+                  errorOccurred = true;
                   toast.error("Habilite el motor DMN", {
                     position: "bottom-right",
                     autoClose: 2000,
@@ -193,7 +193,6 @@ const Validate = () => {
   };
 
   const irANormativa = () => {
-    //podriamos si hay tiempo pasarle el id y que cada boton lleve a su correspondiente normativa
     window.open("https://normativa.montevideo.gub.uy/volumenes", "_blank");
   };
 
