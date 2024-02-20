@@ -73,3 +73,14 @@ export const deleteModelByProjectId = async (ProjectId) => {
     throw error;
   }
 };
+
+export const deleteModelById = async (Id) => {
+  try {
+    const response = await apiClient.delete(`/models/id/${Id}`);
+    return response.data;
+  }
+  catch (error) {
+    console.error("Error getting model by id: ", error);
+    throw error;
+  }
+};

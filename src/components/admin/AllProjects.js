@@ -92,12 +92,6 @@ const AllProjects = () => {
               <p className="text-center text-2xl mt-4 mb-4">
                 No hay proyectos creados.
               </p>
-              <p className="text-center text-lg mb-4">
-                Crea uno nuevo{" "}
-                <a className="text-idem" href="/nuevo">
-                  aquí.
-                </a>
-              </p>
             </div>
           </>
         )}

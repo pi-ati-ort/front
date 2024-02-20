@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 
-import { getProjects, deleteProject } from "../../api/apiProject";
 import { getAllModels, deleteModelByProjectId } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
@@ -11,15 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 const AllModels = () => {
   const [models, setModels] = useState([]);
   const [existsModels, setExistsModels] = useState(false);
-
-  const [loading, setLoading] = useState(true);
-
-  const showMoreRef = useRef(null);
-  const showProjectsRef = useRef(null);
-
-  const [selectedProject, setSelectedProject] = useState(null);
   const [selectedModel, setSelectedModel] = useState(null);
 
+  const [loading, setLoading] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
 
   const fetchModels = useCallback(async () => {
@@ -28,7 +21,7 @@ const AllModels = () => {
       if (response) {
         setModels(response);
         setLoading(false);
-        setExistsModels(true);
+        setExistsModels(response.length > 0);
       }
     } catch (error) {
       console.error("Error in fetchData: ", error);
@@ -42,9 +35,26 @@ const AllModels = () => {
     fetchModels();
   }, [fetchModels]);
 
-  function showDeleteModal(id) {
+  function showDeleteModal(model) {
     setShowDelete(true);
-    setSelectedModel(models.find((model) => model.projectId === id));
+    setSelectedModel(model);
+  }
+
+  async function handleDeleteModel() {
+    console.log(selectedModel.id);
+    await deleteModelByProjectId(selectedModel.projectId);
+    setShowDelete(false);
+    fetchModels();
+    toast.success("Modelo eliminado correctamente", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+    });
   }
 
   return (
@@ -55,13 +65,7 @@ const AllModels = () => {
           <>
             <div className="bg-white p-6 h-auto rounded-2xl shadow-lg flex flex-col border border-idem mt-12">
               <p className="text-center text-2xl mt-4 mb-4">
-                No hay proyectos creados.
-              </p>
-              <p className="text-center text-lg mb-4">
-                Crea uno nuevo{" "}
-                <a className="text-idem" href="/nuevo">
-                  aquí.
-                </a>
+                No hay modelos cargados.
               </p>
             </div>
           </>
@@ -106,7 +110,7 @@ const AllModels = () => {
                       <div className="flex flex-row text-end justify-end">
                         <button
                           onClick={() => {
-                            showDeleteModal(model.id);
+                            showDeleteModal(model);
                           }}
                           className="bg-verde-idem text-white border-idem border-2 py-1 px-3 rounded-md text-base font-semibold mx-2"
                         >
@@ -140,11 +144,12 @@ const AllModels = () => {
                   <div className="">
                     <div className="mt-1 mb-10 w-full">
                       <h2 className="text-2xl font-semibold">
-                        Eliminar proyecto
+                        Eliminar Modelo
                       </h2>
                       <p className="text-lg mt-4 mb-4">
-                        ¿Estás seguro de que quieres eliminar el proyecto. Esta
-                        acción no se puede deshacer.
+                        ¿Estás seguro de que quieres eliminar el modelo{" "}
+                        {selectedModel.filename}? . Esta acción no se puede
+                        deshacer.
                       </p>
                       <div className="flex flex-row">
                         <span className="mx-auto origin-bottom-right right-0 mr-0">
@@ -157,9 +162,7 @@ const AllModels = () => {
                             Cancelar
                           </button>
                           <button
-                            onClick={() => {
-                              console.log(selectedProject.id);
-                            }}
+                            onClick={handleDeleteModel}
                             className="bg-verde-idem text-white border-idem border-2 py-2 px-3 rounded-md text-sm font-medium"
                           >
                             Eliminar
@@ -173,7 +176,6 @@ const AllModels = () => {
             </div>
           </div>
         )}
-        <div ref={showMoreRef} />
         <ToastContainer
           position="bottom-right"
           autoClose={2000}

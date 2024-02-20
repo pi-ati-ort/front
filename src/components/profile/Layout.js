@@ -94,7 +94,6 @@ const Profile = () => {
       <p className="text-4xl text-center mt-9 mb-4 text-black font-bold">
         Te damos la bienvenida, {sessionStorage.getItem("name")}.
       </p>
-      <p className="text-3xl text-center mb-10 text-black font-light">
         {sessionStorage.getItem("role") === "ADMIN" ? (
           <p className="text-3xl text-center mb-10 text-black font-light">
             ¿Qué deseas administrar hoy?
@@ -104,7 +103,6 @@ const Profile = () => {
             ¿Qué deseas hacer hoy?
           </p>
         )}
-      </p>
       {sessionStorage.getItem("role") === "ADMIN" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:mx-20 xl:mx-60 2xl:mx-72">
           {adminMenu.map((item, index) => (

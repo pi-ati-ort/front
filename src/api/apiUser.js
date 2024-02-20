@@ -47,7 +47,7 @@ export const getAllUsers = async () => {
   export const deleteUser = async (id) => {
     try {
       const response = await apiClient.delete(`/users/${id}`);
-      return response.data;
+      return response;
     } catch (error) {
       console.error("Error deleting user: ", error);
       throw error;

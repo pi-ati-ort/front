@@ -1,12 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-
-import { getProjects, deleteProject } from "../../api/apiProject";
-import { getAllModels, deleteModelByProjectId } from "../../api/apiModel";
-
-import Lottie from "lottie-react";
-import animationData from "../../assets/loading.json";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React from "react";
 
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";

@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import { getAllUsers, deleteUser } from "../../api/apiUser";
+import { getProjectsByUser, deleteProject } from "../../api/apiProject";
+import { getAllModelsByUser, deleteModelByProjectId } from "../../api/apiModel";
 
 import Lottie from "lottie-react";
 import animationData from "../../assets/loading.json";
@@ -9,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -33,12 +36,37 @@ const AllUsers = () => {
     fetchUsers();
   }, [fetchUsers]);
 
-  function showDeleteModal(id) {
+  function showDeleteModal(user) {
     setShowDelete(true);
+    setSelectedUser(user);
   }
 
-  async function deleteUserById(id) {
-    await deleteUser(id);
+  async function deleteUserById(user) {
+    await deleteUser(user.id);
+    const projects = await getProjectsByUser(user.username);
+    if (projects) {
+      projects.forEach(async (project) => {
+        await deleteProject(project.id);
+      });
+    }
+    const models = await getAllModelsByUser(user.username);
+    if (models) {
+      models.forEach(async (model) => {
+        await deleteModelByProjectId(model.projectId);
+      });
+      setShowDelete(false);
+      fetchUsers();
+      toast.success("Usuario eliminado correctamente", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   }
 
   return (
@@ -84,7 +112,7 @@ const AllUsers = () => {
                         <button
                           disabled={user.role === "ADMIN"}
                           onClick={() => {
-                            showDeleteModal(user.id);
+                            showDeleteModal(user);
                           }}
                           className={`border-2 py-1 px-3 rounded-md text-base font-semibold mx-2 ${
                             user.role === "ADMIN"
@@ -122,12 +150,13 @@ const AllUsers = () => {
                   <div className="">
                     <div className="mt-1 mb-10 w-full">
                       <h2 className="text-2xl font-semibold">
-                        Eliminar proyecto
+                        Eliminar Usuario
                       </h2>
                       <p className="text-lg mt-4 mb-4">
-                        ¿Estás seguro de que quieres eliminar el usuario ?{" "}
-                        <br />
-                        Esta acción no se puede deshacer.
+                        ¿Estás seguro de que quieres eliminar el usuario{" "}
+                        <b>{selectedUser.name}</b>?<br />
+                        Se eliminarán todos sus proyectos y modelos. Esta acción
+                        no se puede deshacer.
                       </p>
                       <div className="flex flex-row">
                         <span className="mx-auto origin-bottom-right right-0 mr-0">
@@ -141,7 +170,7 @@ const AllUsers = () => {
                           </button>
                           <button
                             onClick={() => {
-                              deleteUserById("id");
+                              deleteUserById(selectedUser);
                             }}
                             className="bg-verde-idem text-white border-idem border-2 py-2 px-3 rounded-md text-sm font-medium"
                           >
